@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
+const generateToken = require("../models/token_generator");
 
 const createUser = async (req, res) => {
   try {
@@ -24,4 +25,34 @@ const createUser = async (req, res) => {
   }
 };
 
-module.exports = { createUser };
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email }).lean();
+
+  if (!user) {
+    res.status(401).json({ message: "No account with this email" });
+  } else if (user.password !== password) {
+    res.status(401).json({ message: "Incorrect password" });
+  } else {
+    const token = generateToken(user._id);
+
+    delete user.password;
+    delete user._id;
+    delete user.__v;
+
+    res.status(201).json({ token, user });
+  }
+};
+
+const getUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.userId }, "username name email");
+    const token = generateToken(req.userId);
+    res.status(200).json({ user, token });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+module.exports = { createUser, getUser, login };
