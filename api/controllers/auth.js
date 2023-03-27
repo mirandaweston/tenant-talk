@@ -30,10 +30,10 @@ const login = async (req, res) => {
 
   const user = await User.findOne({ email }).lean();
 
-  if (!user) {
-    res.status(401).json({ message: "No account with this email" });
-  } else if (user.password !== password) {
-    res.status(401).json({ message: "Incorrect password" });
+  if (!user || user.password !== password) {
+    res.status(401).json({ message: "Username or password is incorrect" });
+    // } else if (user.password !== password) {
+    //   res.status(401).json({ message: "Username or password is incorrect" });
   } else {
     const token = generateToken(user._id);
 
