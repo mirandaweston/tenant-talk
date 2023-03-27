@@ -30,18 +30,20 @@ const login = async (req, res) => {
 
   const user = await User.findOne({ email }).lean();
 
-  if (!user || user.password !== password) {
+  if (!user) {
     res.status(401).json({ message: "Username or password is incorrect" });
-    // } else if (user.password !== password) {
-    //   res.status(401).json({ message: "Username or password is incorrect" });
   } else {
-    const token = generateToken(user._id);
-
-    delete user.password;
-    delete user._id;
-    delete user.__v;
-
-    res.status(201).json({ token, user });
+    const match = await bcrypt.compare(password, user.password);
+    if (match) {
+      const token = generateToken(user._id);
+      delete user.password;
+      delete user._id;
+      delete user.__v;
+      res.status(201).json({ token, message: "OK", user });
+    } else {
+      res.status(401).json({ message: "Username or password is incorrect" });
+    }
+    // res.status(201).json({ token, user });
   }
 };
 
