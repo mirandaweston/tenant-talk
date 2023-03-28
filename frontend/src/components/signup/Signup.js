@@ -1,36 +1,28 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import useAxios from "axios-hooks";
-import Button from "./Button";
+import useSignup from "../../hooks/useSignup";
+import useAuthContext from "../../hooks/useAuthContext";
 
-const Register = () => {
-  const [{ loading, error }, postData] = useAxios(
-    {
-      url: "/auth",
-      method: "POST",
-    },
-    { manual: true }
-  );
-
-  const { register, handleSubmit } = useForm();
-  const onSubmit = async (user) => {
-    const newUser = await postData({ data: user });
-    console.log(newUser.data);
-  };
+const Signup = () => {
+  const { signup, error, isLoading } = useSignup();
+  const { register, handleSubmit, reset } = useForm();
+  const { user } = useAuthContext();
 
   useEffect(() => {
-    console.log(error);
-  }, [error]);
+    if (isLoading) return;
+    reset();
+  }, [isLoading]);
 
   return (
     <div className="relative flex h-screen justify-center md:px-12 lg:px-0">
-      <div className="relative z-10 flex flex-1 flex-col bg-white py-10 px-4 shadow-2xl sm:justify-center md:flex-none md:px-28">
+      <div className="relative z-10 flex flex-1 flex-col bg-white  sm:justify-center md:flex-none md:px-28">
         <div className="mx-auto w-full max-w-md sm:px-4 md:w-96 md:max-w-sm md:px-0">
           <div className="flex flex-col">
             <div className="mt-20">
+              {user && <p>{`Hello ${user.firstName}!`}</p>}
               <h2 className="text-lg font-semibold text-gray-900">
-                Get started for free
+                Sign up for an account
               </h2>
               <p className="mt-2 text-sm text-gray-700">
                 Already registered?{" "}
@@ -46,7 +38,7 @@ const Register = () => {
           </div>
           <form
             className="mt-10 grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-2"
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(signup)}
           >
             <div>
               <label
@@ -57,6 +49,7 @@ const Register = () => {
                 First name
               </label>
               <input
+                data-cy="first_name"
                 id="first_name"
                 name="first_name"
                 type="text"
@@ -74,6 +67,7 @@ const Register = () => {
                 Last name
               </label>
               <input
+                data-cy="last_name"
                 id="last_name"
                 name="last_name"
                 type="text"
@@ -91,6 +85,7 @@ const Register = () => {
                 Email
               </label>
               <input
+                data-cy="email"
                 id="email"
                 name="email"
                 type="email"
@@ -108,6 +103,7 @@ const Register = () => {
                 Password
               </label>
               <input
+                data-cy="password"
                 id="password"
                 name="password"
                 type="password"
@@ -116,18 +112,22 @@ const Register = () => {
                 {...register("password", { required: true })}
               />
             </div>
+            {error && (
+              <div className="col-span-full">
+                <p data-cy="error" className="text-red-500">
+                  {error}
+                </p>
+              </div>
+            )}
             <div className="col-span-full">
-              <Button
+              <button
+                data-cy="submit"
                 type="submit"
-                variant="solid"
-                color="blue"
-                disabled={loading}
-                className="w-full"
+                disabled={isLoading}
+                className="flex w-full justify-center rounded-md bg-orange-500 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-500"
               >
-                <span>
-                  Sign up <span aria-hidden="true">&rarr;</span>
-                </span>
-              </Button>
+                Sign in
+              </button>
             </div>
           </form>
         </div>
@@ -143,4 +143,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Signup;
