@@ -16,19 +16,16 @@ describe("<Signup />", () => {
 
   describe("once the submit button is clicked", () => {
     beforeEach(() => {
-      cy.intercept(
-        "POST",
-        "/user/signup",
-        (req) => {
-          req.reply({
-            statusCode: 201,
-            body: { message: "OK" },
-          });
-        },
-        {
-          delay: 1000,
-        }
-      ).as("signup");
+      cy.intercept("POST", "/user/signup", (req) => {
+        // delay response to test for loading state
+        req.on("response", (res) => {
+          res.setDelay(1000);
+        });
+        req.reply({
+          statusCode: 201,
+          body: { message: "OK" },
+        });
+      }).as("signup");
     });
 
     it("clears the input", () => {
