@@ -39,7 +39,7 @@ const login = async (req, res) => {
       delete user.password;
       delete user._id;
       delete user.__v;
-      res.status(201).json({ token, message: "OK", user });
+      res.status(201).json({ token, message: "Login Successful", user });
     } else {
       res.status(401).json({ message: "Username or password is incorrect" });
     }
