@@ -69,3 +69,7 @@ export const AuthContextProvider = ({ children }) => {
 AuthContextProvider.propTypes = {
   children: PropTypes.element.isRequired,
 };
+
+AuthContextProvider.propTypes = {
+  children: PropTypes.element.isRequired,
+};

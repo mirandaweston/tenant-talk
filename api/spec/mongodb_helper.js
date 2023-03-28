@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 beforeAll(function (done) {
-  mongoose.connect("mongodb://0.0.0.0/tenant_talk", {
+  mongoose.connect("mongodb://0.0.0.0/tenant_talk_test", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
@@ -13,6 +13,8 @@ beforeAll(function (done) {
   });
 });
 
-afterAll(async () => {
-  await mongoose.connection.close();
+afterAll(function (done) {
+  mongoose.connection.close(true, function () {
+    done();
+  });
 });
