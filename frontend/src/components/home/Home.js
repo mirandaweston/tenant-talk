@@ -38,7 +38,7 @@ const Home = () => {
             <Link to="/login" className="text-sm font-semibold leading-6 text-white">
               Log in
             </Link>
-            <Link to="/register" className="text-sm font-semibold leading-6 text-white">
+            <Link to="/signup" className="text-sm font-semibold leading-6 text-white">
               Sign up
             </Link>
           </div>
