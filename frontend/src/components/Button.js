@@ -37,7 +37,11 @@ const Button = ({ type, variant, color, className, href, ...props }) => {
   return href ? (
     <Link href={href} className={className} {...props} />
   ) : (
-    <button type={type} className={className} {...props} />
+    <button
+      type={type === "submit" ? "submit" : "button"}
+      className={className}
+      {...props}
+    />
   );
 };
 

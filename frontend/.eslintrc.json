@@ -25,13 +25,11 @@
     "react/jsx-filename-extension": [
       0,
       {
-        "extensions": [
-          ".js",
-          ".jsx"
-        ]
+        "extensions": [".js", ".jsx"]
       }
     ],
     "react/jsx-props-no-spreading": "off",
-    "jsx-a11y/label-has-associated-control": "off"
+    "jsx-a11y/label-has-associated-control": "off",
+    "no-underscore-dangle": "off"
   }
 }
