@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
+import { usePlacesWidget } from "react-google-autocomplete";
+import { Link } from "react-router-dom";
+
 
 const Home = () => {
+  const [searchValue, setSearchValue] = useState('');
+  const { ref } = usePlacesWidget({
+    apiKey: process.env.REACT_APP_API_KEY,
+    onPlaceSelected: (place) => {
+      console.log(place.formatted_address);
+    },
+    options:{types: ["address"],
+    componentRestrictions: { country: "gb" }},
+  });
+
   return (
     <>
       <header className="absolute inset-x-0 top-0 z-50">
@@ -21,10 +34,13 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="flex flex-1 justify-end">
-            <div className="text-sm font-semibold leading-6 text-white">
-              Log in <span aria-hidden="true">&rarr;</span>
-            </div>
+          <div className="flex flex-1 justify-end space-x-2">
+            <Link to="/login" className="text-sm font-semibold leading-6 text-white">
+              Log in
+            </Link>
+            <Link to="/signup" className="text-sm font-semibold leading-6 text-white">
+              Sign up
+            </Link>
           </div>
         </nav>
       </header>
@@ -55,6 +71,7 @@ const Home = () => {
                     id="search"
                     name="search"
                     type="search"
+                    ref={ref}
                     required
                     className="w-full rounded-full border-0 bg-white/5 p-5 text-white shadow-sm ring-1 ring-inset ring-white/10 backdrop-blur-md focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6"
                     placeholder="Search by postcode"
