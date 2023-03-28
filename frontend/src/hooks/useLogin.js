@@ -1,41 +1,29 @@
-import { useState, useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
-// import { ModalContext } from "../contexts/ModalContext";
+import { useState } from "react";
+import axios from "axios";
+import useAuthContext from "./useAuthContext";
 
-export default () => {
+const useLogin = () => {
+  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
-  const { setToken, setUser } = useContext(AuthContext);
-  // const { pushModal } = useContext(ModalContext);
+  const { dispatch } = useAuthContext();
 
-  const login = async (email, password) => {
+  const login = async (formData) => {
     setIsLoading(true);
+    setError(null);
 
-    const response = await fetch("/user/login", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      window.localStorage.setItem("token", data.token);
-      setToken(data.token);
-      setUser(data.user);
-      // pushModal({
-      //   message: "Login succeeded!",
-      //   type: "success",
-      // });
-      // } else {
-      //   pushModal({
-      //     message: data.message,
-      //     type: "error",
-      //   });
+    try {
+      const { data } = await axios.post("/user/login", formData);
+      dispatch({
+        type: "login",
+        payload: data,
+      });
+    } catch (err) {
+      setError(err.response.data.error);
     }
-
     setIsLoading(false);
   };
-  return { login, isLoading };
+
+  return { login, isLoading, error };
 };
+
+export default useLogin;
