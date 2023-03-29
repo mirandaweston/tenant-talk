@@ -2,7 +2,7 @@ const Property = require("../models/property");
 const generateToken = require("../models/token_generator");
 
 const getPropertyByAddress = async (req, res) => {
-  const { address } = req.body;
+  const { address } = req.query;
   try {
     const property = await Property.findOne({ address }).populate(
       "reviews",
