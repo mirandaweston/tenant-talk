@@ -198,20 +198,6 @@ describe("/users", () => {
   });
 
   describe("/user", () => {
-    // beforeAll(async () => {
-    //   const user = await new User({
-    //     firstName: "User",
-    //     lastName: "One",
-    //     email: "test@test.com",
-    //     password: bcrypt.hashSync("12345678", bcrypt.genSaltSync()),
-    //   });
-    //   await user.save();
-    // });
-
-    // afterAll(async () => {
-    //   await User.deleteMany({});
-    // });
-
     test("a token is returned when login credentials are valid", async () => {
       const user = await new User({
         firstName: "User",

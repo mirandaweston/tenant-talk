@@ -12,3 +12,5 @@ const useAuthContext = () => {
 };
 
 export default useAuthContext;
+
+export default useAuthContext;
