@@ -1,19 +1,8 @@
-import React, { useState } from "react";
-import { usePlacesWidget } from "react-google-autocomplete";
+import React from "react";
 import { Link } from "react-router-dom";
-
+import Search from "../search/Search";
 
 const Home = () => {
-  const [searchValue, setSearchValue] = useState('');
-  const { ref } = usePlacesWidget({
-    apiKey: process.env.REACT_APP_API_KEY,
-    onPlaceSelected: (place) => {
-      console.log(place.formatted_address);
-    },
-    options:{types: ["address"],
-    componentRestrictions: { country: "gb" }},
-  });
-
   return (
     <>
       <header className="absolute inset-x-0 top-0 z-50">
@@ -35,10 +24,16 @@ const Home = () => {
           </div>
 
           <div className="flex flex-1 justify-end space-x-2">
-            <Link to="/login" className="text-sm font-semibold leading-6 text-white">
+            <Link
+              to="/login"
+              className="text-sm font-semibold leading-6 text-white"
+            >
               Log in
             </Link>
-            <Link to="/signup" className="text-sm font-semibold leading-6 text-white">
+            <Link
+              to="/signup"
+              className="text-sm font-semibold leading-6 text-white"
+            >
               Sign up
             </Link>
           </div>
@@ -63,28 +58,9 @@ const Home = () => {
                   Search for an address or postcode to find reviews for your
                   prospective home
                 </p>
-                <form className="relative mx-auto mt-10 flex max-w-md">
-                  <label htmlFor="search" className="sr-only">
-                    Search
-                  </label>
-                  <input
-                    id="search"
-                    name="search"
-                    type="search"
-                    ref={ref}
-                    required
-                    className="w-full rounded-full border-0 bg-white/5 p-5 text-white shadow-sm ring-1 ring-inset ring-white/10 backdrop-blur-md focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6"
-                    placeholder="Search by postcode"
-                  />
-                  <div className="absolute inset-y-0 right-0 flex p-1.5">
-                    <button
-                      type="submit"
-                      className="rounded-full bg-orange-500 px-4 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
-                    >
-                      Search
-                    </button>
-                  </div>
-                </form>
+                <div className="relative mx-auto mt-10 flex max-w-md">
+                  <Search />
+                </div>
               </div>
             </div>
           </div>
