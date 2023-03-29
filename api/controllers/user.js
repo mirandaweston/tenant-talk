@@ -42,20 +42,18 @@ const login = async (req, res) => {
 
   const user = await User.findOne({ email }).lean();
 
-  if (!user) {
+  if (!user)
     res.status(401).json({ message: "Username or password is incorrect" });
-  } else {
-    const match = await bcrypt.compare(password, user.password);
-    if (match) {
-      const token = generateToken(user._id);
-      delete user.password;
-      delete user._id;
-      delete user.__v;
-      res.status(201).json({ token, message: "Login Successful", user });
-    } else {
-      res.status(401).json({ message: "Username or password is incorrect" });
-    }
-  }
+
+  const match = await bcrypt.compare(password, user.password);
+
+  if (!match)
+    res.status(401).json({ message: "Username or password is incorrect" });
+
+  const token = generateToken(user._id);
+  delete user.password;
+
+  res.status(201).json({ token, user });
 };
 
 module.exports = { signup, getUser, login };

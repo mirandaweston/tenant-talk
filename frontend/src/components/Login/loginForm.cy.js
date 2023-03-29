@@ -3,8 +3,8 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthContextProvider } from "../../contexts/AuthContext";
 import LoginForm from "./loginForm";
 
-describe("Logging in", () => {
-  it("calls the /login endpoint and receives token", () => {
+describe("LoginForm", () => {
+   beforeEach(() => {
     cy.mount(
       <BrowserRouter>
         <AuthContextProvider>
@@ -12,6 +12,9 @@ describe("Logging in", () => {
         </AuthContextProvider>
       </BrowserRouter>
     );
+  });
+
+  it("calls the /login endpoint and receives token", () => {
     cy.intercept("POST", "user/login", { token: "fakeToken" }).as("loginRequest");
 
     cy.get('[data-cy="email"]').type("test@test.com");
@@ -21,17 +24,10 @@ describe("Logging in", () => {
       expect(interception.response.body.token).to.eq("fakeToken");
     });
   });
-});
 
-describe('Navigation', () => {
+
+
   it('should navigate to the signup page when "Sign up" link clicked', () => {
-    cy.mount(
-      <BrowserRouter>
-        <AuthContextProvider>
-          <LoginForm />
-        </AuthContextProvider>
-      </BrowserRouter>
-    );
 
     cy.get('[data-cy="signup-link"]').click();
     cy.url().should('include', '/signup');
