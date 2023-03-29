@@ -5,6 +5,7 @@ const logger = require("morgan");
 
 const authRouter = require("./routes/user");
 const reviewRouter = require("./routes/review");
+const propertyRouter = require("./routes/property");
 
 const app = express();
 
@@ -16,5 +17,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/user", authRouter);
 app.use("/review", reviewRouter);
+app.use("/property", propertyRouter)
 
 module.exports = app;
