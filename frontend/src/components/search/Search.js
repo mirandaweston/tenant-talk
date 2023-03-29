@@ -29,11 +29,12 @@ const Search = () => {
         className="w-full"
       >
         <Combobox.Input
-          className="w-full rounded-full border-0 bg-white/5 py-5 pr-24 pl-7 text-white shadow-sm ring-1 ring-inset ring-white/10 backdrop-blur-md focus:ring-2 focus:ring-inset focus:ring-orange-500 sm:text-sm sm:leading-6"
+          className="w-full rounded-full border-0 bg-white/5 py-5 pr-24 pl-7 text-white shadow-sm ring-1 ring-inset ring-white/10 backdrop-blur-md placeholder:text-white/60 focus:ring-2 focus:ring-inset focus:ring-orange-500 sm:text-sm sm:leading-6"
           onChange={(event) =>
             getPlacePredictions({ input: event.target.value })
           }
           displayValue={(place) => place?.description}
+          placeholder="Search by address"
         />
 
         {placePredictions.length > 0 && (
