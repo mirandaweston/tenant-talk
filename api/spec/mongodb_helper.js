@@ -13,8 +13,6 @@ beforeAll(function (done) {
   });
 });
 
-afterAll(function (done) {
-  mongoose.connection.close(true, function () {
-    done();
-  });
+afterAll(async () => {
+  await mongoose.connection.close();
 });

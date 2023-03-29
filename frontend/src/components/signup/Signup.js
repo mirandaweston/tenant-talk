@@ -30,7 +30,7 @@ const Signup = () => {
                   to="/login"
                   className="font-medium text-blue-600 hover:underline"
                 >
-                  Sign in
+                  Log in
                 </Link>{" "}
                 to your account.
               </p>
