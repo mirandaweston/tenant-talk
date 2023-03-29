@@ -4,7 +4,6 @@ const { createReview } = require("../controllers/review");
 
 const router = express.Router();
 
-// router.post("/new", tokenChecker, createReview);
-router.post("/new", createReview);
+router.post("/new", tokenChecker, createReview);
 
 module.exports = router;

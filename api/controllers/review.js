@@ -3,21 +3,18 @@ const Review = require("../models/review");
 const generateToken = require("../models/token_generator");
 
 const createReview = async (req, res) => {
+  const { property, review } = req.body;
+
+  // property can only contain an id or an address
+  const keys = Object.keys(property);
+  const isValidProperty =
+    keys.length === 1 && (keys[0] === "_id" || keys[0] === "address");
+
+  if (!isValidProperty) {
+    return res.status(400).json({ error: "missing required property details" });
+  }
+
   try {
-    const { property, review } = req.body;
-
-    const propertyKeys = Object.keys(property);
-
-    if (
-      (propertyKeys.length === 1 && propertyKeys[0] === "_id") ||
-      propertyKeys[0] === "address"
-    )
-      if (!["_id", "address"].some((key) => key in property)) {
-        return res
-          .status(400)
-          .json({ error: "missing required property details" });
-      }
-
     const newReview = new Review({
       author: req.userId,
       ...review,
@@ -33,12 +30,15 @@ const createReview = async (req, res) => {
         { $push: { reviews: newReview._id } },
         { new: true }
       );
-    } else if ("address" in property) {
-      newProperty = new Property({
+      if (!newProperty)
+        return res.status(400).json({ error: "property not found" });
+    }
+
+    if ("address" in property) {
+      newProperty = await Property.create({
         address: property.address,
         reviews: [newReview._id],
       });
-      await newProperty.save();
     }
 
     const token = generateToken(req.userId);
