@@ -15,8 +15,8 @@ const LoginForm = () => {
   }, [isLoading]);
 
   return (
-    <div className="flex min-h-full">
-      <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+    <div className="relative flex h-screen justify-center md:px-12 lg:px-0">
+      <div className="relative z-10 flex flex-1 flex-col bg-white  sm:justify-center md:flex-none md:px-28">
         <div className="mx-auto w-full max-w-sm lg:w-96">
         <div className="flex lg:flex-1">
           <div className="-m-1.5 p-1.5">
@@ -29,6 +29,7 @@ const LoginForm = () => {
               <path d="M1,0 h18 a1,1 0 0 1 1,1 v6 a1,1 0 0 1 -1,1 h-5 l-8 8 v3 a1,1 0 0 0 1,1 h6 a1,1 0 0 0 1,-1 v-3 l-8 -8 h-5 a1,1 0 0 1 -1,-1 v-6 a1,1 0 0 1 1,-1 z" />
             </svg>
             <br/>
+            {user && <p>{`Hello ${user.firstName}!`}</p>}
             <h2 className="text-lg font-semibold text-gray-900">
             Sign up for an account
             </h2>
@@ -86,6 +87,14 @@ const LoginForm = () => {
                 </div>
               </div>
 
+              {error && (
+                <div className="col-span-full">
+                  <p data-cy="error" className="text-red-500">
+                    {error}
+                  </p>
+                </div>
+              )}
+
               <div className="flex items-center justify-between">
                 {/* <div className="flex items-center">
                   <input
@@ -122,7 +131,7 @@ const LoginForm = () => {
       <div className="relative hidden w-0 flex-1 lg:block">
         <img
           className="absolute inset-0 h-full w-full object-cover"
-          src="https://images.unsplash.com/photo-1505904267569-f02eaeb45a4c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
+          src="https://source.unsplash.com/nrSzRUWqmoI"
           alt=""
         />
       </div>
