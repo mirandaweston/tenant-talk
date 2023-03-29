@@ -1,7 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { StarIcon } from "@heroicons/react/20/solid";
 import useAuthContext from "../../hooks/useAuthContext";
+
+const useReviewCard = () => {
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
+  const { dispatch } = useAuthContext();
+
+  const fetchReview = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const { data } = await axios.get(`/property/ '${propertyId}`)
+    }
+  }
+}
 /*
   This example requires some changes to your config:
   
