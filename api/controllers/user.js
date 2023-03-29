@@ -15,7 +15,7 @@ const signup = async (req, res) => {
       email,
       password: passwordHash,
     });
-    console.log(newUser);
+
     const user = (await newUser.save()).toObject();
 
     delete user.password;
