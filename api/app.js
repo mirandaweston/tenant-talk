@@ -17,6 +17,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/user", authRouter);
 app.use("/review", reviewRouter);
-app.use("/property", propertyRouter)
+app.use("/property", propertyRouter);
 
 module.exports = app;

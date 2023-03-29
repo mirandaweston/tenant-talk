@@ -1,5 +1,20 @@
 const Property = require("../models/property");
+const Review = require("../models/review");
 const generateToken = require("../models/token_generator");
+
+const getPropertyByAddress = async (req, res) => {
+  const { address } = req.body;
+  try {
+    const property = await Property.findOne({ address }).populate(
+      "reviews",
+      "overallRating"
+    );
+    const token = generateToken(req.userId);
+    res.status(200).json({ property, token });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 const getPropertyById = async (req, res) => {
   try {
@@ -20,4 +35,4 @@ const getPropertyById = async (req, res) => {
   }
 };
 
-module.exports = { getPropertyById };
+module.exports = { getPropertyById, getPropertyByAddress };
