@@ -4,6 +4,7 @@ import useAxios from "axios-hooks";
 import useAuthContext from "../../hooks/useAuthContext";
 import { StarIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
+import { format } from 'date-fns';
 
 const propertyDetails = () => {
   const { id } = useParams();
@@ -19,13 +20,6 @@ const propertyDetails = () => {
   if (!data) return null; // change this dependent on if we need to return. Should page
   // be accessible if we haven't hit a property value in the previous path.
 
-//   <div>
-//   <div>
-//     <h1>{data.property.address}</h1>
-//     <h1>{data.property.reviews[0].author.firstName}</h1>
-//   </div>
-// </div>
-
   return (
     <ul role="list" className="space-y-3">
       {data.property.reviews.map((review) => (
@@ -34,7 +28,7 @@ const propertyDetails = () => {
             <div className="flex-1 py-10">
               <h3 className="font-medium text-gray-900">{review.author.firstName}</h3>
               <p>
-                <time dateTime={review.date}>{review.createdAt}</time>
+              <time dateTime={review.date}>{format(new Date(review.createdAt), 'dd, MMMM, yyyy')}</time>
               </p>
 
               <div className="mt-4 flex items-center">
