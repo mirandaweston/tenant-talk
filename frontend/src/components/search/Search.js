@@ -51,20 +51,20 @@ const Search = () => {
         />
 
         <Transition
-          enter="transition duration-100 ease-out"
+          enter="transition duration-100"
           enterFrom="transform scale-95 opacity-0"
           enterTo="transform scale-100 opacity-100"
-          leave="transition duration-75 ease-out"
+          leave="transition duration-75"
           leaveFrom="transform scale-100 opacity-100"
           leaveTo="transform scale-95 opacity-0"
         >
-          <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-2xl bg-white/5 text-white shadow-lg ring-1 ring-white/10 backdrop-blur-md focus:outline-none sm:text-sm">
+          <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-2xl bg-white p-2 text-base shadow-lg ring-1 ring-inset ring-black/5 focus:outline-none sm:text-sm">
             {isPlacePredictionsLoading ? (
-              <div className="relative animate-pulse cursor-default select-none py-2 text-white">
+              <div className="relative animate-pulse cursor-default select-none py-2 text-gray-900">
                 Loading...
               </div>
             ) : placePredictions.length === 0 ? (
-              <div className="relative cursor-default select-none py-2 text-white">
+              <div className="relative cursor-default select-none py-2 text-gray-900">
                 No properties found
               </div>
             ) : (
@@ -83,8 +83,8 @@ const Search = () => {
                     value={{ description, terms }}
                     className={({ active }) =>
                       clsx(
-                        "relative cursor-default select-none py-2 pl-3 pr-9 text-white",
-                        active && "bg-orange-500"
+                        "relative cursor-default select-none rounded-lg py-2 pl-3 pr-9",
+                        active ? "bg-orange-500 text-white" : "text-gray-900"
                       )
                     }
                   >
@@ -93,8 +93,8 @@ const Search = () => {
                         <span className="truncate">{mainText}</span>
                         <span
                           className={clsx(
-                            "ml-2 truncate text-white/60",
-                            active && "text-orange-200"
+                            "ml-2 truncate",
+                            active ? "text-orange-100" : "text-gray-500"
                           )}
                         >
                           {secondaryText}
