@@ -2,6 +2,8 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import useAxios from "axios-hooks";
 import useAuthContext from "../../hooks/useAuthContext";
+import { StarIcon } from "@heroicons/react/20/solid";
+import clsx from "clsx";
 
 const propertyDetails = () => {
   const { id } = useParams();
@@ -17,78 +19,48 @@ const propertyDetails = () => {
   if (!data) return null; // change this dependent on if we need to return. Should page
   // be accessible if we haven't hit a property value in the previous path.
 
-  // useEffect(() => {
-  //   console.log(data);
-  // }, [data]);
+//   <div>
+//   <div>
+//     <h1>{data.property.address}</h1>
+//     <h1>{data.property.reviews[0].author.firstName}</h1>
+//   </div>
+// </div>
 
   return (
-    <div>
-      <div>
-        <h1>{data.property.address}</h1>
-        <h1>{data.property.reviews[0].author.firstName}</h1>
-      </div>
-    </div>
+    <ul role="list" className="space-y-3">
+      {data.property.reviews.map((review) => (
+        <li key={review.id} className="overflow-hidden rounded-md bg-white px-6 py-4 shadow">
+          <div className="flex space-x-4 text-sm text-gray-500">
+            <div className="flex-1 py-10">
+              <h3 className="font-medium text-gray-900">{review.author.firstName}</h3>
+              <p>
+                <time dateTime={review.date}>{review.createdAt}</time>
+              </p>
+
+              <div className="mt-4 flex items-center">
+                {[0, 1, 2, 3, 4].map((rating) => (
+                  <StarIcon
+                    key={rating}
+                    className={clsx(
+                      rating < review.overallRating ? 'text-yellow-400' : 'text-gray-300',
+                      'h-5 w-5 flex-shrink-0'
+                    )}
+                    aria-hidden="true"
+                  />
+                ))}
+              </div>
+              <p className="sr-only">{review.overallRating} out of 5 stars</p>
+
+              <div
+                className="prose prose-sm mt-4 max-w-none text-gray-500"
+                dangerouslySetInnerHTML={{ __html: review.comment }}
+              />
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
   );
 };
 
 export default propertyDetails;
-
-// const CommentList = ({ comments }) => {
-
-//   return (
-//     <div data-cy="comment-list">
-//       <div className="my-6 flex flex-col gap-4">
-//         <p className="text-lg font-semibold">Comments</p>
-//         {comments.length > 0
-//           ? comments.map((comment) => (
-//               <Comment comment={comment} key={comment.id} />
-
-//               // Comment component functionality \/
-//               const Comment = ({ comment }) => {
-//                 const formatDate = () => {
-//                   const date = new Date(comment.createdAt);
-//                   const formattedDate = contextualTime(date);
-//                   return <p className="text-sm text-gray-500">{formattedDate}</p>;
-//                 };
-
-//                 return (
-//                   <div
-//                     data-cy="comment"
-//                     className="flex flex-col rounded-md border border-gray-200 p-4 transition-all hover:bg-gray-100"
-//                   >
-//                     <div className="flex items-center gap-4">
-//                       <ProfilePicture
-//                         className="h-10 w-10"
-//                         publicId={comment.authorImageId}
-//                       />
-//                       <div>
-//                         <p className="text-lg font-semibold capitalize">
-//                           {comment.authorName}
-//                         </p>
-//                         {formatDate()}
-//                       </div>
-//                     </div>
-//                     <div className="mx-2 p-2 text-base">{comment.message}</div>
-//                   </div>
-//                 );
-//               };
-//             ))
-//           : emptyComments()}
-//       </div>
-//     </div>
-//   );
-// };
-
-// CommentList.propTypes = {
-//   comments: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       id: PropTypes.string,
-//       message: PropTypes.string,
-//       authorName: PropTypes.string,
-//       createdAt: PropTypes.string,
-//       likes: PropTypes.arrayOf(PropTypes.string),
-//     })
-//   ).isRequired,
-// };
-
-// export default CommentList;
