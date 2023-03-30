@@ -9,7 +9,7 @@ const {
 const router = express.Router();
 
 router.get("/address", tokenChecker, getPropertyByAddress);
-router.get("/", tokenChecker, getPropertyById);
+router.get("/:id", tokenChecker, getPropertyById);
 router.get("/reviews", tokenChecker, getPropertyReviews);
 
 module.exports = router;
