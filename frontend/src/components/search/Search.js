@@ -7,6 +7,11 @@ import { Link } from "react-router-dom";
 const Search = () => {
   const [selectedPlace, setSelectedPlace] = useState(null);
 
+  const getParams = () => {
+    const params = new URLSearchParams(selectedPlace);
+    return params.toString();
+  };
+
   const { placePredictions, getPlacePredictions, isPlacePredictionsLoading } =
     useGoogle({
       apiKey: process.env.REACT_APP_API_KEY,
@@ -97,9 +102,10 @@ const Search = () => {
       </Combobox>
       <div className="absolute inset-y-0 right-0 flex p-1.5">
         <Link
-          to="/results"
-          state={selectedPlace}
-          type="submit"
+          to={{
+            pathname: "/results",
+            search: getParams(),
+          }}
           className="flex items-center rounded-full bg-orange-500 px-4 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
         >
           Search
