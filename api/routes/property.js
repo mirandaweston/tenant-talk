@@ -8,7 +8,7 @@ const {
 
 const router = express.Router();
 
-router.get("/address", tokenChecker, getPropertyByAddress);
+router.get("/address", getPropertyByAddress);
 router.get("/:id", tokenChecker, getPropertyById);
 router.get("/reviews", tokenChecker, getPropertyReviews);
 

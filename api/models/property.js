@@ -6,6 +6,11 @@ const PropertySchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  addressTerms: {
+    type: Array,
+    required: true,
+    validate: (v) => v == null || v.length > 0,
+  },
   reviews: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
     validate: (v) => v == null || v.length > 0,
