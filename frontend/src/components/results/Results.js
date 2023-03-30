@@ -13,7 +13,7 @@ const Results = () => {
     method: "GET",
     headers: { Authorization: `Bearer ${token}` },
     params: {
-      address: searchParams.get("description"),
+      terms: searchParams.getAll("terms"),
     },
   });
 
@@ -24,7 +24,7 @@ const Results = () => {
       {error && <div>{error.message}</div>}
       {loading && <div>Currently loading</div>}
 
-      {data && <PropertyList properties={[data.property]} />}
+      {data && <PropertyList properties={data.properties} />}
     </>
   );
 };
