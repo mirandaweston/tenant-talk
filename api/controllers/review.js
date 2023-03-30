@@ -8,7 +8,8 @@ const createReview = async (req, res) => {
   // property can only contain an id or an address
   const keys = Object.keys(property);
   const isValidProperty =
-    keys.length === 1 && (keys[0] === "_id" || keys[0] === "address");
+    (keys.length === 1 && keys[0] === "_id") ||
+    (keys.length === 2 && "address" in property && "addressTerms" in property);
 
   if (!isValidProperty) {
     return res.status(400).json({ error: "missing required property details" });
@@ -37,6 +38,7 @@ const createReview = async (req, res) => {
     if ("address" in property) {
       newProperty = await Property.create({
         address: property.address,
+        addressTerms: property.addressTerms,
         reviews: [newReview._id],
       });
     }
