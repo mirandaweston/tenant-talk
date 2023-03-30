@@ -18,41 +18,43 @@ const LoginForm = () => {
     <div className="relative flex h-screen justify-center md:px-12 lg:px-0">
       <div className="relative z-10 flex flex-1 flex-col bg-white  sm:justify-center md:flex-none md:px-28">
         <div className="mx-auto w-full max-w-sm lg:w-96">
-        <div className="flex lg:flex-1">
-          <div className="-m-1.5 p-1.5">
-            <span className="sr-only">Tenant Talk</span>
-            <svg
-              className="w-10 fill-orange-500"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M1,0 h18 a1,1 0 0 1 1,1 v6 a1,1 0 0 1 -1,1 h-5 l-8 8 v3 a1,1 0 0 0 1,1 h6 a1,1 0 0 0 1,-1 v-3 l-8 -8 h-5 a1,1 0 0 1 -1,-1 v-6 a1,1 0 0 1 1,-1 z" />
-            </svg>
-            <br/>
-            {user && <p>{`Hello ${user.firstName}!`}</p>}
-            <h2 className="text-lg font-semibold text-gray-900">
-            Sign up for an account
-            </h2>
+          <div className="flex lg:flex-1">
+            <div className="-m-1.5 p-1.5">
+              <span className="sr-only">Tenant Talk</span>
+              <svg
+                className="w-10 fill-orange-500"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M1,0 h18 a1,1 0 0 1 1,1 v6 a1,1 0 0 1 -1,1 h-5 l-8 8 v3 a1,1 0 0 0 1,1 h6 a1,1 0 0 0 1,-1 v-3 l-8 -8 h-5 a1,1 0 0 1 -1,-1 v-6 a1,1 0 0 1 1,-1 z" />
+              </svg>
+              <br />
+              {user && <p>{`Hello ${user.firstName}!`}</p>}
+              <h2 className="text-lg font-semibold text-gray-900">
+                Sign up for an account
+              </h2>
+            </div>
           </div>
-        </div>
-          
-              <p className="mt-2 text-sm text-gray-700">
-                Not signed up yet?{" "}
-                <Link
-                  data-cy="signup-link"
-                  to="/signup"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Sign up
-                </Link>{" "}
-                here.
-              </p>
+
+          <p className="mt-2 text-sm text-gray-700">
+            Not signed up yet?{" "}
+            <Link
+              data-cy="signup-link"
+              to="/signup"
+              className="font-medium text-blue-600 hover:underline"
+            >
+              Sign up
+            </Link>{" "}
+            here.
+          </p>
 
           <div className="mt-6">
-            <form className="space-y-6"
-              onSubmit={handleSubmit(login)}>
+            <form className="space-y-6" onSubmit={handleSubmit(login)}>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
                   Email address
                 </label>
                 <div className="mt-2">
@@ -70,7 +72,10 @@ const LoginForm = () => {
               </div>
 
               <div className="space-y-1">
-                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
                   Password
                 </label>
                 <div className="mt-2">
@@ -115,7 +120,7 @@ const LoginForm = () => {
         />
       </div>
     </div>
-  ) 
+  );
 };
 
 export default LoginForm;
