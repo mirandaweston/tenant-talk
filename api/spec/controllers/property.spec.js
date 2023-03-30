@@ -1,8 +1,12 @@
 const mongoose = require("mongoose");
-const supertest = require("supertest");
+const jwt = require("jsonwebtoken");
+require("../mongodb_helper");
+const request = require("supertest");
+const bcrypt = require("bcrypt");
 const app = require("../../app");
 const Property = require("../../models/property");
-const generateToken = require("../../models/token_generator");
+const User = require("../../models/user");
+const Review = require("../../models/review");
 
 let token;
 
@@ -31,6 +35,17 @@ const dropProperties = async () => {
 };
 
 describe("/property", () => {
+  beforeAll(async () => {
+    const user = new User({
+      firstName: "poppy ",
+      lastName: "pop",
+      email: "poppy@poppy.com",
+      password: bcrypt.hashSync("12345678", bcrypt.genSaltSync()),
+    });
+    await user.save();
+    token = generateBackdatedToken(user.id);
+  });
+
   beforeEach(async () => {
     await dropProperties();
   });
@@ -41,9 +56,18 @@ describe("/property", () => {
 
   describe("GET, when token is present", () => {
     it("response code is 200", async () => {
+      const review = new Review({
+        author: "64246d86e7b79afa05b06b21",
+        comment: "I really enjoyed my stay at this property",
+        overallRating: 5,
+      });
       const property = new Property({
         address: "123 Tenant Lane",
-        reviews: [],
+        reviews: [
+          {
+            review,
+          },
+        ],
       });
       await property.save();
       token = generateBackdatedToken(user.id);
@@ -54,21 +78,21 @@ describe("/property", () => {
       expect(response.status).toEqual(200);
     });
 
-    xit("returns the corresponding property", async () => {
-      const property = new Property({
-        address: "123 Tenant Lane",
-        reviews: [],
-      });
-      await property.save();
-      token = generateBackdatedToken(user.id);
+    // it.skip("returns the corresponding property", async () => {
+    //   const property = new Property({
+    //     address: "123 Tenant Lane",
+    //     reviews: [],
+    //   });
+    //   await property.save();
+    //   token = generateBackdatedToken(user.id);
 
-      const response = await request(app)
-        .get("/property")
-        .set("Authorization", `Bearer ${token}`);
-      expect(response.body.property).toMatchObject({
-        address: "123 Tenant Lane",
-        review: [],
-      });
-    });
+    //   const response = await request(app)
+    //     .get("/property")
+    //     .set("Authorization", `Bearer ${token}`);
+    //   expect(response.body.property).toMatchObject({
+    //     address: "123 Tenant Lane",
+    //     review: [],
+    //   });
+    // });
   });
 });

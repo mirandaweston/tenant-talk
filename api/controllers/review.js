@@ -4,7 +4,7 @@ const generateToken = require("../models/token_generator");
 
 const createReview = async (req, res) => {
   const { property, review } = req.body;
-
+  console.log(property);
   // property can only contain an id or an address
   const keys = Object.keys(property);
   const isValidProperty =
@@ -19,9 +19,7 @@ const createReview = async (req, res) => {
       author: req.userId,
       ...review,
     });
-
     await newReview.save();
-
     let newProperty;
 
     if ("_id" in property) {
