@@ -5,6 +5,7 @@ import Signup from "../signup/Signup";
 import LoginForm from "../Login/loginForm";
 import Results from "../results/Results";
 import PropertyReviewsPage from "../propertyReviews/propertyReviews";
+import AboutPage from "../aboutPage/aboutPage";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/results" element={<Results />} />
         <Route path="/property/:id" element={<PropertyReviewsPage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
     </BrowserRouter>
   );
