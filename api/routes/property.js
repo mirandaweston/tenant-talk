@@ -3,13 +3,11 @@ const tokenChecker = require("../middleware/token_checker");
 const {
   getPropertyByAddress,
   getPropertyById,
-  getPropertyReviews,
 } = require("../controllers/property");
 
 const router = express.Router();
 
 router.get("/address", getPropertyByAddress);
 router.get("/:id", tokenChecker, getPropertyById);
-router.get("/reviews", tokenChecker, getPropertyReviews);
 
 module.exports = router;
