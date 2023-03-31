@@ -1,7 +1,8 @@
+// token
 // useAuthcontext
-// New job - Create review Link /review/new
+// conditional if user logged in shows name & if not shows login button (token)
 
-import { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   MagnifyingGlassIcon,
@@ -10,12 +11,15 @@ import {
 } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import useAuthContext from "../../hooks/useAuthContext";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const NavBar = () => {
+  const { token, user } = useAuthContext();
+
   return (
     <Disclosure as="nav" className="bg-orange-400 shadow">
       {({ open }) => (
@@ -97,7 +101,7 @@ const NavBar = () => {
                           className="ml-4 text-sm font-semibold leading-6 text-gray-900"
                           aria-hidden="true"
                         >
-                          Tom Cook
+                          {user && user.firstName}
                         </span>
                         <ChevronDownIcon
                           className="text-black-600 ml-0 h-5 w-5"
@@ -144,7 +148,8 @@ const NavBar = () => {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
+                          <Link
+                            to="/"
                             href="#"
                             className={classNames(
                               active ? "bg-gray-100" : "",
@@ -152,7 +157,7 @@ const NavBar = () => {
                             )}
                           >
                             Sign out
-                          </a>
+                          </Link>
                         )}
                       </Menu.Item>
                     </Menu.Items>
@@ -183,10 +188,10 @@ const NavBar = () => {
                 </div>
                 <div className="ml-3">
                   <div className="text-base font-medium text-gray-800">
-                    Tom Cook
+                    {user && user.firstName}
                   </div>
                   <div className="text-sm font-medium text-gray-500">
-                    tom@example.com
+                    {user && user.email}
                   </div>
                 </div>
               </div>
