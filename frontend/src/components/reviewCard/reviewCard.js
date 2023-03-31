@@ -3,10 +3,9 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
 import { format } from 'date-fns';
 
-// 
-
-function ReviewCard(props) {
-  const { review } = props;
+const ReviewCard = ({review}) => {
+// function ReviewCard(props) {
+//   const { review } = props;
 
   return (
     <li className="overflow-hidden rounded-md bg-white px-6 py-4 shadow">
@@ -31,10 +30,9 @@ function ReviewCard(props) {
           </div>
           <p className="sr-only">{review.overallRating} out of 5 stars</p>
 
-          <div
-            className="prose prose-sm mt-4 max-w-none text-gray-500"
-            dangerouslySetInnerHTML={{ __html: review.comment }}
-          />
+          <div className="prose prose-sm mt-4 max-w-none text-gray-500">
+           { review.comment}
+          </div>
         </div>
       </div>
     </li>
