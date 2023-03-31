@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Combobox, Transition } from "@headlessui/react";
-import useGoogle from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import clsx from "clsx";
-import { useNavigate } from "react-router-dom";
-import queryString from "query-string";
+import useGoogle from "react-google-autocomplete/lib/usePlacesAutocompleteService";
+import axios from "axios";
+import AddressFeedback from "../addressFeedback/AddressFeedback";
 
-const Search = () => {
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  const navigate = useNavigate();
+const SmallSearch = ({
+  selectedPlace,
+  setSelectedPlace,
+  foundProperty,
+  setFoundProperty,
+}) => {
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
 
   const { placePredictions, getPlacePredictions, isPlacePredictionsLoading } =
     useGoogle({
@@ -19,35 +24,54 @@ const Search = () => {
       },
     });
 
-  const search = () => {
-    navigate({
-      pathname: "results",
-      search: queryString.stringify({
-        terms: selectedPlace.terms.map(({ value }) => value),
-      }),
-    });
+  const getProperty = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const { data } = await axios.get("/property/address", {
+        params: { address: selectedPlace.description },
+      });
+      if (data.property) {
+        setFoundProperty(data.property);
+      } else {
+        setFoundProperty(false);
+      }
+    } catch (err) {
+      setError(err.response.data.error);
+    }
+    setIsLoading(false);
   };
 
+  useEffect(() => {
+    if (selectedPlace) getProperty();
+    setFoundProperty(null);
+  }, [selectedPlace]);
+
   return (
-    <>
-      <label htmlFor="search" className="sr-only">
-        Search
-      </label>
-      <Combobox
-        as="div"
-        value={selectedPlace}
-        onChange={setSelectedPlace}
-        nullable
-        className="w-full"
-      >
+    <Combobox
+      as="div"
+      value={selectedPlace}
+      onChange={setSelectedPlace}
+      nullable
+    >
+      <Combobox.Label className="block text-sm font-medium leading-6 text-gray-900">
+        Address
+      </Combobox.Label>
+      <div className="relative mt-2">
         <Combobox.Input
-          className="w-full rounded-full border-0 bg-white/5 py-5 pr-24 pl-7 text-white shadow-sm ring-1 ring-inset ring-white/10 backdrop-blur-md placeholder:text-white/60 focus:ring-2 focus:ring-inset focus:ring-orange-500 sm:text-sm sm:leading-6"
+          className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-500 sm:text-sm sm:leading-6"
           onChange={(event) =>
             getPlacePredictions({ input: event.target.value })
           }
           displayValue={(place) => place?.description}
-          placeholder="Search by address"
+          placeholder="Search for an address"
         />
+        <div className="absolute top-0 right-0 flex h-full w-10 items-center justify-center">
+          <AddressFeedback
+            foundProperty={foundProperty}
+            isLoading={isLoading}
+          />
+        </div>
 
         <Transition
           enter="transition duration-100"
@@ -57,13 +81,13 @@ const Search = () => {
           leaveFrom="transform scale-100 opacity-100"
           leaveTo="transform scale-95 opacity-0"
         >
-          <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-2xl bg-white p-2 text-base shadow-lg ring-1 ring-inset ring-black/5 focus:outline-none sm:text-sm">
+          <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white p-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
             {isPlacePredictionsLoading ? (
-              <div className="relative animate-pulse cursor-default select-none py-2 text-gray-900">
+              <div className="relative animate-pulse cursor-default select-none py-2 text-center text-gray-900">
                 Loading...
               </div>
             ) : placePredictions.length === 0 ? (
-              <div className="relative cursor-default select-none py-2 text-gray-900">
+              <div className="relative cursor-default select-none py-2 text-center text-gray-900">
                 No properties found
               </div>
             ) : (
@@ -82,7 +106,7 @@ const Search = () => {
                     value={{ description, terms }}
                     className={({ active }) =>
                       clsx(
-                        "relative cursor-default select-none rounded-lg py-2 pl-3 pr-9",
+                        "relative cursor-default select-none rounded-sm py-2 pl-3 pr-9",
                         active ? "bg-orange-500 text-white" : "text-gray-900"
                       )
                     }
@@ -92,7 +116,7 @@ const Search = () => {
                         <span className="truncate">{mainText}</span>
                         <span
                           className={clsx(
-                            "ml-2 truncate",
+                            "ml-2 truncate text-gray-500",
                             active ? "text-orange-100" : "text-gray-500"
                           )}
                         >
@@ -106,18 +130,9 @@ const Search = () => {
             )}
           </Combobox.Options>
         </Transition>
-      </Combobox>
-      <div className="absolute inset-y-0 right-0 flex p-1.5">
-        <button
-          type="button"
-          onClick={search}
-          className="flex items-center rounded-full bg-orange-500 px-4 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
-        >
-          Search
-        </button>
       </div>
-    </>
+    </Combobox>
   );
 };
 
-export default Search;
+export default SmallSearch;

@@ -22,14 +22,14 @@ const PropertyList = ({ properties }) => {
             <div className="flex-1 truncate">
               <div className="flex items-center space-x-3">
                 <Link
-                  to={"/property/" + property._id}
+                  to={`/property/${property._id}`}
                   className="truncate text-sm font-medium text-gray-900"
                 >
                   {property.address}
                 </Link>
               </div>
               <p className="mt-1 truncate text-sm text-gray-500">
-                {"Reviews: " + property.reviews.length}
+                {`Reviews: ${property.reviews.length}`}
               </p>
               <div className="mt-4 flex items-center">
                 {[0, 1, 2, 3, 4].map((rating) => (
@@ -39,7 +39,7 @@ const PropertyList = ({ properties }) => {
                       getAverage(property) > rating
                         ? "text-yellow-400"
                         : "text-gray-300",
-                      "h-5 w-5 flex-shrink-0"
+                      "h-5 w-5 shrink-0"
                     )}
                     aria-hidden="true"
                   />

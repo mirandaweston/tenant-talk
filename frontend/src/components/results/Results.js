@@ -20,7 +20,6 @@ const Results = () => {
   return (
     <>
       <div>Search results:</div>
-
       {error && <div>{error.message}</div>}
       {loading && <div>Currently loading</div>}
 
