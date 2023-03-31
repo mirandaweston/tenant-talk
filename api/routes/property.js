@@ -1,8 +1,13 @@
 const express = require("express");
-const { getPropertyByAddress } = require("../controllers/property");
+const tokenChecker = require("../middleware/token_checker");
+const {
+  getPropertyByAddress,
+  getPropertyById,
+} = require("../controllers/property");
 
 const router = express.Router();
 
 router.get("/address", getPropertyByAddress);
+router.get("/:id", tokenChecker, getPropertyById);
 
 module.exports = router;
