@@ -4,7 +4,7 @@ import Home from "../home/Home";
 import Signup from "../signup/Signup";
 import LoginForm from "../Login/loginForm";
 import Results from "../results/Results";
-import ReviewsList from "../reviewsList/reviewsList";
+import PropertyReviewsPage from "../propertyReviews/propertyReviews";
 
 const App = () => {
   return (
@@ -14,7 +14,7 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/results" element={<Results />} />
-        <Route path="/property/:id" element={<ReviewsList />} />
+        <Route path="/property/:id" element={<PropertyReviewsPage />} />
       </Routes>
     </BrowserRouter>
   );
