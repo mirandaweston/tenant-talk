@@ -2,16 +2,14 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useAxios from "axios-hooks";
 import useAuthContext from "../../hooks/useAuthContext";
-import ReviewCard from "../reviewCard/reviewCard";
-import { StarIcon } from "@heroicons/react/20/solid";
-import clsx from "clsx";
+import ReviewCard from "../reviewCard/ReviewCard";
+import Stars from "../stars/Stars";
 
 const PropertyReviewsPage = () => {
   const { id } = useParams();
   const { token } = useAuthContext();
   const [{ loading, data, error }, refetch] = useAxios({
     url: `/property/${id}`,
-    method: "GET",
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -35,9 +33,8 @@ const PropertyReviewsPage = () => {
         <h3 className="text-base font-semibold leading-6 text-gray-900">
           {data.property.address}
         </h3>
-
         <p className="mt-1 text-sm text-gray-500">
-          {"Reviews: " + data.property.reviews.length}
+          {`Reviews: ${data.property.reviews.length}`}
         </p>
       </div>
       <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
@@ -48,50 +45,19 @@ const PropertyReviewsPage = () => {
             </dt>
             <dd className="mt-1 text-sm text-gray-900">
               <div className="mt-4 flex items-center">
-                {[0, 1, 2, 3, 4].map((rating) => (
-                  <StarIcon
-                    key={rating}
-                    className={clsx(
-                      getAverage(data.property) > rating
-                        ? "text-yellow-400"
-                        : "text-gray-300",
-                      "h-5 w-5 flex-shrink-0"
-                    )}
-                    aria-hidden="true"
-                  />
-                ))}
-                <p className="mt-1 text-sm text-gray-500">
+                <Stars rating={getAverage(data.property)} />
+                <p className="mt-1 ml-1 text-sm text-gray-500">
                   {getAverage(data.property)} out of 5 stars
                 </p>
               </div>
             </dd>
           </div>
-          {/* <div className="sm:col-span-1">
-              <dt className="text-sm font-medium text-gray-500">Rating Criteria 2</dt>
-              <dd className="mt-1 text-sm text-gray-900">STARS</dd>
-            </div>
-            <div className="sm:col-span-1">
-              <dt className="text-sm font-medium text-gray-500">Rating Criteria 3</dt>
-              <dd className="mt-1 text-sm text-gray-900">STARS</dd>
-            </div>
-            <div className="sm:col-span-1">
-              <dt className="text-sm font-medium text-gray-500">Rating Criteria 4</dt>
-              <dd className="mt-1 text-sm text-gray-900">STARS</dd>
-            </div>
-            <div className="sm:col-span-1">
-              <dt className="text-sm font-medium text-gray-500">Pets Yes/No</dt>
-              <dd className="mt-1 text-sm text-gray-900">Yes/No</dd>
-            </div>
-            <div className="sm:col-span-1">
-              <dt className="text-sm font-medium text-gray-500">Deposit Returned Yes/No</dt>
-              <dd className="mt-1 text-sm text-gray-900">Yes/No</dd>
-            </div> */}
           <div className="sm:col-span-2">
             <dt className="text-sm font-medium text-gray-500">Reviews</dt>
             <dd className="mt-1 text-sm text-gray-900">
-              <ul role="list" className="space-y-3">
+              <ul className="space-y-3">
                 {data.property.reviews.map((review) => (
-                  <ReviewCard key={review.id} review={review} />
+                  <ReviewCard key={review._id} review={review} />
                 ))}
               </ul>
             </dd>

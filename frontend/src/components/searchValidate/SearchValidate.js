@@ -3,15 +3,16 @@ import { Combobox, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import useGoogle from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import axios from "axios";
+import PropTypes from "prop-types";
 import AddressFeedback from "../addressFeedback/AddressFeedback";
 
-const SmallSearch = ({
+const SearchValidate = ({
   selectedPlace,
   setSelectedPlace,
   foundProperty,
   setFoundProperty,
 }) => {
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
 
   const { placePredictions, getPlacePredictions, isPlacePredictionsLoading } =
@@ -29,7 +30,7 @@ const SmallSearch = ({
     setError(null);
     try {
       const { data } = await axios.get("/property/address", {
-        params: { address: selectedPlace.description },
+        params: { address: selectedPlace.address },
       });
       if (data.property) {
         setFoundProperty(data.property);
@@ -43,8 +44,7 @@ const SmallSearch = ({
   };
 
   useEffect(() => {
-    if (selectedPlace) getProperty();
-    setFoundProperty(null);
+    selectedPlace ? getProperty() : setFoundProperty(null);
   }, [selectedPlace]);
 
   return (
@@ -63,7 +63,7 @@ const SmallSearch = ({
           onChange={(event) =>
             getPlacePredictions({ input: event.target.value })
           }
-          displayValue={(place) => place?.description}
+          displayValue={(place) => place?.address}
           placeholder="Search for an address"
         />
         <div className="absolute top-0 right-0 flex h-full w-10 items-center justify-center">
@@ -93,17 +93,16 @@ const SmallSearch = ({
             ) : (
               placePredictions.map(
                 ({
-                  description,
+                  description: address,
                   place_id: id,
                   structured_formatting: {
                     main_text: mainText,
                     secondary_text: secondaryText,
                   },
-                  terms,
                 }) => (
                   <Combobox.Option
                     key={id}
-                    value={{ description, terms }}
+                    value={{ address }}
                     className={({ active }) =>
                       clsx(
                         "relative cursor-default select-none rounded-sm py-2 pl-3 pr-9",
@@ -135,4 +134,25 @@ const SmallSearch = ({
   );
 };
 
-export default SmallSearch;
+SearchValidate.propTypes = {
+  selectedPlace: PropTypes.shape({
+    address: PropTypes.string,
+  }),
+  setSelectedPlace: PropTypes.func.isRequired,
+  foundProperty: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.shape({
+      address: PropTypes.string,
+      reviews: PropTypes.arrayOf(PropTypes.string),
+      _id: PropTypes.string,
+    }),
+  ]),
+  setFoundProperty: PropTypes.func.isRequired,
+};
+
+SearchValidate.defaultProps = {
+  selectedPlace: null,
+  foundProperty: null,
+};
+
+export default SearchValidate;

@@ -2,9 +2,9 @@ import React from "react";
 import { useSearchParams } from "react-router-dom";
 import useAxios from "axios-hooks";
 import useAuthContext from "../../hooks/useAuthContext";
-import PropertyList from "../propertyList/PropertyList";
+import PropertyCard from "../propertyCard/PropertyCard";
 
-const Results = () => {
+const Properties = () => {
   const [searchParams] = useSearchParams();
   const { token } = useAuthContext();
 
@@ -19,13 +19,17 @@ const Results = () => {
 
   return (
     <>
-      <div>Search results:</div>
       {error && <div>{error.message}</div>}
       {loading && <div>Currently loading</div>}
-
-      {data && <PropertyList properties={data.properties} />}
+      {data && "properties" in data && (
+        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {data.properties.map((property) => (
+            <PropertyCard key={property._id} property={property} />
+          ))}
+        </ul>
+      )}
     </>
   );
 };
 
-export default Results;
+export default Properties;

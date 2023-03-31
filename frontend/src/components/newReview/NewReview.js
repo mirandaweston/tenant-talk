@@ -4,18 +4,18 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import SmallSearch from "../smallSearch/SmallSearch";
+import SearchValidate from "../searchValidate/SearchValidate";
 import useAuthContext from "../../hooks/useAuthContext";
 
 const NewReview = () => {
   const { token } = useAuthContext();
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const [addressError, setAddressError] = useState(null);
-  const [isLoading, setIsLoading] = useState(null);
+  const [, setIsLoading] = useState(null);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [foundProperty, setFoundProperty] = useState(null);
   const [overallRating, setOverallRating] = useState(1);
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
   const createReview = async ({ comment }) => {
@@ -67,7 +67,7 @@ const NewReview = () => {
           <div className="px-4 py-6 sm:p-8">
             <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-4">
-                <SmallSearch
+                <SearchValidate
                   selectedPlace={selectedPlace}
                   setSelectedPlace={setSelectedPlace}
                   foundProperty={foundProperty}
