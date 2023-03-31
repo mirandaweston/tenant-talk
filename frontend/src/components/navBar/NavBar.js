@@ -18,7 +18,7 @@ function classNames(...classes) {
 }
 
 const NavBar = () => {
-  const { token, user } = useAuthContext();
+  const { token, user, dispatch } = useAuthContext();
 
   return (
     <Disclosure as="nav" className="bg-orange-400 shadow">
@@ -148,15 +148,17 @@ const NavBar = () => {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <Link
-                            to="/"
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                          >
-                            Log out
+                          <Link to="/" href="#">
+                            <button
+                              type="button"
+                              onClick={() => dispatch({ type: "logout" })}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}
+                            >
+                              Log out
+                            </button>
                           </Link>
                         )}
                       </Menu.Item>
