@@ -115,7 +115,7 @@ const LoginForm = () => {
       <div className="relative hidden w-0 flex-1 lg:block">
         <img
           className="absolute inset-0 h-full w-full object-cover"
-          src="https://source.unsplash.com/nrSzRUWqmoI"
+          src="https://source.unsplash.com/nrSzRUWqmoI/5184x3456"
           alt=""
         />
       </div>
