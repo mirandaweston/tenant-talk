@@ -6,10 +6,10 @@ import Login from "../login/Login";
 import Properties from "../properties/Properties";
 import Property from "../property/Property";
 import NewReview from "../newReview/NewReview";
-import WithNav from "../withNav/WithNav";
 import AboutPage from "../aboutPage/aboutPage";
 import NotFound from "../notFound/notFound";
 import useAuthContext from "../../hooks/useAuthContext";
+import NavBar from "../navBar/NavBar";
 
 const App = () => {
   const { token } = useAuthContext();
@@ -18,6 +18,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="*" element={<NotFound />} />
         <Route
           path="/signup"
           element={token ? <Navigate to="/" /> : <Signup />}
@@ -26,7 +27,7 @@ const App = () => {
           path="/login"
           element={token ? <Navigate to="/" /> : <Login />}
         />
-        <Route element={<WithNav />}>
+        <Route element={<NavBar />}>
           <Route path="/properties" element={<Properties />} />
           <Route
             path="/property/:id"
@@ -37,7 +38,6 @@ const App = () => {
             element={token ? <NewReview /> : <Navigate to="/login" />}
           />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>

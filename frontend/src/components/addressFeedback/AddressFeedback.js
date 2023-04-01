@@ -1,5 +1,6 @@
 import React from "react";
 import { PlusCircleIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
+import PropTypes from "prop-types";
 
 const AddressFeedback = ({ isLoading, foundProperty }) => {
   if (isLoading)
@@ -33,6 +34,23 @@ const AddressFeedback = ({ isLoading, foundProperty }) => {
 
   if (!foundProperty)
     return <PlusCircleIcon className="h-6 w-6 text-blue-500" />;
+};
+
+AddressFeedback.propTypes = {
+  isLoading: PropTypes.bool,
+  foundProperty: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.shape({
+      address: PropTypes.string,
+      reviews: PropTypes.arrayOf(PropTypes.string),
+      _id: PropTypes.string,
+    }),
+  ]),
+};
+
+AddressFeedback.defaultProps = {
+  isLoading: false,
+  foundProperty: null,
 };
 
 export default AddressFeedback;
