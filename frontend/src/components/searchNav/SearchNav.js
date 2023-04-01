@@ -30,6 +30,7 @@ const SearchNav = () => {
       value={selectedPlace}
       onChange={setSelectedPlace}
       nullable
+      className="w-full max-w-lg lg:max-w-xs"
     >
       <Combobox.Label className=" sr-only">Address</Combobox.Label>
       <div className="relative">

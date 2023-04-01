@@ -18,6 +18,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="*" element={<NotFound />} />
         <Route
           path="/signup"
           element={token ? <Navigate to="/" /> : <Signup />}
@@ -37,7 +38,6 @@ const App = () => {
             element={token ? <NewReview /> : <Navigate to="/login" />}
           />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
