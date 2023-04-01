@@ -161,12 +161,14 @@ const NavBar = () => {
                 )}
 
                 <div className="flex items-center space-x-4 lg:hidden">
-                  <button
-                    type="button"
-                    className="rounded-md bg-orange-500 p-2 text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
-                  >
-                    <PlusIcon className="h-5 w-5" aria-hidden="true" />
-                  </button>
+                  {token && (
+                    <button
+                      type="button"
+                      className="rounded-md bg-orange-500 p-2 text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+                    >
+                      <PlusIcon className="h-5 w-5" aria-hidden="true" />
+                    </button>
+                  )}
 
                   {/* Mobile menu button */}
                   <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-400">
