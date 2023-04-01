@@ -2,9 +2,10 @@ import React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Home from "../home/Home";
 import Signup from "../signup/Signup";
-import LoginForm from "../Login/loginForm";
-import Results from "../results/Results";
-import PropertyReviewsPage from "../propertyReviews/propertyReviews";
+import LoginForm from "../login/LoginForm";
+import Properties from "../properties/Properties";
+import PropertyReviewsPage from "../propertyReviews/PropertyReviews";
+import NewReview from "../newReview/NewReview";
 import WithNav from "../withNav/WithNav";
 import AboutPage from "../aboutPage/aboutPage";
 
@@ -12,14 +13,15 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/" element={<Home />} />
         <Route element={<WithNav />}>
-          <Route path="/results" element={<Results />} />
+          <Route path="/properties" element={<Properties />} />
+          <Route path="/property/:id" element={<PropertyReviewsPage />} />
+          <Route path="/review/new" element={<NewReview />} />
+          <Route path="/about" element={<AboutPage />} />
         </Route>
-        <Route path="/property/:id" element={<PropertyReviewsPage />} />
-        <Route path="/about" element={<AboutPage />} />
       </Routes>
     </BrowserRouter>
   );

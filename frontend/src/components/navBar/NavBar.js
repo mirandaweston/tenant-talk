@@ -1,11 +1,7 @@
-import React, { Fragment, useEffect } from "react";
-import { Disclosure, Menu, Transition, Combobox } from "@headlessui/react";
-import {
-  MagnifyingGlassIcon,
-  ChevronDownIcon,
-  PlusIcon,
-} from "@heroicons/react/20/solid";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import React, { Fragment } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { ChevronDownIcon, PlusIcon } from "@heroicons/react/20/solid";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
 import SearchNav from "../searchNav/SearchNav";
@@ -15,10 +11,10 @@ function classNames(...classes) {
 }
 
 const NavBar = () => {
-  const { token, user, dispatch } = useAuthContext();
+  const { user, dispatch } = useAuthContext();
 
   return (
-    <Disclosure as="nav" className="bg-orange-400 shadow">
+    <Disclosure as="nav" className="bg-white shadow">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
@@ -26,23 +22,23 @@ const NavBar = () => {
               <div className="flex px-2 lg:px-0">
                 <div className="flex shrink-0 items-center">
                   <svg
-                    className="w-10 fill-orange-600"
+                    className="w-10 fill-orange-500"
                     viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path d="M1,0 h18 a1,1 0 0 1 1,1 v6 a1,1 0 0 1 -1,1 h-5 l-8 8 v3 a1,1 0 0 0 1,1 h6 a1,1 0 0 0 1,-1 v-3 l-8 -8 h-5 a1,1 0 0 1 -1,-1 v-6 a1,1 0 0 1 1,-1 z" />
                   </svg>
                 </div>
                 <div className="hidden lg:ml-6 lg:flex lg:space-x-8">
-                  {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                   <Link
                     to="/"
-                    href="#"
-                    className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900">
+                    className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
+                  >
                     Home
                   </Link>
                 </div>
               </div>
-              <div className="flex flex-1 items-center justify-center px-2 lg:ml-6 lg:justify-end">
+              <div className="flex flex-1 items-center justify-center lg:ml-6 lg:justify-end">
                 <div className="w-full max-w-lg lg:max-w-xs">
                   <label htmlFor="search" className="sr-only">
                     Search
@@ -67,7 +63,8 @@ const NavBar = () => {
                 <div className="shrink-0">
                   <Link
                     to="/review/new"
-                    className="relative inline-flex items-center gap-x-1.5 rounded-md bg-orange-500 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    className="relative inline-flex items-center gap-x-1.5 rounded-md bg-orange-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
                     <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                     Review
                   </Link>
@@ -82,11 +79,12 @@ const NavBar = () => {
                         <span className="hidden lg:flex lg:items-center">
                           <span
                             className="ml-4 text-sm font-semibold leading-6 text-gray-900"
-                            aria-hidden="true">
+                            aria-hidden="true"
+                          >
                             {user.firstName}
                           </span>
                           <ChevronDownIcon
-                            className="text-black-600 ml-0 h-5 w-5"
+                            className="ml-0 h-5 w-5 text-gray-600"
                             aria-hidden="true"
                           />
                         </span>
@@ -99,30 +97,20 @@ const NavBar = () => {
                       enterTo="transform opacity-100 scale-100"
                       leave="transition ease-in duration-75"
                       leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95">
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none">
                         <Menu.Item>
                           {({ active }) => (
-                            <a
-                              href="#"
+                            <Link
+                              to="/"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
-                              )}>
+                              )}
+                            >
                               Your Profile
-                            </a>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="#"
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
-                              )}>
-                              Settings
-                            </a>
+                            </Link>
                           )}
                         </Menu.Item>
                         <Menu.Item>
@@ -133,7 +121,8 @@ const NavBar = () => {
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
-                              )}>
+                              )}
+                            >
                               Log out
                             </button>
                           )}
@@ -144,7 +133,8 @@ const NavBar = () => {
                 ) : (
                   <Link
                     to="/login"
-                    className="ml-4 text-sm font-semibold leading-6 text-gray-900">
+                    className="ml-4 text-sm font-semibold leading-6 text-gray-900"
+                  >
                     Log in
                   </Link>
                 )}
@@ -157,7 +147,8 @@ const NavBar = () => {
               {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800" */}
               <Link
                 to="/"
-                className="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700">
+                className="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700"
+              >
                 Home
               </Link>
             </div>
@@ -183,19 +174,22 @@ const NavBar = () => {
                 <Disclosure.Button
                   as="a"
                   href="#"
-                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">
+                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                >
                   Your Profile
                 </Disclosure.Button>
                 <Disclosure.Button
                   as="a"
                   href="#"
-                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">
+                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                >
                   Settings
                 </Disclosure.Button>
                 <Disclosure.Button
                   as="a"
                   href="#"
-                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">
+                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                >
                   Log out
                 </Disclosure.Button>
               </div>

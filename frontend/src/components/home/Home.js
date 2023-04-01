@@ -55,8 +55,8 @@ const Home = () => {
                   Welcome to Tenant Talk
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-gray-300">
-                  Search for an address or postcode to find reviews for your
-                  prospective home
+                  Search for an address to find reviews for your prospective
+                  home
                 </p>
                 <div className="relative mx-auto mt-10 flex max-w-md">
                   <Search />

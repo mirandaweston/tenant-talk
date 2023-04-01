@@ -2,16 +2,31 @@ const Property = require("../models/property");
 const generateToken = require("../models/token_generator");
 
 const getPropertyByAddress = async (req, res) => {
-  const { terms } = req.query;
-
   try {
-    const properties = await Property.find({
-      addressTerms: { $all: terms },
-    }).populate("reviews", "overallRating");
-    const token = generateToken(req.userId);
-    res.status(200).json({ properties, token });
+    const { terms, address } = req.query;
+
+    if (terms) {
+      const properties =
+        (await Property.find({
+          addressTerms: { $all: terms },
+        }).populate("reviews", "overallRating")) || [];
+      return res.status(200).json({
+        properties,
+      });
+    }
+
+    if (address) {
+      const property = await Property.findOne({
+        address,
+      });
+      return res.status(200).json({
+        property,
+      });
+    }
+
+    return res.status(400).json({ error: "missing required details" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 };
 

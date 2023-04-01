@@ -2,31 +2,53 @@ import React, { useEffect, useState } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import useGoogle from "react-google-autocomplete/lib/usePlacesAutocompleteService";
-import queryString from "query-string";
-import { useLocation, useSearchParams } from "react-router-dom";
+import axios from "axios";
+import PropTypes from "prop-types";
+import AddressFeedback from "../addressFeedback/AddressFeedback";
 
-const SearchNav = () => {
-  const [, setSearchParams] = useSearchParams();
-  const { state } = useLocation();
-  const [selectedPlace, setSelectedPlace] = useState(state);
+const SearchValidate = ({
+  selectedPlace,
+  setSelectedPlace,
+  foundProperty,
+  setFoundProperty,
+}) => {
+  const [, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
 
   const { placePredictions, getPlacePredictions, isPlacePredictionsLoading } =
     useGoogle({
       apiKey: process.env.REACT_APP_API_KEY,
       debounce: 500,
       options: {
-        types: ["address"],
+        types: ["street_number", "street_address"],
         componentRestrictions: { country: "uk" },
       },
     });
 
-  const createQuery = ({ terms }) =>
-    queryString.stringify({
-      terms: terms.map(({ value }) => value),
-    });
+  const getProperty = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const { data } = await axios.get("/property/address", {
+        params: { address: selectedPlace.address },
+      });
+      if (data.property) {
+        setFoundProperty(data.property);
+      } else {
+        setFoundProperty(false);
+      }
+    } catch (err) {
+      setError(err.response.data.error);
+    }
+    setIsLoading(false);
+  };
 
   useEffect(() => {
-    if (selectedPlace) setSearchParams(createQuery(selectedPlace));
+    if (selectedPlace) {
+      getProperty();
+    } else {
+      setFoundProperty(null);
+    }
   }, [selectedPlace]);
 
   return (
@@ -36,16 +58,24 @@ const SearchNav = () => {
       onChange={setSelectedPlace}
       nullable
     >
-      <Combobox.Label className=" sr-only">Address</Combobox.Label>
+      <Combobox.Label className="block text-sm font-medium leading-6 text-gray-900">
+        Address
+      </Combobox.Label>
       <div className="relative mt-2">
         <Combobox.Input
-          className="w-full rounded-md border-0 bg-white py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-500 sm:text-sm sm:leading-6"
+          className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-500 sm:text-sm sm:leading-6"
           onChange={(event) =>
             getPlacePredictions({ input: event.target.value })
           }
           displayValue={(place) => place?.address}
           placeholder="Search for an address"
         />
+        <div className="absolute top-0 right-0 flex h-full w-10 items-center justify-center">
+          <AddressFeedback
+            foundProperty={foundProperty}
+            isLoading={isLoading}
+          />
+        </div>
 
         <Transition
           enter="transition duration-100"
@@ -78,11 +108,10 @@ const SearchNav = () => {
                     main_text: mainText,
                     secondary_text: secondaryText,
                   },
-                  terms,
                 }) => (
                   <Combobox.Option
                     key={id}
-                    value={{ address, terms }}
+                    value={{ address }}
                     className={({ active }) =>
                       clsx(
                         "relative cursor-default select-none rounded-sm py-2 pl-3 pr-9",
@@ -113,4 +142,25 @@ const SearchNav = () => {
   );
 };
 
-export default SearchNav;
+SearchValidate.propTypes = {
+  selectedPlace: PropTypes.shape({
+    address: PropTypes.string,
+  }),
+  setSelectedPlace: PropTypes.func.isRequired,
+  foundProperty: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.shape({
+      address: PropTypes.string,
+      reviews: PropTypes.arrayOf(PropTypes.string),
+      _id: PropTypes.string,
+    }),
+  ]),
+  setFoundProperty: PropTypes.func.isRequired,
+};
+
+SearchValidate.defaultProps = {
+  selectedPlace: null,
+  foundProperty: null,
+};
+
+export default SearchValidate;
