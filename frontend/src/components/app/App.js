@@ -37,7 +37,7 @@ const App = () => {
             element={token ? <NewReview /> : <Navigate to="/login" />}
           />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="/404" element={<NotFound />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
