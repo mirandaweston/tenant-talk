@@ -5,7 +5,7 @@ import useAuthContext from "../../hooks/useAuthContext";
 import ReviewCard from "../reviewCard/ReviewCard";
 import Stars from "../stars/Stars";
 
-const PropertyReviewsPage = () => {
+const Property = () => {
   const { id } = useParams();
   const { token } = useAuthContext();
   const [{ loading, data, error }, refetch] = useAxios({
@@ -68,4 +68,4 @@ const PropertyReviewsPage = () => {
   );
 };
 
-export default PropertyReviewsPage;
+export default Property;
