@@ -3,9 +3,9 @@ import { format } from "date-fns";
 import PropTypes from "prop-types";
 import Stars from "../stars/Stars";
 
-const ReviewCard = ({ review }) => {
-  const { author, createdAt, overallRating, comment } = review;
-
+const ReviewCard = ({
+  review: { author, createdAt, overallRating, comment },
+}) => {
   return (
     <li className="overflow-hidden rounded-md bg-white px-6 py-4 shadow">
       <div className="space-y-3 text-sm text-gray-500">
