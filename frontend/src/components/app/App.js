@@ -4,7 +4,8 @@ import Home from "../home/Home";
 import Signup from "../signup/Signup";
 import LoginForm from "../Login/loginForm";
 import Results from "../results/Results";
-import WithNav from "../withNav/WithNav";
+import PropertyReviewsPage from "../propertyReviews/propertyReviews";
+import AboutPage from "../aboutPage/aboutPage";
 
 const App = () => {
   return (
@@ -13,9 +14,9 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<LoginForm />} />
-        <Route element={<WithNav />}>
-          <Route path="/results" element={<Results />} />
-        </Route>
+        <Route path="/results" element={<Results />} />
+        <Route path="/property/:id" element={<PropertyReviewsPage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
     </BrowserRouter>
   );
