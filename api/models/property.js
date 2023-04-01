@@ -6,7 +6,7 @@ const PropertySchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  addressTerms: {
+  splitAddress: {
     type: Array,
     required: true,
     validate: (v) => v == null || v.length > 0,

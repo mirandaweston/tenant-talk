@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import useGoogle from "react-google-autocomplete/lib/usePlacesAutocompleteService";
-import queryString from "query-string";
 import { useLocation, useSearchParams } from "react-router-dom";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
 const SearchNav = () => {
   const [, setSearchParams] = useSearchParams();
@@ -20,13 +20,8 @@ const SearchNav = () => {
       },
     });
 
-  const createQuery = ({ terms }) =>
-    queryString.stringify({
-      terms: terms.map(({ value }) => value),
-    });
-
   useEffect(() => {
-    if (selectedPlace) setSearchParams(createQuery(selectedPlace));
+    setSearchParams(selectedPlace ? { address: selectedPlace } : {});
   }, [selectedPlace]);
 
   return (
@@ -37,15 +32,22 @@ const SearchNav = () => {
       nullable
     >
       <Combobox.Label className=" sr-only">Address</Combobox.Label>
-      <div className="relative mt-2">
-        <Combobox.Input
-          className="w-full rounded-md border-0 bg-white py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-500 sm:text-sm sm:leading-6"
-          onChange={(event) =>
-            getPlacePredictions({ input: event.target.value })
-          }
-          displayValue={(place) => place?.address}
-          placeholder="Search for an address"
-        />
+      <div className="relative">
+        <div className="relative">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <MagnifyingGlassIcon
+              className="h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
+          </div>
+          <Combobox.Input
+            className="block w-full rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-500 sm:text-sm sm:leading-6"
+            onChange={(event) =>
+              getPlacePredictions({ input: event.target.value })
+            }
+            placeholder="Search for an address"
+          />
+        </div>
 
         <Transition
           enter="transition duration-100"
@@ -78,11 +80,10 @@ const SearchNav = () => {
                     main_text: mainText,
                     secondary_text: secondaryText,
                   },
-                  terms,
                 }) => (
                   <Combobox.Option
                     key={id}
-                    value={{ address, terms }}
+                    value={address}
                     className={({ active }) =>
                       clsx(
                         "relative cursor-default select-none rounded-sm py-2 pl-3 pr-9",

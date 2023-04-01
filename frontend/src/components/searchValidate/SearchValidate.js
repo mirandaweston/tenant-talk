@@ -29,8 +29,8 @@ const SearchValidate = ({
     setIsLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get("/property/address", {
-        params: { address: selectedPlace.address },
+      const { data } = await axios.get("/property", {
+        params: { address: selectedPlace },
       });
       if (data.property) {
         setFoundProperty(data.property);
@@ -67,7 +67,6 @@ const SearchValidate = ({
           onChange={(event) =>
             getPlacePredictions({ input: event.target.value })
           }
-          displayValue={(place) => place?.address}
           placeholder="Search for an address"
         />
         <div className="absolute top-0 right-0 flex h-full w-10 items-center justify-center">
@@ -111,7 +110,7 @@ const SearchValidate = ({
                 }) => (
                   <Combobox.Option
                     key={id}
-                    value={{ address }}
+                    value={address}
                     className={({ active }) =>
                       clsx(
                         "relative cursor-default select-none rounded-sm py-2 pl-3 pr-9",
@@ -143,9 +142,7 @@ const SearchValidate = ({
 };
 
 SearchValidate.propTypes = {
-  selectedPlace: PropTypes.shape({
-    address: PropTypes.string,
-  }),
+  selectedPlace: PropTypes.string,
   setSelectedPlace: PropTypes.func.isRequired,
   foundProperty: PropTypes.oneOfType([
     PropTypes.bool,

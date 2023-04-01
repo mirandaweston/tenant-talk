@@ -12,19 +12,18 @@ const PropertyCard = ({ property }) => {
   return (
     <li className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
       <div className="flex w-full items-center justify-between space-x-6 p-6">
-        <div className="flex-1 truncate">
-          <div className="flex items-center space-x-3">
+        <div className=" space-y-3">
+          <div>
             <Link
               to={`/property/${property._id}`}
               className="truncate text-sm font-medium text-gray-900"
             >
               {property.address}
             </Link>
+            <p className="mt-1 truncate text-sm text-gray-500">
+              {`Reviews: ${property.reviews.length}`}
+            </p>
           </div>
-          <p className="mt-1 truncate text-sm text-gray-500">
-            {`Reviews: ${property.reviews.length}`}
-          </p>
-
           <Stars rating={getAverage(property)} />
           <p className="sr-only">{getAverage(property)} out of 5 stars</p>
         </div>

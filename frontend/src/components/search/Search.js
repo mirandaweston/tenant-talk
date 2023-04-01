@@ -34,7 +34,6 @@ const Search = () => {
           onChange={(event) =>
             getPlacePredictions({ input: event.target.value })
           }
-          displayValue={(place) => place?.address}
           placeholder="Search for an address"
         />
 
@@ -69,11 +68,10 @@ const Search = () => {
                     main_text: mainText,
                     secondary_text: secondaryText,
                   },
-                  terms,
                 }) => (
                   <Combobox.Option
                     key={id}
-                    value={{ address, terms }}
+                    value={address}
                     className={({ active }) =>
                       clsx(
                         "relative cursor-default select-none rounded-lg py-2 pl-3 pr-9",

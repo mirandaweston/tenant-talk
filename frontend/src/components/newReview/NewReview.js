@@ -19,26 +19,21 @@ const NewReview = () => {
   const navigate = useNavigate();
 
   const createReview = async ({ comment }) => {
+    setIsLoading(true);
+    setError(null);
+
     if (!selectedPlace) {
       setAddressError("Please select a property to review");
       return;
     }
 
-    let property;
-
-    if (foundProperty) {
-      property = { _id: foundProperty._id };
-    } else {
-      property = {
-        address: selectedPlace.description,
-        addressTerms: selectedPlace.terms.map(({ value }) => value),
-      };
-    }
+    const property = foundProperty
+      ? { _id: foundProperty._id }
+      : {
+          address: selectedPlace,
+        };
 
     const formData = { property, review: { comment, overallRating } };
-
-    setIsLoading(true);
-    setError(null);
 
     try {
       const { data } = await axios.post("/review/new", formData, {
