@@ -1,14 +1,14 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import { AuthContextProvider } from "../../contexts/AuthContext";
-import LoginForm from "./LoginForm";
+import Login from "./Login";
 
 describe("LoginForm", () => {
   beforeEach(() => {
     cy.mount(
       <BrowserRouter>
         <AuthContextProvider>
-          <LoginForm />
+          <Login />
         </AuthContextProvider>
       </BrowserRouter>
     );

@@ -30,7 +30,7 @@ const authReducer = (state, action) => {
 export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, {
     user: null,
-    token: null,
+    token: window.localStorage.getItem("token"),
   });
 
   const getUser = async (token) => {

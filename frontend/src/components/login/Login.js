@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import useLogin from "../../hooks/useLogin";
 import useAuthContext from "../../hooks/useAuthContext";
 
-const LoginForm = () => {
+const Login = () => {
   const { login, error, isLoading } = useLogin();
   const { register, handleSubmit, reset } = useForm();
   const { user } = useAuthContext();
@@ -31,7 +31,7 @@ const LoginForm = () => {
               <br />
               {user && <p>{`Hello ${user.firstName}!`}</p>}
               <h2 className="text-lg font-semibold text-gray-900">
-                Sign up for an account
+                Log into your account
               </h2>
             </div>
           </div>
@@ -123,4 +123,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default Login;
