@@ -6,9 +6,9 @@ import Login from "../login/Login";
 import Properties from "../properties/Properties";
 import Property from "../property/Property";
 import NewReview from "../newReview/NewReview";
-import WithNav from "../withNav/WithNav";
 import AboutPage from "../aboutPage/aboutPage";
 import useAuthContext from "../../hooks/useAuthContext";
+import NavBar from "../navBar/NavBar";
 
 const App = () => {
   const { token } = useAuthContext();
@@ -25,7 +25,7 @@ const App = () => {
           path="/login"
           element={token ? <Navigate to="/" /> : <Login />}
         />
-        <Route element={<WithNav />}>
+        <Route element={<NavBar />}>
           <Route path="/properties" element={<Properties />} />
           <Route
             path="/property/:id"
