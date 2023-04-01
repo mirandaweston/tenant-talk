@@ -43,7 +43,7 @@ const Home = () => {
       <main>
         <div className="relative isolate h-screen overflow-hidden bg-zinc-900">
           <img
-            src="https://source.unsplash.com/h95mT1m9Zzs/5034x3696"
+            src="https://source.unsplash.com/nrSzRUWqmoI/5184x3456"
             alt=""
             className="absolute inset-0 -z-10 h-full w-full object-cover opacity-25"
           />
