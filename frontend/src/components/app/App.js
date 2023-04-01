@@ -7,6 +7,7 @@ import Properties from "../properties/Properties";
 import PropertyReviewsPage from "../propertyReviews/PropertyReviews";
 import NewReview from "../newReview/NewReview";
 import WithNav from "../withNav/WithNav";
+import AboutPage from "../aboutPage/aboutPage";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/properties" element={<Properties />} />
           <Route path="/property/:id" element={<PropertyReviewsPage />} />
           <Route path="/review/new" element={<NewReview />} />
+          <Route path="/about" element={<AboutPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
