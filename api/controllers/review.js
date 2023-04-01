@@ -6,10 +6,9 @@ const createReview = async (req, res) => {
   const { property, review } = req.body;
 
   // property can only contain an id or an address
-  const keys = Object.keys(property);
   const isValidProperty =
-    (keys.length === 1 && keys[0] === "_id") ||
-    (keys.length === 2 && "address" in property && "addressTerms" in property);
+    Object.keys(property).length === 1 &&
+    ("_id" in property || "address" in property);
 
   if (!isValidProperty) {
     return res.status(400).json({ error: "missing required property details" });
@@ -29,16 +28,18 @@ const createReview = async (req, res) => {
       newProperty = await Property.findOneAndUpdate(
         { _id: property._id },
         { $push: { reviews: newReview._id } },
-        { new: true }
+        { new: true, projection: { splitAddress: 0 } }
       );
       if (!newProperty)
         return res.status(400).json({ error: "property not found" });
     }
 
     if ("address" in property) {
+      const splitAddress = property.address.replaceAll(",", "").split(" ");
+
       newProperty = await Property.create({
         address: property.address,
-        addressTerms: property.addressTerms,
+        splitAddress,
         reviews: [newReview._id],
       });
     }

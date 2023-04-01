@@ -1,19 +1,16 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import useAxios from "axios-hooks";
-import useAuthContext from "../../hooks/useAuthContext";
 import PropertyCard from "../propertyCard/PropertyCard";
 
 const Properties = () => {
   const [searchParams] = useSearchParams();
-  const { token } = useAuthContext();
 
   const [{ loading, data, error }] = useAxios({
-    url: "/property/address",
+    url: "/properties",
     method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
     params: {
-      terms: searchParams.getAll("terms"),
+      address: searchParams.get("address"),
     },
   });
 
