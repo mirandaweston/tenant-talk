@@ -20,8 +20,9 @@ const getPropertyByAddress = async (req, res) => {
       });
     }
     const token = generateToken(req.userId);
+
     res.status(200).json({
-      [property ? "property" : "properties"]: property || properties,
+      [property ? "property" : "properties"]: property || properties || [],
       token,
     });
   } catch (err) {

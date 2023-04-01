@@ -21,7 +21,10 @@ const Properties = () => {
     <>
       {error && <div>{error.message}</div>}
       {loading && <div>Currently loading</div>}
-      {data && "properties" in data && (
+      {!error && data && data.properties.length === 0 && (
+        <div>No properties found 🙁</div>
+      )}
+      {data && (
         <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {data.properties.map((property) => (
             <PropertyCard key={property._id} property={property} />

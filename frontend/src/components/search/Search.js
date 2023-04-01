@@ -13,7 +13,7 @@ const Search = () => {
       debounce: 500,
       options: {
         types: ["address"],
-        componentRestrictions: { country: "gb" },
+        componentRestrictions: { country: "uk" },
       },
     });
 
@@ -34,8 +34,8 @@ const Search = () => {
           onChange={(event) =>
             getPlacePredictions({ input: event.target.value })
           }
-          displayValue={(place) => place?.description}
-          placeholder="Search by address"
+          displayValue={(place) => place?.address}
+          placeholder="Search for an address"
         />
 
         <Transition
@@ -47,18 +47,23 @@ const Search = () => {
           leaveTo="transform scale-95 opacity-0"
         >
           <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-2xl bg-white p-2 text-base shadow-lg ring-1 ring-inset ring-black/5 focus:outline-none sm:text-sm">
-            {isPlacePredictionsLoading ? (
+            {isPlacePredictionsLoading && (
               <div className="relative animate-pulse cursor-default select-none py-2 text-gray-900">
                 Loading...
               </div>
-            ) : placePredictions.length === 0 ? (
+            )}
+
+            {placePredictions.length === 0 && !isPlacePredictionsLoading && (
               <div className="relative cursor-default select-none py-2 text-gray-900">
                 No properties found
               </div>
-            ) : (
+            )}
+
+            {placePredictions.length > 0 &&
+              !isPlacePredictionsLoading &&
               placePredictions.map(
                 ({
-                  description,
+                  description: address,
                   place_id: id,
                   structured_formatting: {
                     main_text: mainText,
@@ -68,7 +73,7 @@ const Search = () => {
                 }) => (
                   <Combobox.Option
                     key={id}
-                    value={{ description, terms }}
+                    value={{ address, terms }}
                     className={({ active }) =>
                       clsx(
                         "relative cursor-default select-none rounded-lg py-2 pl-3 pr-9",
@@ -91,14 +96,13 @@ const Search = () => {
                     )}
                   </Combobox.Option>
                 )
-              )
-            )}
+              )}
           </Combobox.Options>
         </Transition>
       </Combobox>
       <div className="absolute inset-y-0 right-0 flex p-1.5">
         <Link
-          to="/results"
+          to="/properties"
           state={selectedPlace}
           className="flex items-center rounded-full bg-orange-500 px-4 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
         >

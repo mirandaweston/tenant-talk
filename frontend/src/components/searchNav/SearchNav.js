@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import useGoogle from "react-google-autocomplete/lib/usePlacesAutocompleteService";
@@ -16,7 +16,7 @@ const SearchNav = () => {
       debounce: 500,
       options: {
         types: ["address"],
-        componentRestrictions: { country: "gb" },
+        componentRestrictions: { country: "uk" },
       },
     });
 
@@ -25,13 +25,17 @@ const SearchNav = () => {
       terms: terms.map(({ value }) => value),
     });
 
-  const search = (place) => {
-    if (place) setSearchParams(createQuery(place));
-    setSelectedPlace(place);
-  };
+  useEffect(() => {
+    if (selectedPlace) setSearchParams(createQuery(selectedPlace));
+  }, [selectedPlace]);
 
   return (
-    <Combobox as="div" value={selectedPlace} onChange={search} nullable>
+    <Combobox
+      as="div"
+      value={selectedPlace}
+      onChange={setSelectedPlace}
+      nullable
+    >
       <Combobox.Label className=" sr-only">Address</Combobox.Label>
       <div className="relative mt-2">
         <Combobox.Input
@@ -39,7 +43,7 @@ const SearchNav = () => {
           onChange={(event) =>
             getPlacePredictions({ input: event.target.value })
           }
-          displayValue={(place) => place?.description}
+          displayValue={(place) => place?.address}
           placeholder="Search for an address"
         />
 
@@ -52,18 +56,23 @@ const SearchNav = () => {
           leaveTo="transform scale-95 opacity-0"
         >
           <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white p-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-            {isPlacePredictionsLoading ? (
+            {isPlacePredictionsLoading && (
               <div className="relative animate-pulse cursor-default select-none py-2 text-center text-gray-900">
                 Loading...
               </div>
-            ) : placePredictions.length === 0 ? (
+            )}
+
+            {placePredictions.length === 0 && !isPlacePredictionsLoading && (
               <div className="relative cursor-default select-none py-2 text-center text-gray-900">
                 No properties found
               </div>
-            ) : (
+            )}
+
+            {placePredictions.length > 0 &&
+              !isPlacePredictionsLoading &&
               placePredictions.map(
                 ({
-                  description,
+                  description: address,
                   place_id: id,
                   structured_formatting: {
                     main_text: mainText,
@@ -73,7 +82,7 @@ const SearchNav = () => {
                 }) => (
                   <Combobox.Option
                     key={id}
-                    value={{ description, terms }}
+                    value={{ address, terms }}
                     className={({ active }) =>
                       clsx(
                         "relative cursor-default select-none rounded-sm py-2 pl-3 pr-9",
@@ -96,8 +105,7 @@ const SearchNav = () => {
                     )}
                   </Combobox.Option>
                 )
-              )
-            )}
+              )}
           </Combobox.Options>
         </Transition>
       </div>

@@ -20,8 +20,8 @@ const SearchValidate = ({
       apiKey: process.env.REACT_APP_API_KEY,
       debounce: 500,
       options: {
-        types: ["address"],
-        componentRestrictions: { country: "gb" },
+        types: ["street_number", "street_address"],
+        componentRestrictions: { country: "uk" },
       },
     });
 
@@ -44,7 +44,11 @@ const SearchValidate = ({
   };
 
   useEffect(() => {
-    selectedPlace ? getProperty() : setFoundProperty(null);
+    if (selectedPlace) {
+      getProperty();
+    } else {
+      setFoundProperty(null);
+    }
   }, [selectedPlace]);
 
   return (
@@ -82,15 +86,20 @@ const SearchValidate = ({
           leaveTo="transform scale-95 opacity-0"
         >
           <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white p-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-            {isPlacePredictionsLoading ? (
+            {isPlacePredictionsLoading && (
               <div className="relative animate-pulse cursor-default select-none py-2 text-center text-gray-900">
                 Loading...
               </div>
-            ) : placePredictions.length === 0 ? (
+            )}
+
+            {placePredictions.length === 0 && !isPlacePredictionsLoading && (
               <div className="relative cursor-default select-none py-2 text-center text-gray-900">
                 No properties found
               </div>
-            ) : (
+            )}
+
+            {placePredictions.length > 0 &&
+              !isPlacePredictionsLoading &&
               placePredictions.map(
                 ({
                   description: address,
@@ -125,8 +134,7 @@ const SearchValidate = ({
                     )}
                   </Combobox.Option>
                 )
-              )
-            )}
+              )}
           </Combobox.Options>
         </Transition>
       </div>
