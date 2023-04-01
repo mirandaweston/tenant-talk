@@ -4,6 +4,7 @@ import clsx from "clsx";
 import useGoogle from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import queryString from "query-string";
 import { useLocation, useSearchParams } from "react-router-dom";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 const SearchNav = () => {
   const [, setSearchParams] = useSearchParams();
@@ -34,14 +35,20 @@ const SearchNav = () => {
     <Combobox as="div" value={selectedPlace} onChange={search} nullable>
       <Combobox.Label className=" sr-only">Address</Combobox.Label>
       <div className="relative mt-2">
-        <Combobox.Input
-          className="w-full rounded-md border-0 bg-white py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-500 sm:text-sm sm:leading-6"
-          onChange={(event) =>
-            getPlacePredictions({ input: event.target.value })
-          }
-          displayValue={(place) => place?.description}
-          placeholder="Search for an address"
-        />
+        <div className="relative w-full">
+          <Combobox.Input
+            className="w-full rounded-md border-0 bg-white py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-500 sm:text-sm sm:leading-6"
+            onChange={(event) =>
+              getPlacePredictions({ input: event.target.value })
+            }
+            displayValue={(place) => place?.description}
+            placeholder="Search for an address"
+          />
+          <MagnifyingGlassIcon
+            className="absolute top-1/2 right-3 h-5 w-5 -translate-y-1/2 text-gray-400"
+            aria-hidden="true"
+          />
+        </div>
 
         <Transition
           enter="transition duration-100"
