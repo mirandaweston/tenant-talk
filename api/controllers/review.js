@@ -51,4 +51,30 @@ const createReview = async (req, res) => {
   }
 };
 
-module.exports = { createReview };
+const getReviewById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const review = await Review.findById(id, "reviews")
+      .populate({
+        path: "reviews",
+        select:
+          "_id author createdAt comment overallRating, landlordRating, conditionRating, neighbourRating, warmthRating, parkingRating, areaRating, petsAllowed, depositReturned",
+        populate: {
+          path: "author",
+          select: "firstName",
+        },
+      })
+      .lean();
+    const token = generateToken(req.userId);
+
+    if (!review) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+
+    return res.status(200).json({ review, token });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = { createReview, getReviewById };
