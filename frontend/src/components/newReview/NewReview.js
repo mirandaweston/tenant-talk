@@ -180,7 +180,6 @@ const NewReview = () => {
                   <Controller
                     control={control}
                     name={name}
-                    rules={{ required: true }}
                     defaultValue={false}
                     render={({ field: { ref, ...field } }) => (
                       <Toggle label={label} {...field} />

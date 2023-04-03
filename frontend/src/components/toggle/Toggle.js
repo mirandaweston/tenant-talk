@@ -36,13 +36,12 @@ const Toggle = ({ value, onChange, label }) => {
 };
 
 Toggle.propTypes = {
-  value: PropTypes.number,
+  value: PropTypes.bool.isRequired,
   onChange: PropTypes.func,
   label: PropTypes.string,
 };
 
 Toggle.defaultProps = {
-  value: false,
   onChange: null,
   label: "Label",
 };
