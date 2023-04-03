@@ -20,6 +20,7 @@ const ReviewSchema = new mongoose.Schema({
     min: 0,
     max: 5,
   },
+  image: { type: String },
 });
 
 const Review = mongoose.model("Review", ReviewSchema);

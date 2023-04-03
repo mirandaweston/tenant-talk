@@ -4,6 +4,8 @@
   "private": true,
   "proxy": "http://localhost:8080",
   "dependencies": {
+    "@cloudinary/react": "^1.11.2",
+    "@cloudinary/url-gen": "^1.9.2",
     "@headlessui/react": "^1.7.13",
     "@heroicons/react": "^2.0.17",
     "@tailwindcss/forms": "^0.5.3",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { StarIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
@@ -6,17 +6,22 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import SearchValidate from "../searchValidate/SearchValidate";
 import useAuthContext from "../../hooks/useAuthContext";
+import useUpload from "../../hooks/useUpload";
 
 const NewReview = () => {
   const { token } = useAuthContext();
+  const imageInputRef = useRef();
   const [, setError] = useState(null);
   const [addressError, setAddressError] = useState(null);
   const [, setIsLoading] = useState(null);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [foundProperty, setFoundProperty] = useState(null);
   const [overallRating, setOverallRating] = useState(1);
+  const [imageInput, setImageInput] = useState(null);
+
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
+  const upload = useUpload();
 
   const createReview = async ({ comment }) => {
     setIsLoading(true);
@@ -33,7 +38,12 @@ const NewReview = () => {
           address: selectedPlace,
         };
 
-    const formData = { property, review: { comment, overallRating } };
+    const publicId = await upload(imageInput);
+
+    const formData = {
+      property,
+      review: { comment, overallRating, image: publicId },
+    };
 
     try {
       const { data } = await axios.post("/review/new", formData, {
@@ -102,6 +112,23 @@ const NewReview = () => {
                 >
                   Comment
                 </label>
+                <div className="flex items-center gap-4">
+                  <input
+                    data-cy="file"
+                    type="file"
+                    ref={imageInputRef}
+                    onChange={(e) => setImageInput(e.target.files[0])}
+                    className="block h-[38px] w-full cursor-pointer rounded-lg border border-blue-500 p-1 text-center text-sm text-gray-900 focus:outline-none"
+                  />
+                  {/* <Button
+                    text={`${isLoading ? "Uploading..." : "Post"}`}
+                    type="submit"
+                    id="submit"
+                    buttonStyle="outline"
+                    className="max-w-xs"
+                    isDisabled={isLoading}
+                  /> */}
+                </div>
                 <div className="mt-2">
                   <textarea
                     id="about"
