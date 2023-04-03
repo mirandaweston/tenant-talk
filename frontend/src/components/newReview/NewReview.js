@@ -1,53 +1,61 @@
 import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { StarIcon } from "@heroicons/react/20/solid";
-import clsx from "clsx";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
 import SearchValidate from "../searchValidate/SearchValidate";
 import useAuthContext from "../../hooks/useAuthContext";
+import RadioGroupStars from "../radioGroupStars/RadioGroupStars";
+import Toggle from "../toggle/Toggle";
 import useUpload from "../../hooks/useUpload";
-import Button from "../button/button";
+
+const ratingValues = [
+  { name: "landlordRating", label: "Landlord" },
+  { name: "conditionRating", label: "Condition" },
+  { name: "neighbourRating", label: "Neighbours" },
+  { name: "warmthRating", label: "Warmth" },
+  { name: "parkingRating", label: "Parking" },
+  { name: "areaRating", label: "Area" },
+];
+
+const toggleValues = [
+  { name: "petsAllowed", label: "Pets Allowed?" },
+  { name: "depositReturned", label: "Deposit Returned?" },
+];
 
 const NewReview = () => {
   const { token } = useAuthContext();
+  const [, setError] = useState(null);
+  const [, setIsLoading] = useState(null);
+  const [foundPropertyId, setFoundPropertyId] = useState(null);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
+  const navigate = useNavigate();
+
+  const upload = useUpload();
   const imageInputRef = useRef();
-  const [isError, setError] = useState(null);
-  const [addressError, setAddressError] = useState(null);
-  const [isLoading, setIsLoading] = useState(null);
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  const [foundProperty, setFoundProperty] = useState(null);
-  const [overallRating, setOverallRating] = useState(1);
   const [imageInput, setImageInput] = useState(null);
 
-  const { register, handleSubmit } = useForm();
-  const navigate = useNavigate();
-  const upload = useUpload();
-
-  const createReview = async ({ comment }) => {
+  const createReview = async ({ address, ...formData }) => {
     setIsLoading(true);
     setError(null);
 
-    if (!selectedPlace) {
-      setAddressError("Please select a property to review");
-      return;
-    }
-
-    const property = foundProperty
-      ? { _id: foundProperty._id }
+    const property = foundPropertyId
+      ? { _id: foundPropertyId }
       : {
-          address: selectedPlace,
+          address,
         };
 
     const publicId = await upload(imageInput);
 
-    const formData = {
-      property,
-      review: { comment, overallRating, image: publicId },
-    };
+    const formattedData = { property, review: formData };
+    console.log(formattedData);
 
     try {
-      const { data } = await axios.post("/review/new", formData, {
+      const { data } = await axios.post("/review/new", formattedData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate(`/property/${data.property._id}`);
@@ -73,16 +81,21 @@ const NewReview = () => {
           <div className="px-4 py-6 sm:p-8">
             <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-4">
-                <SearchValidate
-                  selectedPlace={selectedPlace}
-                  setSelectedPlace={setSelectedPlace}
-                  foundProperty={foundProperty}
-                  setFoundProperty={setFoundProperty}
+                <Controller
+                  control={control}
+                  name="address"
+                  rules={{ required: true }}
+                  render={({ field: { ref, ...field } }) => (
+                    <SearchValidate
+                      foundPropertyId={foundPropertyId}
+                      setFoundPropertyId={setFoundPropertyId}
+                      {...field}
+                    />
+                  )}
                 />
-                {addressError && (
-                  <div className="mt-2 text-sm text-red-500">
-                    {addressError}
-                  </div>
+
+                {errors.address?.type === "required" && (
+                  <p role="alert">Address is required</p>
                 )}
               </div>
             </div>
@@ -98,24 +111,8 @@ const NewReview = () => {
           <p className="mt-1 text-sm leading-6 text-gray-600">
             Create a review for this property
           </p>
-          <div className="flex items-center gap-4">
-            <input
-              data-cy="file"
-              type="file"
-              ref={imageInputRef}
-              onChange={(e) => setImageInput(e.target.files[0])}
-              className="block h-[38px] w-full cursor-pointer rounded-lg border border-blue-500 p-1 text-center text-sm text-gray-900 focus:outline-none"
-            />
-            <Button
-              text={`${isLoading ? "Uploading..." : "Post"}`}
-              type="submit"
-              id="submit"
-              buttonStyle="outline"
-              className="max-w-xs"
-              isDisabled={isLoading}
-            />
-          </div>
         </div>
+
         <form
           onSubmit={handleSubmit(createReview)}
           className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
@@ -129,7 +126,6 @@ const NewReview = () => {
                 >
                   Comment
                 </label>
-
                 <div className="mt-2">
                   <textarea
                     id="about"
@@ -151,30 +147,62 @@ const NewReview = () => {
               </div>
 
               <div className="col-span-full">
-                <label
-                  htmlFor="photo"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Overall Rating
-                </label>
-                <div className="mt-2 flex items-center gap-x-3">
-                  <div className="flex items-center">
-                    {[0, 1, 2, 3, 4].map((rating) => (
-                      <StarIcon
-                        key={rating}
-                        onClick={() => setOverallRating(rating + 1)}
-                        className={clsx(
-                          overallRating > rating
-                            ? "text-yellow-400"
-                            : "text-gray-200",
-                          "h-5 w-5 shrink-0"
-                        )}
-                        aria-hidden="true"
-                      />
-                    ))}
-                  </div>
-                </div>
+                <Controller
+                  control={control}
+                  name="overallRating"
+                  rules={{ required: true }}
+                  defaultValue={1}
+                  render={({ field: { ref, ...field } }) => (
+                    <RadioGroupStars label="Overall Rating" {...field} />
+                  )}
+                />
               </div>
+
+              <div className="col-span-full">
+                <legend className="text-sm font-semibold leading-6 text-gray-900">
+                  Detailed Ratings
+                </legend>
+              </div>
+
+              {ratingValues.map(({ name, label }) => (
+                <div key={name} className="sm:col-span-3">
+                  <Controller
+                    control={control}
+                    name={name}
+                    rules={{ required: true }}
+                    defaultValue={1}
+                    render={({ field: { ref, ...field } }) => (
+                      <RadioGroupStars
+                        label={label}
+                        labelPosition="side"
+                        {...field}
+                      />
+                    )}
+                  />
+                </div>
+              ))}
+
+              {toggleValues.map(({ name, label }) => (
+                <div key={name} className="sm:col-span-3">
+                  <Controller
+                    control={control}
+                    name={name}
+                    defaultValue={false}
+                    render={({ field: { ref, ...field } }) => (
+                      <Toggle label={label} {...field} />
+                    )}
+                  />
+                </div>
+              ))}
+
+              <input
+                  data-cy="file"
+                  type="file"
+                  ref={imageInputRef}
+                  onChange={(e) => setImageInput(e.target.files[0])}
+                  className="block h-[38px] w-full cursor-pointer rounded-lg border border-blue-500 p-1 text-center text-sm text-gray-900 focus:outline-none"
+              />
+
             </div>
           </div>
           <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 p-4 sm:px-8">

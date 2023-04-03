@@ -20,6 +20,52 @@ const ReviewSchema = new mongoose.Schema({
     min: 0,
     max: 5,
   },
+  landlordRating: {
+    type: Number,
+    required: true,
+    min: 0,
+    max: 5,
+  },
+  conditionRating: {
+    type: Number,
+    required: true,
+    min: 0,
+    max: 5,
+  },
+  neighbourRating: {
+    type: Number,
+    required: true,
+    min: 0,
+    max: 5,
+  },
+  areaRating: {
+    type: Number,
+    required: true,
+    min: 0,
+    max: 5,
+  },
+  warmthRating: {
+    type: Number,
+    required: true,
+    min: 0,
+    max: 5,
+  },
+  parkingRating: {
+    type: Number,
+    required: true,
+    min: 0,
+    max: 5,
+  },
+  petsAllowed: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  depositReturned: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   image: { type: String },
 });
 
