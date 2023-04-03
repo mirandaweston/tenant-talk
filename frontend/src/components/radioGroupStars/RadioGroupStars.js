@@ -9,7 +9,9 @@ const RadioGroupStars = ({ value, onChange, label, labelPosition }) => {
     <RadioGroup
       value={value}
       onChange={onChange}
-      className={labelPosition === "side" ? "flex space-x-2" : "space-y-1"}
+      className={
+        labelPosition === "side" ? "flex justify-between" : "space-y-1"
+      }
     >
       <RadioGroup.Label className="block text-sm font-medium leading-6 text-gray-900">
         {label}

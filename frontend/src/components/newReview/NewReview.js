@@ -5,6 +5,7 @@ import axios from "axios";
 import SearchValidate from "../searchValidate/SearchValidate";
 import useAuthContext from "../../hooks/useAuthContext";
 import RadioGroupStars from "../radioGroupStars/RadioGroupStars";
+import Toggle from "../toggle/Toggle";
 
 const ratingValues = [
   { name: "landlordRating", label: "Landlord" },
@@ -13,6 +14,11 @@ const ratingValues = [
   { name: "warmthRating", label: "Warmth" },
   { name: "parkingRating", label: "Parking" },
   { name: "areaRating", label: "Area" },
+];
+
+const toggleValues = [
+  { name: "petsAllowed", label: "Pets Allowed?" },
+  { name: "depositReturned", label: "Deposit Returned?" },
 ];
 
 const NewReview = () => {
@@ -28,7 +34,7 @@ const NewReview = () => {
   } = useForm();
   const navigate = useNavigate();
 
-  const createReview = async ({ comment, address, overallRating }) => {
+  const createReview = async ({ address, ...formData }) => {
     setIsLoading(true);
     setError(null);
 
@@ -38,10 +44,11 @@ const NewReview = () => {
           address,
         };
 
-    const formData = { property, review: { comment, overallRating } };
+    const formattedData = { property, review: formData };
+    console.log(formattedData);
 
     try {
-      const { data } = await axios.post("/review/new", formData, {
+      const { data } = await axios.post("/review/new", formattedData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate(`/property/${data.property._id}`);
@@ -137,6 +144,7 @@ const NewReview = () => {
                   control={control}
                   name="overallRating"
                   rules={{ required: true }}
+                  defaultValue={1}
                   render={({ field: { ref, ...field } }) => (
                     <RadioGroupStars label="Overall Rating" {...field} />
                   )}
@@ -155,12 +163,27 @@ const NewReview = () => {
                     control={control}
                     name={name}
                     rules={{ required: true }}
+                    defaultValue={1}
                     render={({ field: { ref, ...field } }) => (
                       <RadioGroupStars
                         label={label}
                         labelPosition="side"
                         {...field}
                       />
+                    )}
+                  />
+                </div>
+              ))}
+
+              {toggleValues.map(({ name, label }) => (
+                <div key={name} className="sm:col-span-3">
+                  <Controller
+                    control={control}
+                    name={name}
+                    rules={{ required: true }}
+                    defaultValue={false}
+                    render={({ field: { ref, ...field } }) => (
+                      <Toggle label={label} {...field} />
                     )}
                   />
                 </div>
@@ -182,3 +205,68 @@ const NewReview = () => {
 };
 
 export default NewReview;
+
+// <div>
+//   <div className="mt-2">
+//     <div className="grid grid-cols-2 gap-x-6 sm:grid-cols-2">
+//       <label
+//         htmlFor="pets-switch"
+//         className="inline-flex cursor-pointer items-center "
+//       >
+//         <span className="mr-4 block text-sm font-medium leading-6 text-gray-900">
+//           Pets Allowed?
+//         </span>
+//         <Switch
+//           id="pets-switch"
+//           checked={petsAllowed}
+//           onChange={togglePetsAllowed}
+//           className={clsx(
+//             petsAllowed ? "bg-orange-500" : "bg-red-500",
+//             "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+//           )}
+//         >
+//           <span className="sr-only">Pets Allowed?</span>
+//           <span
+//             aria-hidden="true"
+//             className={clsx(
+//               petsAllowed ? "translate-x-5" : "translate-x-0",
+//               "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+//             )}
+//           />
+//         </Switch>
+//       </label>
+
+//       <div>
+//         <label
+//           htmlFor="deposit-switch"
+//           className="inline-flex cursor-pointer items-center "
+//         >
+//           <span className="mr-4 block text-sm font-medium leading-6 text-gray-900">
+//             Deposit Returned?
+//           </span>
+//           <Switch
+//             id="deposit-switch"
+//             checked={depositReturned}
+//             onChange={toggleDepositReturned}
+//             className={clsx(
+//               depositReturned ? "bg-orange-500" : "bg-red-500",
+//               "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+//             )}
+//           >
+//             <span className="sr-only">
+//               Was deposit returned?
+//             </span>
+//             <span
+//               aria-hidden="true"
+//               className={clsx(
+//                 depositReturned
+//                   ? "translate-x-5"
+//                   : "translate-x-0",
+//                 "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+//               )}
+//             />
+//           </Switch>
+//         </label>
+//       </div>
+//     </div>
+//   </div>
