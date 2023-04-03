@@ -73,16 +73,18 @@ const NavBar = () => {
                 {token ? (
                   <div className="ml-4 flex items-center">
                     <div className="hidden lg:ml-4 lg:flex lg:items-center">
-                      <Link
-                        to="/review/new"
-                        className="relative inline-flex items-center gap-x-1.5 rounded-md bg-orange-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
-                      >
-                        <PlusIcon
-                          className="-ml-0.5 h-5 w-5"
-                          aria-hidden="true"
-                        />
-                        New Review
-                      </Link>
+                      {pathname !== "/review/new" && (
+                        <Link
+                          to="/review/new"
+                          className="relative inline-flex items-center gap-x-1.5 rounded-md bg-orange-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+                        >
+                          <PlusIcon
+                            className="-ml-0.5 h-5 w-5"
+                            aria-hidden="true"
+                          />
+                          New Review
+                        </Link>
+                      )}
 
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-4 shrink-0">
@@ -162,7 +164,7 @@ const NavBar = () => {
                 )}
 
                 <div className="flex items-center space-x-4 lg:hidden">
-                  {token && (
+                  {token && pathname !== "/review/new" && (
                     <Link
                       to="/review/new"
                       className="rounded-md bg-orange-500 p-2 text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
