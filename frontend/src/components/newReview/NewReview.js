@@ -1,7 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
+import { PhotoIcon } from "@heroicons/react/24/solid";
 import SearchValidate from "../searchValidate/SearchValidate";
 import useAuthContext from "../../hooks/useAuthContext";
 import RadioGroupStars from "../radioGroupStars/RadioGroupStars";
@@ -34,12 +35,9 @@ const NewReview = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const { upload } = useUpload();
 
-  const upload = useUpload();
-  const imageInputRef = useRef();
-  const [imageInput, setImageInput] = useState(null);
-
-  const createReview = async ({ address, ...formData }) => {
+  const createReview = async ({ address, image, ...formData }) => {
     setIsLoading(true);
     setError(null);
 
@@ -49,10 +47,12 @@ const NewReview = () => {
           address,
         };
 
-    const publicId = await upload(imageInput);
+    const publicId = await upload(image[0]);
 
-    const formattedData = { property, review: formData };
-    console.log(formattedData);
+    const formattedData = {
+      property,
+      review: { ...formData, image: publicId },
+    };
 
     try {
       const { data } = await axios.post("/review/new", formattedData, {
@@ -195,14 +195,40 @@ const NewReview = () => {
                 </div>
               ))}
 
-              <input
-                  data-cy="file"
-                  type="file"
-                  ref={imageInputRef}
-                  onChange={(e) => setImageInput(e.target.files[0])}
-                  className="block h-[38px] w-full cursor-pointer rounded-lg border border-blue-500 p-1 text-center text-sm text-gray-900 focus:outline-none"
-              />
+              <div className="col-span-full">
+                <label
+                  htmlFor="property-image"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Property Image
+                </label>
+                <div className="flex w-full items-center justify-center">
+                  <label
+                    htmlFor="dropzone-file"
+                    className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
+                  >
+                    <div className="flex flex-col items-center justify-center pb-6 pt-5">
+                      <PhotoIcon
+                        aria-hidden="true"
+                        className="mb-3 h-10 w-10 text-gray-400"
+                      />
+                      <p className="mb-2 text-sm text-gray-500">
+                        <span className="font-semibold">Click to upload</span>{" "}
+                        or drag and drop
+                      </p>
+                    </div>
 
+                    <input
+                      id="dropzone-file"
+                      accept="image/*"
+                      data-cy="file"
+                      type="file"
+                      {...register("image")}
+                      className="sr-only hidden"
+                    />
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
           <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 p-4 sm:px-8">

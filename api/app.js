@@ -7,7 +7,6 @@ const authRouter = require("./routes/user");
 const reviewRouter = require("./routes/review");
 const propertyRouter = require("./routes/property");
 const propertiesRouter = require("./routes/properties");
-const imagesRouter = require("./routes/images");
 
 const app = express();
 
@@ -21,6 +20,5 @@ app.use("/user", authRouter);
 app.use("/review", reviewRouter);
 app.use("/property", propertyRouter);
 app.use("/properties", propertiesRouter);
-app.use("/images", imagesRouter);
 
 module.exports = app;
