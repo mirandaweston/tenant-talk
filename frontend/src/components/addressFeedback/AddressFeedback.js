@@ -2,7 +2,7 @@ import React from "react";
 import { PlusCircleIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 import PropTypes from "prop-types";
 
-const AddressFeedback = ({ isLoading, foundProperty }) => {
+const AddressFeedback = ({ isLoading, foundPropertyId }) => {
   if (isLoading)
     return (
       <svg
@@ -27,18 +27,18 @@ const AddressFeedback = ({ isLoading, foundProperty }) => {
       </svg>
     );
 
-  if (foundProperty == null) return;
+  if (foundPropertyId == null) return;
 
-  if (foundProperty)
+  if (foundPropertyId)
     return <CheckCircleIcon className="h-6 w-6 text-green-500" />;
 
-  if (!foundProperty)
+  if (!foundPropertyId)
     return <PlusCircleIcon className="h-6 w-6 text-blue-500" />;
 };
 
 AddressFeedback.propTypes = {
   isLoading: PropTypes.bool,
-  foundProperty: PropTypes.oneOfType([
+  foundPropertyId: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.shape({
       address: PropTypes.string,
@@ -50,7 +50,7 @@ AddressFeedback.propTypes = {
 
 AddressFeedback.defaultProps = {
   isLoading: false,
-  foundProperty: null,
+  foundPropertyId: null,
 };
 
 export default AddressFeedback;

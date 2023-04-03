@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Search from "../search/Search";
 import SearchLanding from "../searchLanding/SearchLanding";
 
 const Home = () => {

@@ -1,26 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import useGoogle from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import clsx from "clsx";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import PropTypes from "prop-types";
 import AddressFeedback from "../addressFeedback/AddressFeedback";
 
 const Search = ({
   value,
   onChange,
-  onBlur,
-  ref,
   label,
-  foundProperty,
+  foundPropertyId,
   isLoading,
   variant,
+  location,
 }) => {
   const { placePredictions, getPlacePredictions, isPlacePredictionsLoading } =
     useGoogle({
       apiKey: process.env.REACT_APP_API_KEY,
       debounce: 500,
       options: {
-        types: ["address"],
+        types:
+          location === "form"
+            ? ["street_number", "street_address"]
+            : ["address"],
         componentRestrictions: { country: "uk" },
       },
     });
@@ -30,10 +33,8 @@ const Search = ({
       as="div"
       value={value}
       onChange={onChange}
-      onBlur={onBlur}
-      ref={ref}
       nullable
-      className="w-full max-w-lg lg:max-w-xs"
+      className={clsx("w-full", location === "nav" && "max-w-lg lg:max-w-xs")}
     >
       <Combobox.Label
         className={
@@ -66,7 +67,7 @@ const Search = ({
           />
           <div className="absolute right-0 top-0 flex h-full w-10 items-center justify-center">
             <AddressFeedback
-              foundProperty={foundProperty}
+              foundPropertyId={foundPropertyId}
               isLoading={isLoading}
             />
           </div>
@@ -135,6 +136,26 @@ const Search = ({
       </div>
     </Combobox>
   );
+};
+
+Search.propTypes = {
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  label: PropTypes.bool,
+  foundPropertyId: PropTypes.string,
+  isLoading: PropTypes.bool,
+  variant: PropTypes.string,
+  location: PropTypes.string,
+};
+
+Search.defaultProps = {
+  value: null,
+  onChange: null,
+  label: false,
+  foundPropertyId: null,
+  isLoading: null,
+  variant: null,
+  location: null,
 };
 
 export default Search;

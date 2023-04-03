@@ -1,36 +1,43 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { StarIcon } from "@heroicons/react/20/solid";
-import clsx from "clsx";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
 import SearchValidate from "../searchValidate/SearchValidate";
 import useAuthContext from "../../hooks/useAuthContext";
+import RadioGroupStars from "../radioGroupStars/RadioGroupStars";
+
+const ratingValues = [
+  { name: "landlordRating", label: "Landlord" },
+  { name: "conditionRating", label: "Condition" },
+  { name: "neighbourRating", label: "Neighbours" },
+  { name: "warmthRating", label: "Warmth" },
+  { name: "parkingRating", label: "Parking" },
+  { name: "areaRating", label: "Area" },
+];
 
 const NewReview = () => {
   const { token } = useAuthContext();
   const [, setError] = useState(null);
-  const [addressError, setAddressError] = useState(null);
   const [, setIsLoading] = useState(null);
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  const [foundProperty, setFoundProperty] = useState(null);
-  const [overallRating, setOverallRating] = useState(1);
-  const { register, handleSubmit } = useForm();
+  const [foundPropertyId, setFoundPropertyId] = useState(null);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
 
-  const createReview = async ({ comment }) => {
+  const createReview = async ({ comment, address, overallRating }) => {
     setIsLoading(true);
     setError(null);
 
-    if (!selectedPlace) {
-      setAddressError("Please select a property to review");
-      return;
-    }
+    console.log(overallRating);
 
-    const property = foundProperty
-      ? { _id: foundProperty._id }
+    const property = foundPropertyId
+      ? { _id: foundPropertyId }
       : {
-          address: selectedPlace,
+          address,
         };
 
     const formData = { property, review: { comment, overallRating } };
@@ -62,16 +69,21 @@ const NewReview = () => {
           <div className="px-4 py-6 sm:p-8">
             <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-4">
-                <SearchValidate
-                  selectedPlace={selectedPlace}
-                  setSelectedPlace={setSelectedPlace}
-                  foundProperty={foundProperty}
-                  setFoundProperty={setFoundProperty}
+                <Controller
+                  control={control}
+                  name="address"
+                  rules={{ required: true }}
+                  render={({ field: { ref, ...field } }) => (
+                    <SearchValidate
+                      foundPropertyId={foundPropertyId}
+                      setFoundPropertyId={setFoundPropertyId}
+                      {...field}
+                    />
+                  )}
                 />
-                {addressError && (
-                  <div className="mt-2 text-sm text-red-500">
-                    {addressError}
-                  </div>
+
+                {errors.address?.type === "required" && (
+                  <p role="alert">Address is required</p>
                 )}
               </div>
             </div>
@@ -123,30 +135,42 @@ const NewReview = () => {
               </div>
 
               <div className="col-span-full">
-                <label
-                  htmlFor="photo"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Overall Rating
-                </label>
-                <div className="mt-2 flex items-center gap-x-3">
-                  <div className="flex items-center">
-                    {[0, 1, 2, 3, 4].map((rating) => (
-                      <StarIcon
-                        key={rating}
-                        onClick={() => setOverallRating(rating + 1)}
-                        className={clsx(
-                          overallRating > rating
-                            ? "text-yellow-400"
-                            : "text-gray-200",
-                          "h-5 w-5 shrink-0"
-                        )}
-                        aria-hidden="true"
-                      />
-                    ))}
-                  </div>
+                <div className="w-fit">
+                  <Controller
+                    control={control}
+                    name="overallRating"
+                    rules={{ required: true }}
+                    render={({ field: { ref, ...field } }) => (
+                      <RadioGroupStars label="Overall Rating" {...field} />
+                    )}
+                  />
                 </div>
               </div>
+
+              <div className="col-span-full">
+                <legend className="text-sm font-semibold leading-6 text-gray-900">
+                  Detailed Ratings
+                </legend>
+              </div>
+
+              {ratingValues.map(({ name, label }) => (
+                <div key={name} className="sm:col-span-3">
+                  <div className="w-fit">
+                    <Controller
+                      control={control}
+                      name={name}
+                      rules={{ required: true }}
+                      render={({ field: { ref, ...field } }) => (
+                        <RadioGroupStars
+                          label={label}
+                          labelPosition="side"
+                          {...field}
+                        />
+                      )}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
           <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 p-4 sm:px-8">

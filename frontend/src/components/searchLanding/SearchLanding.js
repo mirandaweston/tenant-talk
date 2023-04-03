@@ -1,30 +1,37 @@
-import React, { useState } from "react";
-import useGoogle from "react-google-autocomplete/lib/usePlacesAutocompleteService";
-import { Link } from "react-router-dom";
+import React from "react";
+import { useForm, Controller } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import queryString from "query-string";
 import Search from "../search/Search";
 
 const SearchLanding = () => {
-  const [selectedPlace, setSelectedPlace] = useState(null);
+  const { handleSubmit, control } = useForm();
+  const navigate = useNavigate();
+
+  const search = ({ address }) => {
+    navigate({
+      pathname: "properties",
+      search: queryString.stringify({
+        address,
+      }),
+    });
+  };
 
   return (
-    <form className="mx-auto mt-10 flex max-w-md gap-x-4">
-      <Search
-        variant="blur"
-        value={selectedPlace}
-        onChange={setSelectedPlace}
+    <form onSubmit={handleSubmit(search)} className="flex w-full gap-x-4">
+      <Controller
+        control={control}
+        name="address"
+        render={({ field: { ref, ...field } }) => (
+          <Search variant="blur" {...field} />
+        )}
       />
-      <Link
-        to="/properties"
-        state={selectedPlace}
-        className="flex items-center rounded-full bg-orange-500 px-4 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
-      >
-        Search
-      </Link>
+
       <button
         type="submit"
-        className="flex-none rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        className="rounded-md bg-orange-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
       >
-        Notify me
+        Search
       </button>
     </form>
   );
