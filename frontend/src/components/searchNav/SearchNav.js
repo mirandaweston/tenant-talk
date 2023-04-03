@@ -32,7 +32,7 @@ const SearchNav = () => {
       nullable
       className="w-full max-w-lg lg:max-w-xs"
     >
-      <Combobox.Label className=" sr-only">Address</Combobox.Label>
+      <Combobox.Label className="sr-only">Search for an address</Combobox.Label>
       <div className="relative">
         <div className="relative">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
