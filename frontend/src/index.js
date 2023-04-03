@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./components/app/App";
 import reportWebVitals from "./reportWebVitals";
 import { AuthContextProvider } from "./contexts/AuthContext";
+import CloudinaryContextProvider from "./contexts/CloudinaryContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <AuthContextProvider>
-      <App />
+      <CloudinaryContextProvider>
+        <App />
+      </CloudinaryContextProvider>
     </AuthContextProvider>
   </React.StrictMode>
 );

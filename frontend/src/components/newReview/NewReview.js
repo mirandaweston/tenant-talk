@@ -1,42 +1,61 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { StarIcon } from "@heroicons/react/20/solid";
-import clsx from "clsx";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
+import { PhotoIcon } from "@heroicons/react/24/solid";
 import SearchValidate from "../searchValidate/SearchValidate";
 import useAuthContext from "../../hooks/useAuthContext";
+import RadioGroupStars from "../radioGroupStars/RadioGroupStars";
+import Toggle from "../toggle/Toggle";
+import useUpload from "../../hooks/useUpload";
+
+const ratingValues = [
+  { name: "landlordRating", label: "Landlord" },
+  { name: "conditionRating", label: "Condition" },
+  { name: "neighbourRating", label: "Neighbours" },
+  { name: "warmthRating", label: "Warmth" },
+  { name: "parkingRating", label: "Parking" },
+  { name: "areaRating", label: "Area" },
+];
+
+const toggleValues = [
+  { name: "petsAllowed", label: "Pets Allowed?" },
+  { name: "depositReturned", label: "Deposit Returned?" },
+];
 
 const NewReview = () => {
   const { token } = useAuthContext();
   const [, setError] = useState(null);
-  const [addressError, setAddressError] = useState(null);
   const [, setIsLoading] = useState(null);
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  const [foundProperty, setFoundProperty] = useState(null);
-  const [overallRating, setOverallRating] = useState(1);
-  const { register, handleSubmit } = useForm();
+  const [foundPropertyId, setFoundPropertyId] = useState(null);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
+  const { upload } = useUpload();
 
-  const createReview = async ({ comment }) => {
+  const createReview = async ({ address, image, ...formData }) => {
     setIsLoading(true);
     setError(null);
 
-    if (!selectedPlace) {
-      setAddressError("Please select a property to review");
-      return;
-    }
-
-    const property = foundProperty
-      ? { _id: foundProperty._id }
+    const property = foundPropertyId
+      ? { _id: foundPropertyId }
       : {
-          address: selectedPlace,
+          address,
         };
 
-    const formData = { property, review: { comment, overallRating } };
+    const publicId = await upload(image[0]);
+
+    const formattedData = {
+      property,
+      review: { ...formData, image: publicId },
+    };
 
     try {
-      const { data } = await axios.post("/review/new", formData, {
+      const { data } = await axios.post("/review/new", formattedData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate(`/property/${data.property._id}`);
@@ -62,16 +81,21 @@ const NewReview = () => {
           <div className="px-4 py-6 sm:p-8">
             <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-4">
-                <SearchValidate
-                  selectedPlace={selectedPlace}
-                  setSelectedPlace={setSelectedPlace}
-                  foundProperty={foundProperty}
-                  setFoundProperty={setFoundProperty}
+                <Controller
+                  control={control}
+                  name="address"
+                  rules={{ required: true }}
+                  render={({ field: { ref, ...field } }) => (
+                    <SearchValidate
+                      foundPropertyId={foundPropertyId}
+                      setFoundPropertyId={setFoundPropertyId}
+                      {...field}
+                    />
+                  )}
                 />
-                {addressError && (
-                  <div className="mt-2 text-sm text-red-500">
-                    {addressError}
-                  </div>
+
+                {errors.address?.type === "required" && (
+                  <p role="alert">Address is required</p>
                 )}
               </div>
             </div>
@@ -123,28 +147,86 @@ const NewReview = () => {
               </div>
 
               <div className="col-span-full">
+                <Controller
+                  control={control}
+                  name="overallRating"
+                  rules={{ required: true }}
+                  defaultValue={1}
+                  render={({ field: { ref, ...field } }) => (
+                    <RadioGroupStars label="Overall Rating" {...field} />
+                  )}
+                />
+              </div>
+
+              <div className="col-span-full">
+                <legend className="text-sm font-semibold leading-6 text-gray-900">
+                  Detailed Ratings
+                </legend>
+              </div>
+
+              {ratingValues.map(({ name, label }) => (
+                <div key={name} className="sm:col-span-3">
+                  <Controller
+                    control={control}
+                    name={name}
+                    rules={{ required: true }}
+                    defaultValue={1}
+                    render={({ field: { ref, ...field } }) => (
+                      <RadioGroupStars
+                        label={label}
+                        labelPosition="side"
+                        {...field}
+                      />
+                    )}
+                  />
+                </div>
+              ))}
+
+              {toggleValues.map(({ name, label }) => (
+                <div key={name} className="sm:col-span-3">
+                  <Controller
+                    control={control}
+                    name={name}
+                    defaultValue={false}
+                    render={({ field: { ref, ...field } }) => (
+                      <Toggle label={label} {...field} />
+                    )}
+                  />
+                </div>
+              ))}
+
+              <div className="col-span-full">
                 <label
-                  htmlFor="photo"
+                  htmlFor="property-image"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Overall Rating
+                  Property Image
                 </label>
-                <div className="mt-2 flex items-center gap-x-3">
-                  <div className="flex items-center">
-                    {[0, 1, 2, 3, 4].map((rating) => (
-                      <StarIcon
-                        key={rating}
-                        onClick={() => setOverallRating(rating + 1)}
-                        className={clsx(
-                          overallRating > rating
-                            ? "text-yellow-400"
-                            : "text-gray-200",
-                          "h-5 w-5 shrink-0"
-                        )}
+                <div className="flex w-full items-center justify-center">
+                  <label
+                    htmlFor="dropzone-file"
+                    className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
+                  >
+                    <div className="flex flex-col items-center justify-center pb-6 pt-5">
+                      <PhotoIcon
                         aria-hidden="true"
+                        className="mb-3 h-10 w-10 text-gray-400"
                       />
-                    ))}
-                  </div>
+                      <p className="mb-2 text-sm text-gray-500">
+                        <span className="font-semibold">Click to upload</span>{" "}
+                        or drag and drop
+                      </p>
+                    </div>
+
+                    <input
+                      id="dropzone-file"
+                      accept="image/*"
+                      data-cy="file"
+                      type="file"
+                      {...register("image")}
+                      className="sr-only hidden"
+                    />
+                  </label>
                 </div>
               </div>
             </div>

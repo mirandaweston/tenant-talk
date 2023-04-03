@@ -1,5 +1,5 @@
 import React from "react";
-import Search from "../search/Search";
+import SearchLanding from "../searchLanding/SearchLanding";
 
 const Home = () => {
   return (
@@ -36,7 +36,7 @@ const Home = () => {
                   home
                 </p>
                 <div className="relative mx-auto mt-10 flex max-w-md">
-                  <Search />
+                  <SearchLanding />
                 </div>
               </div>
             </div>
