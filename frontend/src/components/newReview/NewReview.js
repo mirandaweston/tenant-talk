@@ -32,8 +32,6 @@ const NewReview = () => {
     setIsLoading(true);
     setError(null);
 
-    console.log(overallRating);
-
     const property = foundPropertyId
       ? { _id: foundPropertyId }
       : {
@@ -135,16 +133,14 @@ const NewReview = () => {
               </div>
 
               <div className="col-span-full">
-                <div className="w-fit">
-                  <Controller
-                    control={control}
-                    name="overallRating"
-                    rules={{ required: true }}
-                    render={({ field: { ref, ...field } }) => (
-                      <RadioGroupStars label="Overall Rating" {...field} />
-                    )}
-                  />
-                </div>
+                <Controller
+                  control={control}
+                  name="overallRating"
+                  rules={{ required: true }}
+                  render={({ field: { ref, ...field } }) => (
+                    <RadioGroupStars label="Overall Rating" {...field} />
+                  )}
+                />
               </div>
 
               <div className="col-span-full">
@@ -155,20 +151,18 @@ const NewReview = () => {
 
               {ratingValues.map(({ name, label }) => (
                 <div key={name} className="sm:col-span-3">
-                  <div className="w-fit">
-                    <Controller
-                      control={control}
-                      name={name}
-                      rules={{ required: true }}
-                      render={({ field: { ref, ...field } }) => (
-                        <RadioGroupStars
-                          label={label}
-                          labelPosition="side"
-                          {...field}
-                        />
-                      )}
-                    />
-                  </div>
+                  <Controller
+                    control={control}
+                    name={name}
+                    rules={{ required: true }}
+                    render={({ field: { ref, ...field } }) => (
+                      <RadioGroupStars
+                        label={label}
+                        labelPosition="side"
+                        {...field}
+                      />
+                    )}
+                  />
                 </div>
               ))}
             </div>

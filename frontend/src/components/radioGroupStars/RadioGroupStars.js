@@ -10,15 +10,12 @@ const RadioGroupStars = ({ value, onChange, label, labelPosition }) => {
     <RadioGroup
       value={value}
       onChange={onChange}
-      className={clsx(
-        labelPosition === "side" ? "flex space-x-2" : "space-y-1",
-        "w-full"
-      )}
+      className={labelPosition === "side" ? "flex space-x-2" : "space-y-1"}
     >
       <RadioGroup.Label className="block text-sm font-medium leading-6 text-gray-900">
         {label}
       </RadioGroup.Label>
-      <div className="flex flex-row-reverse">
+      <div className="flex w-fit flex-row-reverse">
         {[5, 4, 3, 2, 1].map((item) => (
           <RadioGroup.Option
             key={item}
@@ -28,7 +25,7 @@ const RadioGroupStars = ({ value, onChange, label, labelPosition }) => {
               value >= item && "text-yellow-400"
             )}
           >
-            <RadioGroup.Label as={StarIcon} className="h-6 w-6" />
+            <RadioGroup.Label as={StarIcon} className="h-5 w-5 shrink-0" />
           </RadioGroup.Option>
         ))}
       </div>
