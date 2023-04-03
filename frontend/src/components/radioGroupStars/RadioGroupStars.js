@@ -20,7 +20,7 @@ const RadioGroupStars = ({ value, onChange, label, labelPosition }) => {
             key={item}
             value={item}
             className={clsx(
-              "peer flex-1 cursor-pointer text-gray-200 hover:text-yellow-400 peer-hover:text-yellow-300",
+              "peer flex-1 cursor-pointer text-gray-200 hover:text-yellow-400 peer-hover:text-yellow-400",
               value >= item && "text-yellow-400"
             )}
           >
