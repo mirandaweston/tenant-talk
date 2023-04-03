@@ -1,10 +1,12 @@
 import React from "react";
+import { Menu, transition } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import SearchLanding from "../searchLanding/SearchLanding";
 
 const Home = () => {
   return (
     <>
-      <header className="absolute inset-x-0 top-0 z-50">
+      <header className="absolute inset-x-0 top-0 z-50 flex items-center justify-between">
         <nav className="p-6 lg:px-8" aria-label="Global">
           <span className="sr-only">Tenant Talk</span>
           <svg
@@ -15,6 +17,35 @@ const Home = () => {
             <path d="M1,0 h18 a1,1 0 0 1 1,1 v6 a1,1 0 0 1 -1,1 h-5 l-8 8 v3 a1,1 0 0 0 1,1 h6 a1,1 0 0 0 1,-1 v-3 l-8 -8 h-5 a1,1 0 0 1 -1,-1 v-6 a1,1 0 0 1 1,-1 z" />
           </svg>
         </nav>
+        <Menu>
+          <Menu.Button className="inline-flex justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+            Menu
+            <ChevronDownIcon
+              className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
+              aria-hidden="true"
+            />
+          </Menu.Button>
+
+          <Menu.Items>
+            <Menu.Item>
+              {({ active }) => (
+                <a className={`${active && "bg-blue-500"}`} href="/login">
+                  Login
+                </a>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <a className={`${active && "bg-blue-500"}`} href="/about">
+                  About
+                </a>
+              )}
+            </Menu.Item>
+            <Menu.Item disabled>
+              <span className="opacity-75">Invite a friend (coming soon!)</span>
+            </Menu.Item>
+          </Menu.Items>
+        </Menu>
       </header>
 
       <main>
