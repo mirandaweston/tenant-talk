@@ -4,7 +4,7 @@ const NotFound = () => {
   return (
     <main className="relative isolate h-screen overflow-hidden bg-zinc-900">
       <img
-        src="https://images.unsplash.com/photo-1545972154-9bb223aac798?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=3050&q=80&exp=8&con=-15&sat=-75"
+        src="https://images.unsplash.com/photo-1576577610667-c9ea0ac983fd?ixlib=rb-4.0.3&ixid=MnwxM[…]90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3540&q=80"
         alt=""
         className="absolute inset-0 -z-10 h-full w-full object-cover opacity-25"
       />
