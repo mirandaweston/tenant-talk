@@ -39,6 +39,7 @@ const App = () => {
           />
           <Route path="/about" element={<AboutPage />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
