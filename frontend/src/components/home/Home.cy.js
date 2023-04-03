@@ -12,7 +12,7 @@ describe("<Home />", () => {
   });
 
   it("displays placeholder text within search input", () => {
-    cy.get("input").should("have.attr", "placeholder", "Search by postcode");
+    cy.get("input").should("have.attr", "placeholder", "Search for an address");
   });
 
   it("displays log in and sign up buttons", () => {
