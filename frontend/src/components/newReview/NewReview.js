@@ -7,13 +7,14 @@ import axios from "axios";
 import SearchValidate from "../searchValidate/SearchValidate";
 import useAuthContext from "../../hooks/useAuthContext";
 import useUpload from "../../hooks/useUpload";
+import Button from "../button/button";
 
 const NewReview = () => {
   const { token } = useAuthContext();
   const imageInputRef = useRef();
-  const [, setError] = useState(null);
+  const [isError, setError] = useState(null);
   const [addressError, setAddressError] = useState(null);
-  const [, setIsLoading] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [foundProperty, setFoundProperty] = useState(null);
   const [overallRating, setOverallRating] = useState(1);
@@ -97,8 +98,24 @@ const NewReview = () => {
           <p className="mt-1 text-sm leading-6 text-gray-600">
             Create a review for this property
           </p>
+          <div className="flex items-center gap-4">
+            <input
+              data-cy="file"
+              type="file"
+              ref={imageInputRef}
+              onChange={(e) => setImageInput(e.target.files[0])}
+              className="block h-[38px] w-full cursor-pointer rounded-lg border border-blue-500 p-1 text-center text-sm text-gray-900 focus:outline-none"
+            />
+            <Button
+              text={`${isLoading ? "Uploading..." : "Post"}`}
+              type="submit"
+              id="submit"
+              buttonStyle="outline"
+              className="max-w-xs"
+              isDisabled={isLoading}
+            />
+          </div>
         </div>
-
         <form
           onSubmit={handleSubmit(createReview)}
           className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
@@ -112,23 +129,7 @@ const NewReview = () => {
                 >
                   Comment
                 </label>
-                <div className="flex items-center gap-4">
-                  <input
-                    data-cy="file"
-                    type="file"
-                    ref={imageInputRef}
-                    onChange={(e) => setImageInput(e.target.files[0])}
-                    className="block h-[38px] w-full cursor-pointer rounded-lg border border-blue-500 p-1 text-center text-sm text-gray-900 focus:outline-none"
-                  />
-                  {/* <Button
-                    text={`${isLoading ? "Uploading..." : "Post"}`}
-                    type="submit"
-                    id="submit"
-                    buttonStyle="outline"
-                    className="max-w-xs"
-                    isDisabled={isLoading}
-                  /> */}
-                </div>
+
                 <div className="mt-2">
                   <textarea
                     id="about"

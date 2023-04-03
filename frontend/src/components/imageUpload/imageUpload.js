@@ -20,7 +20,7 @@ const Image = () => {
     // 2. upload the input to Cloudinary
     const formData = new FormData();
     formData.append("file", inputValue);
-    formData.append("upload_preset", "llzecft2");
+    // formData.append("upload_preset", "llzecft2");
     if (token !== "undefined" && inputValue) {
       const response = await fetch(
         "https://api.cloudinary.com/v1_1/dfawheswi/image/upload",
@@ -40,11 +40,12 @@ const Image = () => {
         method: "post",
         body: JSON.stringify({ publicId: data.public_id }),
       });
-      const imageData = await imageRes.json();
+      const imageData = imageRes.data;
 
       window.localStorage.setItem("token", imageData.token);
       setToken(window.localStorage.getItem("token"));
       setimageResponse(imageData);
+      console.log(imageData);
     } else {
       setIsError(true);
     }

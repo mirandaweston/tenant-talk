@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 const useUpload = () => {
   const [token, setToken] = useState(window.localStorage.getItem("token"));
@@ -7,34 +8,41 @@ const useUpload = () => {
   const upload = async (image) => {
     const formData = new FormData();
     formData.append("file", image);
-    formData.append("upload_preset", "llzecft2");
+    formData.append("upload_preset", "luublxr1");
+
+    // formData.append("upload_preset", "llzecft2");
 
     if (token !== "undefined" && image) {
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/dfawheswi/image/upload",
-        {
-          method: "post",
-          body: formData,
-        }
-      );
-      const data = await response.json();
+      try {
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/dfawheswi/upload",
+          formData
+        );
 
-      // 3. save the publicId to the database
-      const imageRes = await fetch("/images", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        method: "post",
-        body: JSON.stringify({ publicId: data.public_id }),
-      });
-      const imageData = await imageRes.json();
+        const { data } = response;
+        console.log(data);
+        // 3. save the publicId to the database
+        const imageRes = await axios.post(
+          "/images",
+          { publicId: data.public_id },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const imageData = imageRes.data;
 
-      window.localStorage.setItem("token", imageData.token);
-      setToken(window.localStorage.getItem("token"));
-      return imageData.public_id;
+        window.localStorage.setItem("token", imageData.token);
+        setToken(window.localStorage.getItem("token"));
+        return imageData.public_id;
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
     }
-    return null;
+    // return null;
   };
   return upload;
 };
