@@ -38,14 +38,7 @@ const AddressFeedback = ({ isLoading, foundPropertyId }) => {
 
 AddressFeedback.propTypes = {
   isLoading: PropTypes.bool,
-  foundPropertyId: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.shape({
-      address: PropTypes.string,
-      reviews: PropTypes.arrayOf(PropTypes.string),
-      _id: PropTypes.string,
-    }),
-  ]),
+  foundPropertyId: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 };
 
 AddressFeedback.defaultProps = {
