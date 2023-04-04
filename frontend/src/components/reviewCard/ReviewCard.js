@@ -23,7 +23,7 @@ const ReviewCard = ({
         <div className="py-10">
           <div
             data-cy="image"
-            className="flex h-32 w-32 flex-none items-center justify-center rounded-md bg-gray-200"
+            className="flex h-32 w-32 flex-none items-center justify-center overflow-hidden rounded-md bg-gray-200"
           >
             {image ? (
               <AdvancedImage
