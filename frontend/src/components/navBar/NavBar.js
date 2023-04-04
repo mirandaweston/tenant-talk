@@ -17,7 +17,7 @@ const NavBar = () => {
   const { pathname } = useLocation();
 
   return (
-    <div className="h-screen bg-gray-100">
+    <div className="min-h-full">
       <Disclosure as="nav" className="bg-white shadow">
         {({ open }) => (
           <>
@@ -116,7 +116,7 @@ const NavBar = () => {
                             <Menu.Item>
                               {({ active }) => (
                                 <Link
-                                  to="/"
+                                  to="/profile"
                                   className={clsx(
                                     active ? "bg-gray-100" : "",
                                     "block px-4 py-2 text-sm text-gray-700"

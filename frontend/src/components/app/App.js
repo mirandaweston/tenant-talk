@@ -10,6 +10,7 @@ import AboutPage from "../aboutPage/aboutPage";
 import NotFound from "../notFound/notFound";
 import useAuthContext from "../../hooks/useAuthContext";
 import NavBar from "../navBar/NavBar";
+import Profile from "../profile/Profile";
 
 const App = () => {
   const { token } = useAuthContext();
@@ -38,6 +39,10 @@ const App = () => {
             element={token ? <NewReview /> : <Navigate to="/login" />}
           />
           <Route path="/about" element={<AboutPage />} />
+          <Route
+            path="/profile"
+            element={token ? <Profile /> : <Navigate to="/login" />}
+          />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

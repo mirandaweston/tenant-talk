@@ -60,4 +60,23 @@ const login = async (req, res) => {
   return res.status(201).json({ token, user });
 };
 
-module.exports = { signup, getUser, login };
+const updateUser = async (req, res) => {
+  try {
+    let user = req.body;
+
+    if (user.password) {
+      user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync());
+    }
+
+    user = await User.findOneAndUpdate({ _id: req.userId }, user, {
+      projection: { password: 0 },
+      new: true,
+    });
+    const token = generateToken(user._id);
+    res.status(200).json({ user, token });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+module.exports = { signup, getUser, login, updateUser };
