@@ -41,27 +41,38 @@ const NewReview = () => {
     setIsLoading(true);
     setError(null);
 
-    const property = foundPropertyId
-      ? { _id: foundPropertyId }
-      : {
-          address,
-        };
+    const publicId = image.length !== 0 ? await upload(image[0]) : null;
 
-    const publicId = await upload(image[0]);
-
-    const formattedData = {
-      property,
-      review: { ...formData, image: publicId },
-    };
-
-    try {
-      const { data } = await axios.post("/review/new", formattedData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      navigate(`/property/${data.property._id}`);
-    } catch (err) {
-      setError(err.response.data.error);
+    if (foundPropertyId) {
+      try {
+        const { data } = await axios.patch(
+          `/property/${foundPropertyId}`,
+          {
+            review: { ...formData, image: publicId },
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        navigate(`/property/${data.property._id}`);
+      } catch (err) {
+        setError(err.response.data.error);
+      }
+    } else {
+      const formattedData = {
+        property: { address },
+        review: { ...formData, image: publicId },
+      };
+      try {
+        const { data } = await axios.post("/property", formattedData, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        navigate(`/property/${data.property._id}`);
+      } catch (err) {
+        setError(err.response.data.error);
+      }
     }
+
     setIsLoading(false);
   };
 

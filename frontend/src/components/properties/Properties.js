@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import useAxios from "axios-hooks";
 import PropertyCard from "../propertyCard/PropertyCard";
@@ -6,13 +6,17 @@ import PropertyCard from "../propertyCard/PropertyCard";
 const Properties = () => {
   const [searchParams] = useSearchParams();
 
-  const [{ loading, data, error }] = useAxios({
+  const [{ loading, data, error }, refetch] = useAxios({
     url: "/properties",
     method: "GET",
     params: {
       address: searchParams.get("address"),
     },
   });
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <>

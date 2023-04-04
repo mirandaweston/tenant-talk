@@ -17,7 +17,7 @@ const getPropertiesByAddress = async (req, res) => {
       properties,
     });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
