@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 import useAuthContext from "../../hooks/useAuthContext";
 
 const UpdateProfileForm = () => {
@@ -32,8 +33,10 @@ const UpdateProfileForm = () => {
         type: "refresh",
         payload: data,
       });
+      toast.success("Update successful");
     } catch (err) {
       setError(err.response.data.error);
+      toast.error(`Update failed, error: ${err.response.data.error}`);
     }
     setIsLoading(false);
   };

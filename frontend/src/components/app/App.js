@@ -11,6 +11,7 @@ import NotFound from "../notFound/notFound";
 import useAuthContext from "../../hooks/useAuthContext";
 import NavBar from "../navBar/NavBar";
 import Profile from "../profile/Profile";
+import ToasterWrapper from "../toasterWrapper/ToasterWrapper";
 
 const App = () => {
   const { token } = useAuthContext();
@@ -46,6 +47,7 @@ const App = () => {
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <ToasterWrapper />
     </BrowserRouter>
   );
 };
