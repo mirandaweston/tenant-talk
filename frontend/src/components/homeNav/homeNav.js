@@ -4,7 +4,10 @@ import { Menu, Transition } from "@headlessui/react";
 const HomeNav = () => {
   return (
     <Menu>
-      <Menu.Button className="inline-flex justify-center rounded-md  px-4 py-2 text-sm font-medium text-white hover:bg-black hover:bg-opacity-30 ">
+      <Menu.Button
+        data-testid="menu-button"
+        className="inline-flex justify-center rounded-md  px-4 py-2 text-sm font-medium text-white hover:bg-black hover:bg-opacity-30 "
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -29,8 +32,11 @@ const HomeNav = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0  w-36 origin-top-right rounded-md bg-black bg-opacity-20 text-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <Menu.Item>
+        <Menu.Items
+          data-testid="menu-items"
+          className="absolute right-0  w-36 origin-top-right rounded-md bg-black bg-opacity-20 text-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        >
+          <Menu.Item data-testid="menu-item-login">
             {({ active }) => (
               <a
                 className={`${
@@ -42,7 +48,7 @@ const HomeNav = () => {
               </a>
             )}
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item data-testid="menu-item-properties">
             {({ active }) => (
               <a
                 className={`${
@@ -54,7 +60,7 @@ const HomeNav = () => {
               </a>
             )}
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item data-testid="menu-item-about">
             {({ active }) => (
               <a
                 className={`${
