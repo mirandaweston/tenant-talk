@@ -1,34 +1,57 @@
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
+import { AdvancedImage } from "@cloudinary/react";
+import { fill } from "@cloudinary/url-gen/actions/resize";
+import { autoGravity } from "@cloudinary/url-gen/qualifiers/gravity";
+import { HomeIcon } from "@heroicons/react/24/solid";
 import Stars from "../stars/Stars";
+import { CloudinaryContext } from "../../contexts/CloudinaryContext";
 
-const PropertyCard = ({ property }) => {
-  const getAverage = ({ reviews }) => {
-    const ratings = reviews.map(({ overallRating }) => overallRating);
-    return ratings.reduce((a, b) => a + b) / ratings.length;
-  };
+const PropertyCard = ({ property: { address, reviews, _id: propertyId } }) => {
+  const cld = useContext(CloudinaryContext);
+
+  const averageOverallRating = Math.round(
+    reviews.reduce((total, { overallRating }) => total + overallRating, 0) /
+      Object.keys(reviews).length
+  );
+
+  const publicId = reviews[reviews.length - 1].image;
 
   return (
-    <li className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
-      <div className="flex w-full items-center justify-between space-x-6 p-6">
-        <div className=" space-y-3">
+    <Link to={`/property/${propertyId}`}>
+      <li
+        data-cy="PropertyCard"
+        className="col-span-1 flex w-full items-center justify-between space-x-6 divide-y divide-gray-200 rounded-lg bg-white p-6 shadow"
+      >
+        <div className="w-full space-y-3">
+          <div
+            data-cy="image"
+            className="flex aspect-square w-full items-center justify-center rounded-md bg-gray-200"
+          >
+            {publicId ? (
+              <AdvancedImage
+                cldImg={cld
+                  .image(publicId)
+                  .resize(fill().width(800).height(800).gravity(autoGravity()))}
+              />
+            ) : (
+              <HomeIcon className="h-24 w-24 text-white" />
+            )}
+          </div>
           <div>
-            <Link
-              to={`/property/${property._id}`}
-              className="truncate text-sm font-medium text-gray-900"
-            >
-              {property.address}
-            </Link>
+            <p className="truncate text-sm font-medium text-gray-900">
+              {address}
+            </p>
             <p className="mt-1 truncate text-sm text-gray-500">
-              {`Reviews: ${property.reviews.length}`}
+              {`Reviews: ${reviews.length}`}
             </p>
           </div>
-          <Stars rating={getAverage(property)} />
-          <p className="sr-only">{getAverage(property)} out of 5 stars</p>
+          <Stars value={averageOverallRating} />
+          <p className="sr-only">{averageOverallRating} out of 5 stars</p>
         </div>
-      </div>
-    </li>
+      </li>
+    </Link>
   );
 };
 
@@ -36,7 +59,10 @@ PropertyCard.propTypes = {
   property: PropTypes.shape({
     address: PropTypes.string,
     reviews: PropTypes.arrayOf(
-      PropTypes.shape({ overallRating: PropTypes.number })
+      PropTypes.shape({
+        overallRating: PropTypes.number,
+        image: PropTypes.string,
+      })
     ),
     _id: PropTypes.string,
   }).isRequired,

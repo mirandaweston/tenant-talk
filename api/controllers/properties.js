@@ -12,12 +12,12 @@ const getPropertiesByAddress = async (req, res) => {
           splitAddress: { $all: splitAddress },
         },
         "-splitAddress"
-      ).populate("reviews", "overallRating")) || [];
+      ).populate("reviews", "overallRating image")) || [];
     return res.status(200).json({
       properties,
     });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 

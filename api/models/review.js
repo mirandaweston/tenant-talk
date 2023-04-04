@@ -7,6 +7,12 @@ const ReviewSchema = new mongoose.Schema({
     immutable: true,
     required: true,
   },
+  property: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Property",
+    immutable: true,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: () => Date.now(),
@@ -17,43 +23,43 @@ const ReviewSchema = new mongoose.Schema({
   overallRating: {
     type: Number,
     required: true,
-    min: 0,
+    min: 1,
     max: 5,
   },
   landlordRating: {
     type: Number,
     required: true,
-    min: 0,
+    min: 1,
     max: 5,
   },
   conditionRating: {
     type: Number,
     required: true,
-    min: 0,
+    min: 1,
     max: 5,
   },
   neighbourRating: {
     type: Number,
     required: true,
-    min: 0,
+    min: 1,
     max: 5,
   },
   areaRating: {
     type: Number,
     required: true,
-    min: 0,
+    min: 1,
     max: 5,
   },
   warmthRating: {
     type: Number,
     required: true,
-    min: 0,
+    min: 1,
     max: 5,
   },
   parkingRating: {
     type: Number,
     required: true,
-    min: 0,
+    min: 1,
     max: 5,
   },
   petsAllowed: {

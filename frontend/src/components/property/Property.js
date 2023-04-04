@@ -26,7 +26,6 @@ const Property = () => {
     const ratings = reviews.map(({ overallRating }) => overallRating);
     return ratings.reduce((a, b) => a + b) / ratings.length;
   };
-
   return (
     <div className="overflow-hidden bg-white shadow sm:rounded-lg">
       <div className="px-4 py-5 sm:px-6">
@@ -45,20 +44,24 @@ const Property = () => {
             </dt>
             <dd className="mt-1 text-sm text-gray-900">
               <div className="mt-4 flex items-center">
-                <Stars rating={getAverage(data.property)} />
-                <p className="mt-1 ml-1 text-sm text-gray-500">
+                <Stars value={getAverage(data.property)} />
+                <p className="ml-1 mt-1 text-sm text-gray-500">
                   {getAverage(data.property)} out of 5 stars
                 </p>
               </div>
             </dd>
           </div>
+
           <div className="sm:col-span-2">
             <dt className="text-sm font-medium text-gray-500">Reviews</dt>
             <dd className="mt-1 text-sm text-gray-900">
               <ul className="space-y-3">
-                {data.property.reviews.map((review) => (
-                  <ReviewCard key={review._id} review={review} />
-                ))}
+                {data.property.reviews
+                  .slice()
+                  .reverse()
+                  .map((review) => (
+                    <ReviewCard key={review._id} review={review} />
+                  ))}
               </ul>
             </dd>
           </div>
