@@ -7,6 +7,12 @@ const ReviewSchema = new mongoose.Schema({
     immutable: true,
     required: true,
   },
+  property: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Property",
+    immutable: true,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: () => Date.now(),

@@ -10,6 +10,8 @@ import AboutPage from "../aboutPage/aboutPage";
 import NotFound from "../notFound/notFound";
 import useAuthContext from "../../hooks/useAuthContext";
 import NavBar from "../navBar/NavBar";
+import Presentation from "../presentation/Presentation";
+import Review from "../reviews/Review";
 
 const App = () => {
   const { token } = useAuthContext();
@@ -37,7 +39,11 @@ const App = () => {
             path="/review/new"
             element={token ? <NewReview /> : <Navigate to="/login" />}
           />
-          <Route path="/about" element={<AboutPage />} />
+          <Route
+            path="/review/:id"
+            element={token ? <Review /> : <Navigate to="/login" />}
+          />
+          <Route path="/about" element={<Presentation />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
