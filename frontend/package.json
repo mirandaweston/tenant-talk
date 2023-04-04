@@ -5,6 +5,7 @@
   "proxy": "http://localhost:8080",
   "dependencies": {
     "@cloudinary/react": "^1.11.2",
+    "@cloudinary/transformation-builder-sdk": "^1.2.7",
     "@cloudinary/url-gen": "^1.9.2",
     "@headlessui/react": "^1.7.13",
     "@heroicons/react": "^2.0.17",
