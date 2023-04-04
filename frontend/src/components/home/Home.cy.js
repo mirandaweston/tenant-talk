@@ -15,16 +15,28 @@ describe("<Home />", () => {
     cy.get("input").should("have.attr", "placeholder", "Search for an address");
   });
 
-  it("displays log in and sign up buttons", () => {
-    cy.get("div").contains("Log in").should("exist");
-    cy.get("div").contains("Sign up").should("exist");
-  });
-
   it("displays search button", () => {
     cy.get("div").contains("Search").should("exist");
   });
 
   it("displays text", () => {
-    cy.get("h1").contains("Welcome to Tenant T").should("exist");
+    cy.get("h1").contains("Welcome to Tenant Talk").should("exist");
+    cy.get("p")
+      .contains(
+        "Search for an address to find reviews for your prospective home"
+      )
+      .should("exist");
+  });
+
+  it("displays background image", () => {
+    cy.get("img").should(
+      "have.attr",
+      "src",
+      "https://source.unsplash.com/nrSzRUWqmoI/5184x3456"
+    );
+  });
+
+  it("displays logo", () => {
+    cy.get("svg").should("have.attr", "xmlns", "http://www.w3.org/2000/svg");
   });
 });
