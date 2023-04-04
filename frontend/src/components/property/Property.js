@@ -45,7 +45,7 @@ const Property = () => {
             </dt>
             <dd className="mt-1 text-sm text-gray-900">
               <div className="mt-4 flex items-center">
-                <Stars rating={getAverage(data.property)} />
+                <Stars value={getAverage(data.property)} />
                 <p className="ml-1 mt-1 text-sm text-gray-500">
                   {getAverage(data.property)} out of 5 stars
                 </p>

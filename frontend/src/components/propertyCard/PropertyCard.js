@@ -24,7 +24,7 @@ const PropertyCard = ({ property }) => {
               {`Reviews: ${property.reviews.length}`}
             </p>
           </div>
-          <Stars rating={getAverage(property)} />
+          <Stars value={getAverage(property)} />
           <p className="sr-only">{getAverage(property)} out of 5 stars</p>
         </div>
       </div>
