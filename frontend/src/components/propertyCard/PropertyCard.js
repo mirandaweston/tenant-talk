@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
+import { AdvancedImage } from "@cloudinary/react";
+import { fill } from "@cloudinary/url-gen/actions/resize";
+import { autoGravity } from "@cloudinary/url-gen/qualifiers/gravity";
+// import { scale } from "@cloudinary/transformation-builder-sdk";
 import Stars from "../stars/Stars";
+import { CloudinaryContext } from "../../contexts/CloudinaryContext";
 
 const PropertyCard = ({ property }) => {
   const getAverage = ({ reviews }) => {
@@ -9,10 +14,23 @@ const PropertyCard = ({ property }) => {
     return ratings.reduce((a, b) => a + b) / ratings.length;
   };
 
+  const cld = useContext(CloudinaryContext);
+
+  const { reviews } = property;
+
+  const publicId = property.reviews[reviews.length - 1].image;
+
+  const myImage = cld
+    .image(publicId)
+    .resize(fill().width(400).height(300).gravity(autoGravity()));
+
   return (
     <li className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
       <div className="flex w-full items-center justify-between space-x-6 p-6">
         <div className=" space-y-3">
+          <div>
+            <AdvancedImage cldImg={myImage} />
+          </div>
           <div>
             <Link
               to={`/property/${property._id}`}
@@ -21,7 +39,7 @@ const PropertyCard = ({ property }) => {
               {property.address}
             </Link>
             <p className="mt-1 truncate text-sm text-gray-500">
-              {`Reviews: ${property.reviews.length}`}
+              {`Reviews: ${reviews.length}`}
             </p>
           </div>
           <Stars rating={getAverage(property)} />
@@ -36,7 +54,10 @@ PropertyCard.propTypes = {
   property: PropTypes.shape({
     address: PropTypes.string,
     reviews: PropTypes.arrayOf(
-      PropTypes.shape({ overallRating: PropTypes.number })
+      PropTypes.shape({
+        overallRating: PropTypes.number,
+        image: PropTypes.string,
+      })
     ),
     _id: PropTypes.string,
   }).isRequired,

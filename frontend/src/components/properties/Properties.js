@@ -2,6 +2,7 @@ import React from "react";
 import { useSearchParams } from "react-router-dom";
 import useAxios from "axios-hooks";
 import PropertyCard from "../propertyCard/PropertyCard";
+import { CloudinaryContext } from "../../contexts/CloudinaryContext";
 
 const Properties = () => {
   const [searchParams] = useSearchParams();
