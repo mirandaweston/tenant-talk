@@ -4,6 +4,9 @@ import useAxios from "axios-hooks";
 import { format } from "date-fns";
 import { AdvancedImage } from "@cloudinary/react";
 import clsx from "clsx";
+import { fill } from "@cloudinary/url-gen/actions/resize";
+import { autoGravity } from "@cloudinary/url-gen/qualifiers/gravity";
+import { HomeIcon } from "@heroicons/react/24/solid";
 import useAuthContext from "../../hooks/useAuthContext";
 import { CloudinaryContext } from "../../contexts/CloudinaryContext";
 import Stars from "../stars/Stars";
@@ -84,11 +87,19 @@ const Review = () => {
             {/* Image */}
             <div className="my-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
               <h2 className="sr-only">Images</h2>
-              <div className="aspect-square overflow-hidden rounded-lg ">
-                <AdvancedImage
-                  className="h-full w-full object-cover"
-                  cldImg={cld.image(data.review.image)}
-                />
+              <div className="flex aspect-square items-center justify-center overflow-hidden rounded-lg bg-gray-200">
+                {data.review.image ? (
+                  <AdvancedImage
+                    className="h-full w-full object-cover"
+                    cldImg={cld
+                      .image(data.review.image)
+                      .resize(
+                        fill().width(800).height(800).gravity(autoGravity())
+                      )}
+                  />
+                ) : (
+                  <HomeIcon className="h-36 w-36 text-white" />
+                )}
               </div>
             </div>
 
