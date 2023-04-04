@@ -1,5 +1,6 @@
 const Property = require("../models/property");
 const generateToken = require("../models/token_generator");
+const Review = require("../models/review");
 
 const getPropertyByAddress = async (req, res) => {
   try {
@@ -47,4 +48,80 @@ const getPropertyById = async (req, res) => {
   }
 };
 
-module.exports = { getPropertyById, getPropertyByAddress };
+const createProperty = async (req, res) => {
+  const { property, review } = req.body;
+
+  // property must contain an address
+  const isValidProperty =
+    Object.keys(property).length === 1 && "address" in property;
+
+  if (!isValidProperty) {
+    return res.status(400).json({ error: "property must contain an address" });
+  }
+
+  try {
+    const splitAddress = property.address.replaceAll(",", "").split(" ");
+
+    const newProperty = new Property({
+      address: property.address,
+      splitAddress,
+      reviews: [],
+    });
+
+    const newReview = new Review({
+      author: req.userId,
+      property: newProperty._id,
+      ...review,
+    });
+
+    newProperty.reviews.push(newReview._id);
+
+    await newReview.save();
+    await newProperty.save();
+
+    const token = generateToken(req.userId);
+    return res.status(201).json({ property: newProperty, token });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+const updateProperty = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { review } = req.body;
+
+    const newReview = new Review({
+      author: req.userId,
+      property: id,
+      ...review,
+    });
+
+    await newReview.save();
+
+    const property = await Property.findOneAndUpdate(
+      { _id: id },
+      { $push: { reviews: newReview._id } },
+      {
+        projection: { splitAddress: 0 },
+        new: true,
+      }
+    ).lean();
+
+    if (!property) {
+      return res.status(404).json({ error: "Property not found" });
+    }
+
+    const token = generateToken(req.userId);
+    return res.status(200).json({ property, token });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = {
+  getPropertyById,
+  getPropertyByAddress,
+  createProperty,
+  updateProperty,
+};

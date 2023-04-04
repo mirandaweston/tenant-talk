@@ -11,7 +11,7 @@ import NotFound from "../notFound/notFound";
 import useAuthContext from "../../hooks/useAuthContext";
 import NavBar from "../navBar/NavBar";
 import Presentation from "../presentation/Presentation";
-import Review from "../reviews/Review";
+import Review from "../review/Review";
 
 const App = () => {
   const { token } = useAuthContext();
