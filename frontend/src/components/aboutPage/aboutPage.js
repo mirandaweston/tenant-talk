@@ -40,7 +40,7 @@ const team = [
   {
     name: "Joel Powell",
     role: "Senior Dev",
-    imageUrl: "/frontend/public/assets/joel.png",
+    imageUrl: "/../../../public/assets/joel.png",
   },
 
   // More people...
@@ -89,7 +89,6 @@ const footerNavigation = {
 };
 
 const AboutPage = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="bg-white">
