@@ -44,10 +44,15 @@ const App = () => {
             path="/review/:id"
             element={token ? <Review /> : <Navigate to="/login" />}
           />
+          <Route
+            path="/profile"
+            element={token ? <Profile /> : <Navigate to="/login" />}
+          />
           <Route path="/about" element={<AboutPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <ToasterWrapper />
     </BrowserRouter>
   );
 };

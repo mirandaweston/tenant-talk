@@ -2,12 +2,19 @@ const Property = require("../models/property");
 const generateToken = require("../models/token_generator");
 const Review = require("../models/review");
 
+const createReview = (author, property, review) =>
+  new Review({
+    author,
+    property,
+    ...review,
+  });
+
 const getPropertyByAddress = async (req, res) => {
   try {
     const { address } = req.query;
 
     if (!address)
-      return res.status(400).json({ error: "missing required details" });
+      return res.status(400).json({ message: "missing required details" });
 
     const property = await Property.findOne(
       {
@@ -19,7 +26,7 @@ const getPropertyByAddress = async (req, res) => {
       property,
     });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
@@ -39,12 +46,12 @@ const getPropertyById = async (req, res) => {
     const token = generateToken(req.userId);
 
     if (!property) {
-      return res.status(404).json({ error: "Property not found" });
+      return res.status(404).json({ message: "Property not found" });
     }
 
     return res.status(200).json({ property, token });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
@@ -56,7 +63,9 @@ const createProperty = async (req, res) => {
     Object.keys(property).length === 1 && "address" in property;
 
   if (!isValidProperty) {
-    return res.status(400).json({ error: "property must contain an address" });
+    return res
+      .status(400)
+      .json({ message: "property must contain an address" });
   }
 
   try {
@@ -68,11 +77,7 @@ const createProperty = async (req, res) => {
       reviews: [],
     });
 
-    const newReview = new Review({
-      author: req.userId,
-      property: newProperty._id,
-      ...review,
-    });
+    const newReview = createReview(req.userId, newProperty._id, review);
 
     newProperty.reviews.push(newReview._id);
 
@@ -82,7 +87,7 @@ const createProperty = async (req, res) => {
     const token = generateToken(req.userId);
     return res.status(201).json({ property: newProperty, token });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
@@ -91,11 +96,7 @@ const updateProperty = async (req, res) => {
     const { id } = req.params;
     const { review } = req.body;
 
-    const newReview = new Review({
-      author: req.userId,
-      property: id,
-      ...review,
-    });
+    const newReview = createReview(req.userId, id, review);
 
     await newReview.save();
 
@@ -109,13 +110,13 @@ const updateProperty = async (req, res) => {
     ).lean();
 
     if (!property) {
-      return res.status(404).json({ error: "Property not found" });
+      return res.status(404).json({ message: "Property not found" });
     }
 
     const token = generateToken(req.userId);
     return res.status(200).json({ property, token });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 

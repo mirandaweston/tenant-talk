@@ -17,12 +17,12 @@ const getReviewById = async (req, res) => {
     const token = generateToken(req.userId);
 
     if (!review) {
-      return res.status(404).json({ error: "Review not found" });
+      return res.status(404).json({ message: "Review not found" });
     }
 
     return res.status(200).json({ review, token });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 

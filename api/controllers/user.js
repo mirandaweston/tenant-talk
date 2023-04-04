@@ -23,60 +23,84 @@ const signup = async (req, res) => {
     const token = generateToken(user._id);
     res.status(201).json({ user, token });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
 const getUser = async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.userId }, { password: 0 });
+    const user = await User.findById(req.userId, { password: 0 });
     const token = generateToken(user._id);
     res.status(200).json({ user, token });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: err.message });
   }
 };
 
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email }).lean();
+    const user = await User.findOne({ email }).lean();
 
-  if (!user)
-    return res
-      .status(401)
-      .json({ message: "Username or password is incorrect" });
+    if (!user)
+      return res
+        .status(401)
+        .json({ message: "Username or password is incorrect" });
 
-  const match = await bcrypt.compare(password, user.password);
+    const match = await bcrypt.compare(password, user.password);
 
-  if (!match)
-    return res
-      .status(401)
-      .json({ message: "Username or password is incorrect" });
+    if (!match)
+      return res
+        .status(401)
+        .json({ message: "Username or password is incorrect" });
 
-  const token = generateToken(user._id);
-  delete user.password;
+    const token = generateToken(user._id);
+    delete user.password;
 
-  return res.status(201).json({ token, user });
+    return res.status(201).json({ token, user });
+  } catch (err) {
+    return res.status(400).json({ message: err.message });
+  }
 };
 
 const updateUser = async (req, res) => {
   try {
-    let user = req.body;
-
-    if (user.password) {
-      user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync());
-    }
-
-    user = await User.findOneAndUpdate({ _id: req.userId }, user, {
+    const user = await User.findOneAndUpdate({ _id: req.userId }, req.body, {
       projection: { password: 0 },
       new: true,
     });
     const token = generateToken(user._id);
-    res.status(200).json({ user, token });
+    return res.status(200).json({ user, token });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ message: err.message });
   }
 };
 
-module.exports = { signup, getUser, login, updateUser };
+const updatePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!(currentPassword && newPassword))
+      return res.status(400).json({ message: "Missing required info" });
+
+    const user = await User.findById(req.userId);
+
+    const match = await bcrypt.compare(currentPassword, user.password);
+
+    if (!match) return res.status(401).json({ message: "Incorrect password" });
+
+    user.set("password", bcrypt.hashSync(newPassword, bcrypt.genSaltSync()));
+
+    await user.save();
+
+    delete user.password;
+
+    const token = generateToken(user._id);
+    return res.status(200).json({ user, token });
+  } catch (err) {
+    return res.status(400).json({ message: err.message });
+  }
+};
+
+module.exports = { signup, getUser, login, updateUser, updatePassword };

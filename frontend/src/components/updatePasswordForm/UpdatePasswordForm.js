@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 import useAuthContext from "../../hooks/useAuthContext";
 
 const UpdatePasswordForm = () => {
-  const { user, token, dispatch } = useAuthContext();
+  const { token, dispatch } = useAuthContext();
   const {
     register,
     reset,
@@ -12,23 +13,23 @@ const UpdatePasswordForm = () => {
     watch,
     formState: { errors },
   } = useForm();
-  const [error, setError] = useState(null);
+
   const [isLoading, setIsLoading] = useState(null);
 
-  const updatePassword = async (formData) => {
+  const updatePassword = async ({ confirmPassword, ...formData }) => {
     setIsLoading(true);
-    setError(null);
 
     try {
-      const { data } = await axios.patch("/user", formData, {
+      const { data } = await axios.patch("/user/password", formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       dispatch({
         type: "refresh",
         payload: data,
       });
+      toast.success("Password updated");
     } catch (err) {
-      setError(err.response.data.error);
+      toast.error(`Update failed, error: ${err.response.data.message}`);
     }
     setIsLoading(false);
   };
@@ -128,6 +129,7 @@ const UpdatePasswordForm = () => {
           </button>
           <button
             type="submit"
+            disabled={isLoading}
             className="rounded-md bg-orange-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
           >
             Save
