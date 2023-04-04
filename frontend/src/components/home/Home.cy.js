@@ -1,5 +1,6 @@
 import React from "react";
 import Home from "./Home";
+import HomeNav from "../homeNav/homeNav";
 import { BrowserRouter } from "react-router-dom";
 
 describe("<Home />", () => {
@@ -38,5 +39,9 @@ describe("<Home />", () => {
 
   it("displays logo", () => {
     cy.get("svg").should("have.attr", "xmlns", "http://www.w3.org/2000/svg");
+  });
+
+  it("displays menu", () => {
+    cy.get('[data-testid="home-nav"]').should("exist");
   });
 });
