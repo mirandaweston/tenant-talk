@@ -1,10 +1,11 @@
 import React from "react";
 import SearchLanding from "../searchLanding/SearchLanding";
+import HomeNav from "../homeNav/homeNav";
 
 const Home = () => {
   return (
     <>
-      <header className="absolute inset-x-0 top-0 z-50">
+      <header className="absolute inset-x-0 top-0 z-50 flex items-center justify-between">
         <nav className="p-6 lg:px-8" aria-label="Global">
           <span className="sr-only">Tenant Talk</span>
           <svg
@@ -15,6 +16,9 @@ const Home = () => {
             <path d="M1,0 h18 a1,1 0 0 1 1,1 v6 a1,1 0 0 1 -1,1 h-5 l-8 8 v3 a1,1 0 0 0 1,1 h6 a1,1 0 0 0 1,-1 v-3 l-8 -8 h-5 a1,1 0 0 1 -1,-1 v-6 a1,1 0 0 1 1,-1 z" />
           </svg>
         </nav>
+        <div>
+          <HomeNav />
+        </div>
       </header>
 
       <main>
