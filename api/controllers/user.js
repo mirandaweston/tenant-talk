@@ -15,7 +15,7 @@ const signup = async (req, res) => {
       email,
       password: passwordHash,
     });
-    console.log(newUser);
+
     const user = (await newUser.save()).toObject();
 
     delete user.password;
@@ -37,4 +37,27 @@ const getUser = async (req, res) => {
   }
 };
 
-module.exports = { signup, getUser };
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email }).lean();
+
+  if (!user)
+    return res
+      .status(401)
+      .json({ message: "Username or password is incorrect" });
+
+  const match = await bcrypt.compare(password, user.password);
+
+  if (!match)
+    return res
+      .status(401)
+      .json({ message: "Username or password is incorrect" });
+
+  const token = generateToken(user._id);
+  delete user.password;
+
+  return res.status(201).json({ token, user });
+};
+
+module.exports = { signup, getUser, login };

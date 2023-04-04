@@ -25,10 +25,7 @@
     "react/jsx-filename-extension": [
       0,
       {
-        "extensions": [
-          ".js",
-          ".jsx"
-        ]
+        "extensions": [".js", ".jsx"]
       }
     ],
     "react/jsx-props-no-spreading": "off",
