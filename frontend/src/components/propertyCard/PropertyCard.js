@@ -13,7 +13,7 @@ const PropertyCard = ({ property: { address, reviews, _id: propertyId } }) => {
 
   const averageOverallRating = Math.round(
     reviews.reduce((total, { overallRating }) => total + overallRating, 0) /
-      Object.keys(reviews).length
+      reviews.length
   );
 
   const publicId = reviews[reviews.length - 1].image;

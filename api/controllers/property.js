@@ -36,7 +36,6 @@ const getPropertyById = async (req, res) => {
     const property = await Property.findById(id, "address reviews")
       .populate({
         path: "reviews",
-        select: "_id author createdAt comment overallRating image",
         populate: {
           path: "author",
           select: "firstName",
