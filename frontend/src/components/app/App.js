@@ -13,6 +13,7 @@ import NavBar from "../navBar/NavBar";
 import Profile from "../profile/Profile";
 import ToasterWrapper from "../toasterWrapper/ToasterWrapper";
 import Review from "../review/Review";
+import FaqPage from "../ratingGuide/ratingGuide";
 
 const App = () => {
   const { token } = useAuthContext();
@@ -49,6 +50,7 @@ const App = () => {
             element={token ? <Profile /> : <Navigate to="/login" />}
           />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/ratingguide" element={<FaqPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

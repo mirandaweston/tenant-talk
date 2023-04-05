@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { fill } from "@cloudinary/url-gen/actions/resize";
 import { AdvancedImage } from "@cloudinary/react";
 import { HomeIcon } from "@heroicons/react/24/solid";
-
 import { autoGravity } from "@cloudinary/url-gen/qualifiers/gravity";
 import clsx from "clsx";
 import Stars from "../stars/Stars";
