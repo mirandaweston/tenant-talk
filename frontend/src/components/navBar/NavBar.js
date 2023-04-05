@@ -8,6 +8,7 @@ import useAuthContext from "../../hooks/useAuthContext";
 import SearchNav from "../searchNav/SearchNav";
 
 const navigation = [
+  { name: "Home", to: "/" },
   { name: "Properties", to: "/properties" },
   { name: "About", to: "/about" },
   { name: "Rating Guide", to: "/ratingguide" },
@@ -19,7 +20,20 @@ const NavBar = () => {
 
   return (
     <div className="min-h-full">
-      <Disclosure as="nav" className="bg-white shadow">
+      <Disclosure
+        as="nav"
+        className={({ open }) =>
+          clsx(
+            pathname === "/"
+              ? clsx(
+                  open && "bg-white shadow",
+                  "absolute inset-x-0 top-0 z-50 bg-none"
+                )
+              : "bg-white shadow",
+            "transition-all"
+          )
+        }
+      >
         {({ open }) => (
           <>
             <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
@@ -51,8 +65,18 @@ const NavBar = () => {
                         to={to}
                         className={({ isActive }) =>
                           clsx(
-                            isActive ? "bg-gray-100" : " hover:bg-gray-50",
-                            "rounded-md px-3 py-2 text-sm font-medium text-gray-900"
+                            pathname === "/"
+                              ? clsx(
+                                  isActive
+                                    ? "bg-white/10 hover:bg-white/10"
+                                    : "hover:bg-white/5"
+                                )
+                              : clsx(
+                                  isActive ? "bg-gray-100" : "hover:bg-gray-50"
+                                ),
+                            isActive && pathname === "/",
+                            pathname === "/" ? "text-white" : "text-gray-900",
+                            "rounded-md px-3 py-2 text-sm font-medium"
                           )
                         }
                         aria-current={({ isActive }) =>
@@ -93,7 +117,12 @@ const NavBar = () => {
                           <span className="sr-only">Open user menu</span>
                           <span className="hidden lg:flex lg:items-center">
                             <span
-                              className=" text-sm font-semibold leading-6 text-gray-900"
+                              className={clsx(
+                                pathname === "/"
+                                  ? "text-white"
+                                  : "text-gray-900",
+                                "text-sm font-semibold leading-6"
+                              )}
                               aria-hidden="true"
                             >
                               {user && user.firstName}
@@ -187,82 +216,96 @@ const NavBar = () => {
               </div>
             </div>
 
-            <Disclosure.Panel className="lg:hidden">
-              {({ close }) => (
-                <>
-                  {/* Navigation section */}
-                  <div className="space-y-1 pb-3 pt-2">
-                    {navigation.map(({ name, to }) => (
-                      <NavLink
-                        key={name}
-                        to={to}
-                        onClick={close}
-                        className={({ isActive }) =>
-                          clsx(
-                            isActive
-                              ? "bg-orange-50 text-orange-600"
-                              : " hover:bg-gray-50 hover:text-gray-800",
-                            "block py-2 pl-3 pr-4 text-base font-medium text-gray-600"
-                          )
-                        }
-                        aria-current={({ isActive }) =>
-                          isActive ? "page" : undefined
-                        }
-                      >
-                        {name}
-                      </NavLink>
-                    ))}
-                  </div>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Disclosure.Panel className="lg:hidden">
+                {({ close }) => (
+                  <>
+                    {/* Navigation section */}
+                    <div className="space-y-1 pb-3 pt-2">
+                      {navigation.map(({ name, to }) => (
+                        <NavLink
+                          key={name}
+                          to={to}
+                          onClick={close}
+                          className={({ isActive }) =>
+                            clsx(
+                              isActive
+                                ? "bg-orange-50 text-orange-600"
+                                : " hover:bg-gray-50 hover:text-gray-800",
+                              "block py-2 pl-3 pr-4 text-base font-medium text-gray-600"
+                            )
+                          }
+                          aria-current={({ isActive }) =>
+                            isActive ? "page" : undefined
+                          }
+                        >
+                          {name}
+                        </NavLink>
+                      ))}
+                    </div>
 
-                  {/* Profile section */}
-                  <div className="border-t border-gray-200 py-3">
-                    {token ? (
-                      <>
-                        <div className="mt-1 px-4">
-                          <div className="text-base font-medium text-gray-800">
-                            {user && user.firstName}
+                    {/* Profile section */}
+                    <div className="border-t border-gray-200 py-3">
+                      {token ? (
+                        <>
+                          <div className="mt-1 px-4">
+                            <div className="text-base font-medium text-gray-800">
+                              {user && user.firstName}
+                            </div>
+                            <div className="text-sm font-medium text-gray-500">
+                              {user && user.email}
+                            </div>
                           </div>
-                          <div className="text-sm font-medium text-gray-500">
-                            {user && user.email}
+                          <div className="mt-3 space-y-1">
+                            <Disclosure.Button
+                              as="button"
+                              onClick={() => dispatch({ type: "logout" })}
+                              className="block w-full px-4 py-2 text-left text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                            >
+                              Sign out
+                            </Disclosure.Button>
                           </div>
-                        </div>
-                        <div className="mt-3 space-y-1">
-                          <Disclosure.Button
-                            as="button"
-                            onClick={() => dispatch({ type: "logout" })}
-                            className="block w-full px-4 py-2 text-left text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                        </>
+                      ) : (
+                        <div className="space-y-1">
+                          <Link
+                            to="/login"
+                            onClick={close}
+                            className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
                           >
-                            Sign out
-                          </Disclosure.Button>
+                            Log in
+                          </Link>
+                          <Link
+                            to="/signup"
+                            onClick={close}
+                            className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                          >
+                            Sign up
+                          </Link>
                         </div>
-                      </>
-                    ) : (
-                      <div className="space-y-1">
-                        <Link
-                          to="/login"
-                          onClick={close}
-                          className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
-                        >
-                          Log in
-                        </Link>
-                        <Link
-                          to="/signup"
-                          onClick={close}
-                          className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
-                        >
-                          Sign up
-                        </Link>
-                      </div>
-                    )}
-                  </div>
-                </>
-              )}
-            </Disclosure.Panel>
+                      )}
+                    </div>
+                  </>
+                )}
+              </Disclosure.Panel>
+            </Transition>
           </>
         )}
       </Disclosure>
       <main>
-        <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+        <div
+          className={
+            pathname !== "/" && "mx-auto max-w-7xl py-6 sm:px-6 lg:px-8"
+          }
+        >
           <Outlet />
         </div>
       </main>

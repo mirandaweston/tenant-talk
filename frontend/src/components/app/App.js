@@ -22,7 +22,6 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
         <Route element={<AuthLayout />}>
           <Route
@@ -35,6 +34,7 @@ const App = () => {
           />
         </Route>
         <Route element={<NavBar />}>
+          <Route path="/" element={<Home />} />
           <Route path="/properties" element={<Properties />} />
           <Route
             path="/property/:id"
