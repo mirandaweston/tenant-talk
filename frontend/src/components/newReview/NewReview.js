@@ -235,12 +235,9 @@ const NewReview = () => {
               ))}
 
               <div className="col-span-full">
-                <label
-                  htmlFor="cover-photo"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
+                <p className="block text-sm font-medium leading-6 text-gray-900">
                   Review Image
-                </label>
+                </p>
 
                 <div className="relative my-2 rounded-lg border border-dashed border-gray-900/25">
                   <input
