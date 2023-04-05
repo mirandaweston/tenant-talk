@@ -4,6 +4,7 @@ import useGoogle from "react-google-autocomplete/lib/usePlacesAutocompleteServic
 import clsx from "clsx";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 import AddressFeedback from "../addressFeedback/AddressFeedback";
 
 const Search = ({
@@ -15,6 +16,7 @@ const Search = ({
   variant,
   location,
 }) => {
+  const { pathname } = useLocation();
   const { placePredictions, getPlacePredictions, isPlacePredictionsLoading } =
     useGoogle({
       apiKey: process.env.REACT_APP_API_KEY,
@@ -58,7 +60,8 @@ const Search = ({
               variant === "blur"
                 ? "bg-white/5 py-2 pl-11 pr-3.5 text-white ring-white/10 backdrop-blur-md focus:ring-white"
                 : "bg-white py-1.5 pl-10 pr-3 text-gray-900 ring-gray-300 focus:ring-orange-500",
-              "block w-full rounded-md border-0 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+              pathname !== "/properties" && "shadow-sm",
+              "block w-full rounded-md border-0 ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
             )}
             onChange={(event) =>
               getPlacePredictions({ input: event.target.value })
