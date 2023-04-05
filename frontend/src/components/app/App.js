@@ -6,7 +6,7 @@ import Login from "../login/Login";
 import Properties from "../properties/Properties";
 import Property from "../property/Property";
 import NewReview from "../newReview/NewReview";
-import AboutPage from "../aboutPage/AboutPage";
+import AboutPage from "../aboutPage/aboutPage";
 import NotFound from "../notFound/notFound";
 import useAuthContext from "../../hooks/useAuthContext";
 import NavBar from "../navBar/NavBar";
