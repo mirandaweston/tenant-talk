@@ -13,6 +13,7 @@ import NavBar from "../navBar/NavBar";
 import Profile from "../profile/Profile";
 import ToasterWrapper from "../toasterWrapper/ToasterWrapper";
 import Review from "../review/Review";
+import AuthLayout from "../authLayout/AuthLayout";
 import FaqPage from "../ratingGuide/ratingGuide";
 
 const App = () => {
@@ -23,14 +24,16 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
-        <Route
-          path="/signup"
-          element={token ? <Navigate to="/properties" /> : <Signup />}
-        />
-        <Route
-          path="/login"
-          element={token ? <Navigate to="/properties" /> : <Login />}
-        />
+        <Route element={<AuthLayout />}>
+          <Route
+            path="/signup"
+            element={token ? <Navigate to="/properties" /> : <Signup />}
+          />
+          <Route
+            path="/login"
+            element={token ? <Navigate to="/properties" /> : <Login />}
+          />
+        </Route>
         <Route element={<NavBar />}>
           <Route path="/properties" element={<Properties />} />
           <Route
