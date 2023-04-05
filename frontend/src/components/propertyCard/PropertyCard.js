@@ -22,7 +22,7 @@ const PropertyCard = ({ property: { address, reviews, _id: propertyId } }) => {
     <Link to={`/property/${propertyId}`}>
       <li
         data-cy="PropertyCard"
-        className="col-span-1 flex w-full items-center justify-between space-x-6 divide-y divide-gray-200 rounded-lg bg-white p-6 shadow transition-colors hover:bg-gray-50"
+        className="hover:bg-gray-60 col-span-1 flex w-full items-center justify-between space-x-6 divide-y divide-gray-200 rounded-lg bg-white p-6 shadow transition-colors"
       >
         <div className="w-full space-y-3">
           <div
@@ -69,4 +69,3 @@ PropertyCard.propTypes = {
 };
 
 export default PropertyCard;
-
