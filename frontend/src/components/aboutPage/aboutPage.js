@@ -10,14 +10,14 @@ const timeline = [
   {
     name: "Secured $0m in funding",
     description:
-      "ut we went ahead anyway... wireframes, models, diagrams galore. Day 1 of our final engineering project began",
+      "But who needs a budget when you've got five junior devs and a deadline? Wireframes, models, diagrams galore... day 1 of our final engineering project began.",
     date: "March 27th",
     dateTime: "2023-03",
   },
   {
     name: "Completed MVP",
     description:
-      "MVP complete-ish. Given the limited time in which we were to build our final project, we allowed for more time to complete our MVP, in order to ensure we built functionality that didn't just tick a box, but would be clean, reusable and scalable, and enable us to implement additional functionality at a quicker pace",
+      "Our MVP is now complete-ish. Given our limited time, we took extra care to ensure that the functionality we built was not just box-ticking, but clean, reusable, and scalable, allowing for quick implementation of additional functionality.",
     date: "March 31st",
     dateTime: "2023-03",
   },
@@ -32,18 +32,30 @@ const timeline = [
 
 const team = [
   {
-    name: "Hayley Dobbs",
-    role: "Class Clown",
-    imageUrl:
-      "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
+    name: "Dora Gores",
+    role: "Founder",
+    imageUrl: "/assets/dora.jpg",
+  },
+  {
+    name: "Abi Makovsky",
+    role: "Project Momager",
+    imageUrl: "/assets/abi.jpg",
+  },
+  {
+    name: "Miranda Weston",
+    role: "Top Tester",
+    imageUrl: "/assets/miranda.jpg",
   },
   {
     name: "Joel Powell",
     role: "Senior Dev",
-    imageUrl: "/../../../public/assets/joel.png",
+    imageUrl: "/assets/joel.jpg",
   },
-
-  // More people...
+  {
+    name: "Hayley Dobbs",
+    role: "Code Clown",
+    imageUrl: "/assets/hayley.jpg",
+  },
 ];
 
 const values = [
@@ -70,12 +82,12 @@ const values = [
   {
     name: "Balance",
     description:
-      "Finding a balance of learning, whilst still producing great work on a deadline has been extremely tricky. We all agree that whilst we wish we could have spent more time learning, we likely wouldn't have the polished product you see today if we had.",
+      "Finding a balance of learning, whilst still producing great work on a deadline has been extremely tricky. We all agree that whilst we wish we could have spent more time learning, if we had, we probably wouldn't have the polished product you see today.",
   },
   {
     name: "Enjoy downtime",
     description:
-      "The midnight oil, the candle at both ends, whatever it was, it was definitely on fire. Ensuring we respected eachother's downtime was key to getting through the project and being able to give it our all. Thought I still don't think Joel has watched \"Love Is Blind\"",
+      "The midnight oil, the candle at both ends, whatever it was, it was definitely on fire. Ensuring we respected eachother's downtime was key to getting through the project and being able to give it our all. Though I still don't think Joel has watched \"Love Is Blind\"",
   },
 ];
 
@@ -84,12 +96,11 @@ const footerNavigation = {
     { name: "Home", href: "/" },
     { name: "Signup", href: "/signup" },
     { name: "Login", href: "/login" },
-    { name: "How It Works", href: "/howitworks" },
+    { name: "Rating Guide", href: "/ratingguide" },
   ],
 };
 
 const AboutPage = () => {
-
   return (
     <div className="bg-white">
       <main className="isolate">
@@ -157,13 +168,14 @@ const AboutPage = () => {
         </div>
 
         {/* Team section */}
-        <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-48 lg:px-8">
+        <div className="sm:mt-30 mx-auto mt-32 max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Our team
             </h2>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              DO WE WANT TEXT HERE????????
+              We're the team that Googles everything, even how to make toast.
+              But somehow we manage to build software (most of the time).
             </p>
           </div>
           <ul
