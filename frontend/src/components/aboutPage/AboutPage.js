@@ -87,7 +87,7 @@ const values = [
   {
     name: "Enjoy downtime",
     description:
-      "The midnight oil, the candle at both ends, whatever it was, it was definitely on fire. Ensuring we respected eachother's downtime was key to getting through the project and being able to give it our all. Though I still don't think Joel has watched \"Love Is Blind\"",
+      "The midnight oil, the candle at both ends, whatever it was, it was definitely on fire. Ensuring we respected eachother's downtime was key to getting through the project and being able to give it our all. Though we still don't think Joel has watched \"Love Is Blind\".",
   },
 ];
 
@@ -102,7 +102,7 @@ const footerNavigation = {
 
 const AboutPage = () => {
   return (
-    <div className="bg-white">
+    <div className="overflow-hidden rounded-lg bg-white shadow">
       <main className="isolate">
         {/* Hero section */}
         <div className="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-indigo-100/20 pt-14">
