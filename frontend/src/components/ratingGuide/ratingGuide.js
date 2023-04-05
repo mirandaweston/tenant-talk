@@ -5,42 +5,42 @@ import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline";
 const FaqPage = () => {
   const faqs = [
     {
-      question: "How do I rate my landlord?",
+      question: " 🧍 Landlord",
       answer:
         "This category is about your landlord’s responsiveness to your queries and concerns, as well as their efficiency in handling any repairs or maintenance issues. If your landlord was quick to respond to your messages and took immediate action to resolve any issues with the property, you may rate them a 5. If they were slow to respond and didn’t resolve issues promptly, you may rate them a 1. ",
       example3:
         "A rating of 3 could indicate that the landlord was generally responsive but didn’t always address concerns in a timely manner or took longer to resolve maintenance issues.",
     },
     {
-      question: "Condition",
+      question: "🔧 Condition",
       answer:
         "This category is about the overall condition of the property you rented. This includes the building itself, any outdoor space such as a garden or balcony, as well as fixtures, fittings, and paint. If the property was well-maintained, clean and in good repair, you may rate it a 5. If it was poorly maintained, dirty or in disrepair, you may rate it a 1.",
       example3:
         "A rating of 3 could indicate that the property was generally in good condition, but there were some minor issues such as wear and tear or a few cosmetic problems",
     },
     {
-      question: "Neighbors",
+      question: "👩‍👧‍👦 Neighbors",
       answer:
         "This category is about your experience with your neighbours. Were they friendly and respectful, or did they cause disturbances and noise? If you had no issues with your neighbours and found them to be friendly and respectful, you may rate this category a 5. If you had significant issues with noise or disturbances caused by neighbours, you may rate it a 1.",
       example3:
         "A rating of 3 could indicate that you had a mix of positive and negative experiences with your neighbours, and while there were some issues, they weren’t significant enough to warrant a low rating.",
     },
     {
-      question: "Area",
+      question: "📍 Area",
       answer:
         "This category is about the local area where the property is located. This includes factors such as safety, cleanliness, and overall vibe. If the area was quiet, safe, and well-maintained, you may rate it a 5. If there were issues with anti-social behaviour, crime, or the area was dirty and poorly maintained, you may rate it a 1.",
       example3:
         " A rating of 3 could indicate that the local area had both positive and negative aspects, such as a mix of safe and less safe areas or a combination of well-maintained and less well-maintained areas",
     },
     {
-      question: "Warmth",
+      question: "🌡️ Warmth",
       answer:
         "This category is about the warmth of the property, and how it affects things like heating bills. If the property was warm and well-insulated, you may rate it a 5. If it was consistently cold and required a lot of heating, resulting in high bills, you may rate it a 1.",
       example3:
         "A rating of 3 could indicate that the property was generally warm enough, but there were some occasional issues with maintaining a comfortable temperature.",
     },
     {
-      question: "Parking",
+      question: "🚗 Parking",
       answer:
         "This category is about the availability of parking at the property, including instances where parking was technically available, but it was difficult to find a parking space. If there was ample parking available and you never had trouble finding a space, you may rate it a 5. If there were significant issues with parking, such as no designated parking or limited availability, resulting in difficulty finding a space, you may rate it a 1.",
       example3:
@@ -75,7 +75,7 @@ const FaqPage = () => {
 
           <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
             <div className="text-lg font-semibold">
-              <p>Ratings</p>
+              <p> How do I rate...</p>
             </div>
             {faqs.map((faq) => (
               <Disclosure as="div" key={faq.question} className="pt-6">
