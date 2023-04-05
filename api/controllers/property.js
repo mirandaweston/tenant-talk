@@ -14,7 +14,7 @@ const getPropertyByAddress = async (req, res) => {
     const { address } = req.query;
 
     if (!address)
-      return res.status(400).json({ message: "missing required details" });
+      return res.status(400).json({ message: "Missing required address" });
 
     const property = await Property.findOne(
       {
@@ -42,12 +42,12 @@ const getPropertyById = async (req, res) => {
         },
       })
       .lean();
-    const token = generateToken(req.userId);
 
     if (!property) {
       return res.status(404).json({ message: "Property not found" });
     }
 
+    const token = generateToken(req.userId);
     return res.status(200).json({ property, token });
   } catch (err) {
     return res.status(500).json({ message: err.message });

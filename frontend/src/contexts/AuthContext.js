@@ -4,12 +4,17 @@ import axios from "axios";
 
 export const AuthContext = createContext();
 
-const save = ({ user, token }) => {
+const login = ({ user, token }) => {
   window.localStorage.setItem("token", token);
   return { user, token };
 };
 
-const clear = () => {
+const refresh = ({ user }, { token }) => {
+  window.localStorage.setItem("token", token);
+  return { user, token };
+};
+
+const logout = () => {
   window.localStorage.removeItem("token");
   return { user: null, token: null };
 };
@@ -17,11 +22,11 @@ const clear = () => {
 const authReducer = (state, action) => {
   switch (action.type) {
     case "login":
-      return save(action.payload);
+      return login(action.payload);
     case "refresh":
-      return save(action.payload);
+      return refresh(state, action.payload);
     case "logout":
-      return clear();
+      return logout();
     default:
       return state;
   }
