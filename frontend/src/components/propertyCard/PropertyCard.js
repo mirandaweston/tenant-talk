@@ -69,3 +69,4 @@ PropertyCard.propTypes = {
 };
 
 export default PropertyCard;
+
