@@ -4,7 +4,7 @@ const timeline = [
   {
     name: "Founded Project",
     description: "The day our team was formed and Tenant Talk was born!",
-    date: "March 23rd",
+    date: "March 24th",
     dateTime: "2023-03",
   },
   {
@@ -105,9 +105,9 @@ const AboutPage = () => {
     <div className="overflow-hidden rounded-lg bg-white shadow">
       <main className="isolate">
         {/* Hero section */}
-        <div className="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-indigo-100/20 pt-14">
+        <div className="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-orange-100/20 pt-14">
           <div
-            className="absolute inset-y-0 right-1/2 -z-10 -mr-96 w-[200%] origin-top-right skew-x-[-30deg] bg-white shadow-xl shadow-indigo-600/10 ring-1 ring-indigo-50 sm:-mr-80 lg:-mr-96"
+            className="absolute inset-y-0 right-1/2 -z-10 -mr-96 w-[200%] origin-top-right skew-x-[-30deg] bg-white shadow-xl shadow-orange-600/10 ring-1 ring-orange-50 sm:-mr-80 lg:-mr-96"
             aria-hidden="true"
           />
           <div className="mx-auto max-w-7xl px-6 py-32 sm:py-40 lg:px-8">
@@ -119,7 +119,7 @@ const AboutPage = () => {
               <div className="mt-6 max-w-xl lg:mt-0 xl:col-end-1 xl:row-start-1">
                 <p className="text-lg leading-8 text-gray-600">
                   We’re Tenant Talk and we're here to change the way you find
-                  your next renatal home. Find honest reviews covering landlords
+                  your next rental home. Find honest reviews covering landlords
                   to localilty, parking to pets and much more from folks who've
                   actually lived there.
                 </p>
