@@ -5,6 +5,15 @@ import useAuthContext from "../../hooks/useAuthContext";
 import ReviewCard from "../reviewCard/ReviewCard";
 import Stars from "../stars/Stars";
 
+const ratings = [
+  { name: "landlordRating", label: "Landlord" },
+  { name: "conditionRating", label: "Condition" },
+  { name: "neighbourRating", label: "Neighbours" },
+  { name: "warmthRating", label: "Warmth" },
+  { name: "parkingRating", label: "Parking" },
+  { name: "areaRating", label: "Area" },
+];
+
 const Property = () => {
   const { id } = useParams();
   const { token } = useAuthContext();
@@ -22,50 +31,51 @@ const Property = () => {
   if (!data) return null; // change this dependent on if we need to return. Should page
   // be accessible if we haven't hit a property value in the previous path.
 
-  const getAverage = ({ reviews }) => {
-    const ratings = reviews.map(({ overallRating }) => overallRating);
-    return ratings.reduce((a, b) => a + b) / ratings.length;
-  };
+  const getAverage = (name, reviews) =>
+    Math.round(
+      reviews.reduce((total, review) => total + review[name], 0) /
+        reviews.length
+    );
+
+  const { address, reviews } = data.property;
+
   return (
     <div className="overflow-hidden bg-white shadow sm:rounded-lg">
       <div className="px-4 py-5 sm:px-6">
         <h3 className="text-base font-semibold leading-6 text-gray-900">
-          {data.property.address}
+          {address}
         </h3>
         <p className="mt-1 text-sm text-gray-500">
-          {`Reviews: ${data.property.reviews.length}`}
+          {`Reviews: ${reviews.length}`}
         </p>
       </div>
-      <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
-        <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-          <div className="sm:col-span-1">
-            <dt className="text-sm font-medium text-gray-500">
-              Overall Rating
-            </dt>
-            <dd className="mt-1 text-sm text-gray-900">
-              <div className="mt-4 flex items-center">
-                <Stars value={getAverage(data.property)} />
-                <p className="ml-1 mt-1 text-sm text-gray-500">
-                  {getAverage(data.property)} out of 5 stars
-                </p>
-              </div>
-            </dd>
-          </div>
 
-          <div className="sm:col-span-2">
-            <dt className="text-sm font-medium text-gray-500">Reviews</dt>
-            <dd className="mt-1 text-sm text-gray-900">
-              <ul className="space-y-3">
-                {data.property.reviews
-                  .slice()
-                  .reverse()
-                  .map((review) => (
-                    <ReviewCard key={review._id} review={review} />
-                  ))}
-              </ul>
-            </dd>
-          </div>
+      <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <Stars
+          value={getAverage("overallRating", reviews)}
+          label="Overall Rating"
+        />
+
+        <dl className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {ratings.map(({ name, label }) => (
+            <div key={name} className="sm:col-span-1">
+              <Stars
+                value={getAverage(name, reviews)}
+                label={label}
+                labelPosition="side"
+              />
+            </div>
+          ))}
         </dl>
+      </div>
+
+      <h3 className="mt-4 block px-4 font-medium leading-6 text-gray-900 sm:px-6">
+        Reviews
+      </h3>
+      <div className="mt-2">
+        {reviews.reverse().map((review, index) => (
+          <ReviewCard key={review._id} review={review} index={index} />
+        ))}
       </div>
     </div>
   );

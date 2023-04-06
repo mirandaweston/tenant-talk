@@ -10,6 +10,7 @@ import SearchNav from "../searchNav/SearchNav";
 const navigation = [
   { name: "Properties", to: "/properties" },
   { name: "About", to: "/about" },
+  { name: "Rating Guide", to: "/ratingguide" },
 ];
 
 const NavBar = () => {

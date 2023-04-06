@@ -1,15 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 import useAuthContext from "./useAuthContext";
 
 const useLogin = () => {
-  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const { dispatch } = useAuthContext();
 
   const login = async (formData) => {
     setIsLoading(true);
-    setError(null);
 
     try {
       const { data } = await axios.post("/user/login", formData);
@@ -17,13 +16,14 @@ const useLogin = () => {
         type: "login",
         payload: data,
       });
+      toast.success("Login successful 🎉");
     } catch (err) {
-      setError(err.response.data.error);
+      toast.error(err.response.data.message);
     }
     setIsLoading(false);
   };
 
-  return { login, isLoading, error };
+  return { login, isLoading };
 };
 
 export default useLogin;

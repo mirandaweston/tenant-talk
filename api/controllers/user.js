@@ -23,6 +23,11 @@ const signup = async (req, res) => {
     const token = generateToken(user._id);
     res.status(201).json({ user, token });
   } catch (err) {
+    if (err.code === 11000)
+      return res
+        .status(500)
+        .json({ message: "Account with this email already exists" });
+
     res.status(500).json({ message: err.message });
   }
 };
