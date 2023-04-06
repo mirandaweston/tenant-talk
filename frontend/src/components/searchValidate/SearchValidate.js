@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import Search from "../search/Search";
+import useError from "../../hooks/useError";
 
 const SearchValidate = ({
   onChange,
@@ -9,12 +10,11 @@ const SearchValidate = ({
   foundPropertyId,
   setFoundPropertyId,
 }) => {
-  const [, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
+  const { handleError } = useError();
 
   const getProperty = async () => {
     setIsLoading(true);
-    setError(null);
     try {
       const { data } = await axios.get("/property", {
         params: { address: value },
@@ -25,7 +25,7 @@ const SearchValidate = ({
         setFoundPropertyId(false);
       }
     } catch (err) {
-      setError(err.response.data.error);
+      handleError(err);
     }
     setIsLoading(false);
   };

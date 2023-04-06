@@ -1,6 +1,7 @@
 import React, { useEffect, createContext, useReducer } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 export const AuthContext = createContext();
 
@@ -51,6 +52,7 @@ export const AuthContextProvider = ({ children }) => {
       });
     } catch {
       dispatch({ type: "logout" });
+      toast.error("Please login again");
     }
   };
 
