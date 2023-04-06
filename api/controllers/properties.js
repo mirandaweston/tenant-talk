@@ -12,7 +12,9 @@ const getPropertiesByAddress = async (req, res) => {
           splitAddress: { $all: splitAddress },
         },
         "-splitAddress"
-      ).populate("reviews", "overallRating image")) || [];
+      )
+        .sort({ $natural: -1 })
+        .populate("reviews", "overallRating image")) || [];
     return res.status(200).json({
       properties,
     });

@@ -27,7 +27,7 @@ const PropertyCard = ({ property: { address, reviews, _id: propertyId } }) => {
         <div className="w-full space-y-3">
           <div
             data-cy="image"
-            className="flex aspect-square w-full items-center justify-center rounded-md bg-gray-200"
+            className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-md bg-gray-200"
           >
             {publicId ? (
               <AdvancedImage
