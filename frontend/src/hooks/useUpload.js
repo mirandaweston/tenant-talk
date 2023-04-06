@@ -1,14 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 const useUpload = () => {
-  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
 
   // uploads the image to Cloudinary
   const upload = async (image) => {
     setIsLoading(true);
-    setError(null);
 
     const formData = new FormData();
     formData.append("file", image);
@@ -23,11 +22,11 @@ const useUpload = () => {
       );
       return publicId;
     } catch (err) {
-      setError(err.response.data.error);
+      toast.error(err.response.data.error.message);
     }
     setIsLoading(false);
   };
-  return { upload, isLoading, error };
+  return { upload, isLoading };
 };
 
 export default useUpload;

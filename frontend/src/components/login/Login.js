@@ -36,13 +36,15 @@ const Login = () => {
 
   return (
     <>
-      <svg
-        className="h-12 w-auto fill-orange-500"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="M1,0 h18 a1,1 0 0 1 1,1 v6 a1,1 0 0 1 -1,1 h-5 l-8 8 v3 a1,1 0 0 0 1,1 h6 a1,1 0 0 0 1,-1 v-3 l-8 -8 h-5 a1,1 0 0 1 -1,-1 v-6 a1,1 0 0 1 1,-1 z" />
-      </svg>
+      <Link to="/">
+        <svg
+          className="h-12 w-auto fill-orange-500"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M1,0 h18 a1,1 0 0 1 1,1 v6 a1,1 0 0 1 -1,1 h-5 l-8 8 v3 a1,1 0 0 0 1,1 h6 a1,1 0 0 0 1,-1 v-3 l-8 -8 h-5 a1,1 0 0 1 -1,-1 v-6 a1,1 0 0 1 1,-1 z" />
+        </svg>
+      </Link>
 
       <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
         Log in to your account
@@ -77,7 +79,7 @@ const Login = () => {
                   errors[name]
                     ? "ring-red-500 focus:ring-red-500"
                     : "ring-gray-300 focus:ring-orange-500",
-                  "block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
+                  "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
                 )}
                 {...register(name, {
                   required: `${label} is required`,
