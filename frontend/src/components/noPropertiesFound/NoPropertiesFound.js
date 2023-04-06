@@ -7,7 +7,7 @@ const NoPropertiesFound = () => {
     <div className="relative isolate">
       <div className="absolute -z-10 grid h-fit w-full grid-cols-1 gap-6 blur-md sm:grid-cols-2 lg:grid-cols-3">
         {[0, 1, 2, 3, 4, 5].map((i) => (
-          <div key={i} className="w-full rounded-lg bg-gray-300 p-6 pb-24">
+          <div key={i} className="w-full bg-gray-300 p-6 pb-24 sm:rounded-lg">
             <div className="aspect-square w-full rounded-md bg-gray-400 opacity-50" />
           </div>
         ))}
