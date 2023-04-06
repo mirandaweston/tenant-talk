@@ -50,7 +50,7 @@ const FaqPage = () => {
   ];
 
   return (
-    <div className="bg-white">
+    <div className="overflow-hidden bg-white shadow sm:rounded-lg">
       <div className="mx-auto max-w-7xl px-4 py-12 ">
         <div className="mx-auto max-w-4xl ">
           <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">
