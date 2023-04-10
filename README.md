@@ -37,6 +37,7 @@ cd ..
 cd api
 npm install
 JWT_SECRET=secret npm start
+
 ```
 
 ## 3. Technologies used
