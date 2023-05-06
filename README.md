@@ -37,9 +37,10 @@ cd ..
 cd api
 npm install
 JWT_SECRET=secret npm start
+
 ```
 
-## 3. Technologies used
+## 3. Tools and technologies
 
 - MongoDB
 - Express
@@ -48,3 +49,8 @@ JWT_SECRET=secret npm start
 - Tailwind
 - Jest (backend tests)
 - Cypress (frontend tests)
+
+## 4. Rendered
+<img width="1232" alt="Screenshot 2023-04-16 at 23 58 02" src="https://user-images.githubusercontent.com/117643324/232347695-1e73e7be-23c8-4528-814b-ed6b9d4656bc.png">
+
+
